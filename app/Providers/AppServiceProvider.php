@@ -40,14 +40,8 @@ class AppServiceProvider extends ServiceProvider
 
       view()->composer('*', function ($view) {
          if (Auth::check()) {
-           
             $view->with('fotoProfil',    User::find(auth()->user()->id)->getUrlFoto());
-    
          }
-
-
-       
-
       });
    }
 }

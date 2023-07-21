@@ -52,7 +52,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
    Route::get('/', [DashboardController::class, 'index'])->name('admin');
    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-   Route::resource('user', MasterPegawaiController::class);
+
 
    Route::controller(AuthController::class)->group(function () {
       Route::put('password-ubah', 'ubahPassword')->name('password.ubah');

@@ -198,7 +198,8 @@
             $('.error').hide();
             let url = $(this).attr('data-url');
             $.get(url, function(response) {
-                $('#user_id').val(response.data.id)
+              
+                $('#modal_create_edit_user input[name=user_id]').val(response.data.id)
                 $('#username').val(response.data.username)
                 $('#nama_lengkap').val(response.data.nama_lengkap)
                 $('#kontak').val(response.data.kontak)
@@ -247,7 +248,9 @@
             $('#modal_reset_password').modal('show')
             let name = $(this).attr('data-name');
             let id = $(this).attr('data-id');
-            $('#modal_reset_password #user_id').val(id)
+
+
+            $('#modal_reset_password input[name=user_id]').val(id)
         })
 
 

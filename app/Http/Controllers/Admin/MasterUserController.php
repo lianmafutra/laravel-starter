@@ -28,6 +28,7 @@ class MasterUserController extends Controller
 
    public function index()
    {
+    
       $data = User::with('file_foto');
       $x['roles']          = Role::get();
 

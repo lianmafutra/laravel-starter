@@ -15,7 +15,7 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input hidden id="user_id" name="user_id" value="" />
+                                 <input autocomplete="off" hidden name="user_id"></input>
                                     <x-input id='username'  name='username' placeholder='Username Login'  label='Username' required='true' />
                                     <x-input id='nama_lengkap' name='nama_lengkap' placeholder='Nama Lengkap user'  label='Nama Lengkap' required='true'  />
                                     <x-input-number id='kontak' name='kontak'  label='Kontak' required=false  placeholder="Kontak User" />

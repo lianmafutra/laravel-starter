@@ -7,7 +7,7 @@
             <a href="{{ route('dashboard') }}" class="nav-link"> 
                Selamat Datang, 
                <span style="font-weight: 900"> {{ auth()->user()->nama_lengkap }} </span>
-              <span class="pl-1" style="color: blue">( {{  ucfirst(auth()->user()->getRoleName()) }} ) </span> 
+              <span class="pl-1" style="color: rgb(137, 137, 137)">( {{  ucfirst(auth()->user()->getRoleName()) }} ) </span> 
                 </a> 
         </li>
     </ul>

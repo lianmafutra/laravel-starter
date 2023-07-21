@@ -13,7 +13,7 @@
                     <p>Apakah anda yakin Mereset Password User <span style="font-weight: bold" class="username"></span>
                         ? (Password Default : 123456)</p>
                     <div class="form-group">
-                        <input hidden id="user_id" name="user_id"></input>
+                        <input autocomplete="off" hidden  name="user_id"></input>
                         <x-input-password value="123456" label='Password Baru' id="password_baru"
                             placeholder='Password Baru'></x-input-password>
                     </div>

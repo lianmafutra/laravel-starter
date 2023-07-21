@@ -15,7 +15,6 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-12">
-                                 
                                  <input hidden id="user_id" name="user_id" value="{{ $user->id }}" />
                                  <x-select2_multi id="permission" name='permission' label='Select Permission' required="true"
                                   placeholder='Select Permission'>

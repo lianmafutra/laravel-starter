@@ -1,11 +1,9 @@
 @extends('admin.layouts.master')
 @push('css')
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-
     <link href="{{ asset('plugins/filepond/filepond.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }} ">
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
-    <link href="{{ asset('plugins/filepond/filepond-plugin-image-preview.css') }} " rel="stylesheet" />
 @endpush
 <style>
 
@@ -21,7 +19,7 @@
                     User</a>
             </div>
             <div class="card-body">
-                <x-datatable id="datatable" :th="[
+                <x-datatable class="table-hover" id="datatable" :th="[
                     'No',
                     'Foto',
                     'Username',
@@ -41,10 +39,10 @@
 @push('js')
     @include('admin.master-user.modal-create-edit')
     @include('admin.master-user.modal-reset-password')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.scrollbar/0.2.11/jquery.scrollbar.min.js"></script>
+
+  
     <script src="{{ asset('template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('template/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="https://unpkg.com/scrollbooster@2/dist/scrollbooster.min.js"></script>
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
     <script>
         $('.select2bs4').select2({
@@ -125,7 +123,6 @@
             ]
         })
 
-
         $('#btn_create_user').click(function(e) {
             e.preventDefault()
             clearInput()
@@ -161,7 +158,6 @@
             })
         })
 
-
         $('#form_reset_password').submit(function(e) {
             e.preventDefault();
             const formData = new FormData(this);
@@ -189,8 +185,6 @@
             })
         })
 
-
-
         $('#datatable').on('click', '.btn_edit', function(e) {
             clearInput()
             $('#modal_create_edit_user').modal('show')
@@ -207,7 +201,6 @@
                 $('#email').val(response.data.email)
             })
         })
-
 
         $('#datatable').on('click', '.btn_delete', function(e) {
             e.preventDefault()
@@ -247,12 +240,8 @@
             e.preventDefault();
             $('#modal_reset_password').modal('show')
             let name = $(this).attr('data-name');
-            let id = $(this).attr('data-id');
-
-
-            $('#modal_reset_password input[name=user_id]').val(id)
+            $('#modal_reset_password input[name=user_id]').val($(this).attr('data-id'))
         })
-
 
         $('body').on('click', '.btn_nonaktifkan', function(e) {
             e.preventDefault();
@@ -274,5 +263,6 @@
                 }
             })
         })
+
     </script>
 @endpush

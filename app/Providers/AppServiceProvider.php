@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-
+use App\Config\MenuSidebar;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -41,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
       view()->composer('*', function ($view) {
          if (Auth::check()) {
             $view->with('fotoProfil',    User::find(auth()->user()->id)->getUrlFoto());
+            $view->with('menu', MenuSidebar::menu());
          }
       });
    }

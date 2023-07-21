@@ -351,3 +351,7 @@ a.brand-link {
  .main-sidebar {
    box-shadow: 1px -2px 4px -2px #0101014f !important;
 }
+
+.dropdown-menu>li>a:hover {
+   background-color: rgba(179, 179, 179, 0.237);
+}

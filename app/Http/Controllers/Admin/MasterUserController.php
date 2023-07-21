@@ -14,7 +14,6 @@ use PHPUnit\TextUI\XmlConfiguration\Group;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\ResponseCache\Facades\ResponseCache;
-use Validator;
 
 class MasterUserController extends Controller
 {
@@ -37,6 +36,7 @@ class MasterUserController extends Controller
          return  datatables()->of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
+              
                return view('admin.master-user.action', compact('data'));
             })
             ->editColumn('foto', function ($data) {

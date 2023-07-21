@@ -14,6 +14,7 @@ use PHPUnit\TextUI\XmlConfiguration\Group;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\ResponseCache\Facades\ResponseCache;
+use Validator;
 
 class MasterUserController extends Controller
 {
@@ -38,7 +39,7 @@ class MasterUserController extends Controller
                return view('admin.master-user.action', compact('data'));
             })
             ->editColumn('foto', function ($data) {
-                  return '<img   class="foto img-circle elevation-3 foto p-0" src="'. $data?->getUrlFoto(). '' . '" height="40px" width="40px"; style="object-fit: cover; padding: 0px !important;">';
+               return '<img   class="foto img-circle elevation-3 foto p-0" src="' . $data?->getUrlFoto() . '' . '" height="40px" width="40px"; style="object-fit: cover; padding: 0px !important;">';
             })
             ->addColumn('role', function (User $data) {
                return $this->userServices->getRoleColor($data->getRoleName());
@@ -68,8 +69,6 @@ class MasterUserController extends Controller
 
    public function store(Request $request)
    {
-
-
       try {
          $input =  $request->except('user_id', 'role');
          $input['password'] = bcrypt('123456');
@@ -101,7 +100,7 @@ class MasterUserController extends Controller
                if ($user->hasDirectPermission($data->name)) {
                   return '<a href="#" data-action="' . $data->name . '"
                   data-url="' . route("revoke.permission") . '" data-toggle="tooltip" data-placement="bottom" title="Delete Data" class="btn btn-sm btn-danger btn_delete" data-id="" data-name=""><i class="fas fa-trash"></i></a>';
-               } 
+               }
             })
             ->editColumn('created_at', function ($data) {
                return Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('d/m/Y h:i:s');
@@ -126,7 +125,7 @@ class MasterUserController extends Controller
             ->rawColumns(['action', 'guard_name', 'type'])
             ->make(true);
       }
-      return view('admin.master-user.show', compact('user','permissions'));
+      return view('admin.master-user.show', compact('user', 'permissions'));
    }
 
    public function edit($id)
@@ -143,6 +142,8 @@ class MasterUserController extends Controller
          $user = User::find($id);
          $user->delete();
          DB::commit();
+
+         ResponseCache::forget(route('master-user.index'));
          return $this->success(config('language.alert-success.destroy'));
       } catch (\Throwable $th) {
          DB::rollBack();
@@ -152,7 +153,7 @@ class MasterUserController extends Controller
 
    public function revokePermission(Request $request)
    {
-    
+
       try {
          DB::beginTransaction();
          $user = User::find($request->user_id);
@@ -182,13 +183,26 @@ class MasterUserController extends Controller
    public function setActiveStatus(Request $request)
    {
       try {
-         User::where('id', $request->id)->update([
+
+         User::find($request->id)->update([
             'status' => $request->status
          ]);
-         ResponseCache::forget(route('master-user.index'));
-         return redirect()->back()->with('success', 'Berhasil Mengaktifkan User');
+
+         return redirect()->back()->with('success', __('trans.crud.update'));
       } catch (\Throwable $th) {
-         return redirect()->back()->with('error', 'Gagal');
+         return redirect()->back()->with('error', __('trans.crud.error'));
+      }
+   }
+
+   public function passwordReset(Request $request)
+   {
+      try {
+         User::find($request->user_id)->update([
+            'password' => bcrypt($request->password_baru)
+         ]);
+         return redirect()->back()->with('success', __('trans.crud.update'));
+      } catch (\Throwable $th) {
+         return redirect()->back()->with('error', __('trans.crud.error'));
       }
    }
 }

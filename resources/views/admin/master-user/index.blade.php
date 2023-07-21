@@ -40,7 +40,7 @@
 @endsection
 @push('js')
     @include('admin.master-user.modal-create-edit')
-    @include('app.user.modal-reset-password')
+    @include('admin.master-user.modal-reset-password')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.scrollbar/0.2.11/jquery.scrollbar.min.js"></script>
     <script src="{{ asset('template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('template/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -136,7 +136,6 @@
         $('#form_modal_create_edit').submit(function(e) {
             e.preventDefault();
             const formData = new FormData(this);
-
             $.ajax({
                 type: 'POST',
                 url: @json(route('master-user.store')),
@@ -162,6 +161,36 @@
             })
         })
 
+
+        $('#form_reset_password').submit(function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            $.ajax({
+               url : route('master-user.password-reset'),
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                beforeSend: function() {
+                    showLoading()
+                },
+                success: (response) => {
+                    if (response) {
+                        this.reset()
+                        $('#modal_reset_password').modal('hide')
+                        datatable.ajax.reload()
+                        alertSuccess(response.message)
+                    }
+                },
+                error: function(response) {
+                    showError(response)
+                }
+            })
+        })
+
+
+
         $('#datatable').on('click', '.btn_edit', function(e) {
             clearInput()
             $('#modal_create_edit_user').modal('show')
@@ -169,57 +198,56 @@
             $('.error').hide();
             let url = $(this).attr('data-url');
             $.get(url, function(response) {
-               console.log(response)
                 $('#user_id').val(response.data.id)
                 $('#username').val(response.data.username)
                 $('#nama_lengkap').val(response.data.nama_lengkap)
                 $('#kontak').val(response.data.kontak)
                 $('#role').val(response.data.role).trigger("change")
                 $('#email').val(response.data.email)
-
             })
         })
 
+
         $('#datatable').on('click', '.btn_delete', function(e) {
-                e.preventDefault()
-                Swal.fire({
-                    title: 'Are you sure, you want to delete this data ?',
-                    text: $(this).attr('data-action'),
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6 ',
-                    confirmButtonText: 'Yes, Delete'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: 'POST',
-                            dataType: 'json',
-                            data: {
-                                _method: 'DELETE'
-                            },
-                            url: $(this).attr('data-url'),
-                            beforeSend: function() {
-                                showLoading()
-                            },
-                            success: (response) => {
-                                datatable.ajax.reload()
-                                alertSuccess(response.message)
-                            },
-                            error: function(response) {
-                                showError(response)
-                            }
-                        })
-                    }
-                })
+            e.preventDefault()
+            Swal.fire({
+                title: 'Are you sure, you want to delete this data ?',
+                text: $(this).attr('data-action'),
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6 ',
+                confirmButtonText: 'Yes, Delete'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            _method: 'DELETE'
+                        },
+                        url: $(this).attr('data-url'),
+                        beforeSend: function() {
+                            showLoading()
+                        },
+                        success: (response) => {
+                            datatable.ajax.reload()
+                            alertSuccess(response.message)
+                        },
+                        error: function(response) {
+                            showError(response)
+                        }
+                    })
+                }
             })
+        })
 
         $('body').on('click', '.btn_reset_password', function(e) {
             e.preventDefault();
             $('#modal_reset_password').modal('show')
             let name = $(this).attr('data-name');
             let id = $(this).attr('data-id');
-            $('#user_id').val(id)
+            $('#modal_reset_password #user_id').val(id)
         })
 
 

@@ -2,23 +2,19 @@
 
 namespace App\Models;
 
-use App\Utils\ApiResponse;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
-use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\ResponseCache\Facades\ResponseCache;
 use Storage;
 
-class User extends Authenticatable implements Auditable
+class User extends Authenticatable
 {
-   use HasApiTokens, HasFactory, Notifiable;
-   use \OwenIt\Auditing\Auditable;
+   use HasFactory, Notifiable;
    use HasRoles;
+
    protected $guarded = [];
    protected $hidden = [
       'password',
@@ -34,6 +30,23 @@ class User extends Authenticatable implements Auditable
    protected $appends = [
       'role'
    ];
+
+   public static function boot()
+   {
+      parent::boot();
+      self::created(function () {
+         ResponseCache::forget(route('master-user.index'));
+      });
+
+      self::updated(function () {
+         ResponseCache::forget(route('master-user.index'));
+      });
+
+      self::deleted(function () {
+         ResponseCache::forget(route('master-user.index'));
+      });
+   }
+   
 
    public function getRoleName()
    {

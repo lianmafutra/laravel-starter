@@ -109,21 +109,20 @@ class RoleController extends Controller
          ]);
          $role->syncPermissions($request->permissions);
          DB::commit();
-         toast('Update Success','success');
+         return redirect()->back()->with('success', __('trans.crud.success'));
       } catch (\Throwable $th) {
-         DB::rollback();
-         toast('Update Error'.$th,'error');
+         DB::rollBack();
+         return redirect()->back()->with('error', __('trans.crud.error'));
       }
-      return back();
    }
 
    public function destroy(Role $role)
    {
       try {
          $role->delete();
-         return redirect()->back()->with('success', config('language.alert-success.destroy'), 200);
+         return redirect()->back()->with('success', __('trans.crud.success'));
       } catch (\Throwable $th) {
-         return redirect()->back()->with('error', config('language.alert-error.destroy'), 400);
+         return redirect()->back()->with('error', __('trans.crud.error'));
       }
    }
 }

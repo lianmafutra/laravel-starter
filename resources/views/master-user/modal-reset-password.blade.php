@@ -22,7 +22,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="form_reset_password" action="{{ route('master-user.password.reset') }}" method="POST">
+            <form id="form_reset_password" action="{{ route('master-user.password-reset') }}" method="POST">
                 @csrf
                 @method('POST')
                 <div class="modal-body">

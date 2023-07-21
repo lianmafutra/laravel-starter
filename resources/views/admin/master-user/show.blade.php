@@ -56,7 +56,7 @@
                                     <div class="card-body">
                                         <div class="tab-content">
                                             <div class="active tab-pane" id="tab_profile">
-                                                <form method="POST" action="{{ route('profile.update') }}"
+                                                <form method="POST" action=""
                                                     class="form-horizontal">
                                                     @csrf
                                                     @method('PUT')
@@ -310,7 +310,7 @@
 
         $.ajax({
             type: 'POST',
-            url: @json(route('add.direct.permission')),
+            url: @json(route('master-user.add.direct.permission')),
             data: formData,
             cache: false,
             contentType: false,

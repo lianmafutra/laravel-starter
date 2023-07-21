@@ -36,12 +36,13 @@ Route::middleware(['auth'])->get('/home', [DashboardController::class, 'index'])
 Route::prefix('admin')->middleware(['auth'])->group(function () {
   
    Route::resource('master-user', MasterUserController::class);
-   
    Route::controller(MasterUserController::class)->name('master-user.')->group(function () {
       Route::post('revoke-permission', 'revokePermission')->name('revoke.permission');
       Route::post('add-permission', 'addDirectPermission')->name('add.direct.permission');
       Route::put('active-status', 'setActiveStatus')->name('active-status');
+      Route::post('password/reset', 'passwordReset')->name('password-reset');
    });
+   
    Route::resource('role', RoleController::class);
    Route::resource('permission-group', PermissionGroupController::class);
    Route::resource('permission', PermissionController::class);

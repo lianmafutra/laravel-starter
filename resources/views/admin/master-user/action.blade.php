@@ -33,12 +33,11 @@
                     </form>
                 </a> </li>
             <div class="dropdown-divider"></div>
-            <li><a data-url='{{ route('user.edit', $data->id) }}' data-name="{{ $data->username }}"
-                    data-id="{{ $data->id }}" href="#" class="btn_reset_password dropdown-item">
+            <li><a data-id="{{ $data->id }}" href="#" class="btn_reset_password dropdown-item">
                     <i class="fas fa-lock-open"></i> Reset
                     Password</a> </li>
             <div class="dropdown-divider"></div>
-            <li><a data-url='{{ route('user.edit', $data->id) }}' data-name="{{ $data->username }}"
+            <li><a data-url='{{ route('master-user.show', $data->id) }}' data-name="{{ $data->username }}"
                     data-id="{{ $data->id }}" href="{{ route('master-user.show', $data->id) }}" class="dropdown-item">
                     <i class="fas fa-lock-open"></i> Detail </a> </li>
             <div class="dropdown-divider"></div>

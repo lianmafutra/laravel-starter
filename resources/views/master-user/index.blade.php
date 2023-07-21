@@ -317,7 +317,7 @@
                 const formData = new FormData(this);
                 $.ajax({
                     type: 'POST',
-                    url: @json(route('master-user.password.reset')),
+                    url: @json(route('master-user.password-reset')),
                     data: formData,
                     cache: false,
                     contentType: false,

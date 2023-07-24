@@ -4,14 +4,15 @@ namespace App\Config;
 
 class MenuSidebar
 {
-   public static function menu(){
+   public static function render()
+   {
       return  collect([
 
          [
             'type'   => 'header',
             'title'  => 'App Settings',
          ],
-   
+
          [
             'type'   => 'menu',
             'title'  => 'Dashboard',
@@ -19,12 +20,12 @@ class MenuSidebar
             'icon'   => 'fas fa-tachometer-alt',
             'active' => ['dashboard']
          ],
-   
+
          [
             'type'   => 'tree',
             'title'  => 'Role Permissions',
             'url'    => '#',
-            'icon'   => 'fas fa-tachometer-alt',
+            'icon'   => 'fas fa-user-shield',
             'active' => ['master-user*', 'role.*', 'permission-group.*', 'permission.*'],
             'items' => [
                [
@@ -54,8 +55,16 @@ class MenuSidebar
                   'url'    => route('permission.index'),
                   'icon'   => 'fas fa-unlock',
                   'active' => ['permission.*']
-               ],
+               ]
+
             ]
+         ],
+         [
+            'type'   => 'menu',
+            'title'  => 'Settings',
+            'url'    => route('settings.index'),
+            'icon'   => 'fas fa-cog',
+            'active' => ['settings.*']
          ],
          [
             'type'   => 'header',
@@ -65,17 +74,25 @@ class MenuSidebar
             'type'   => 'tree',
             'title'  => 'Sample Data',
             'url'    => '#',
-            'icon'   => 'fas fa-search',
-            'active' => [''],
+            'icon'   => 'fas fa-folder-open',
+            'active' => ['sample-crud.*'],
             'items' => [
                [
                   'type'   => 'menu',
-                  'title'  => 'CRUD',
-                  'url'    => '',
-                  'icon'   => 'fas fa-unlock',
-                  'active' => ''
+                  'title'  => 'Form Input',
+                  'url'    => route('sample-crud.create'),
+                  'icon'   => 'fas fa-folder-open',
+                  'active' => ['sample-crud.create']
                ],
-            ]
+               [
+                  'type'   => 'menu',
+                  'title'  => 'Datatable',
+                  'url'    => route('sample-crud.index'),
+                  'icon'   => 'fas fa-table',
+                  'active' => ['sample-crud.index']
+               ],
+            ],
+            
          ],
          [
             'type'   => 'menu',

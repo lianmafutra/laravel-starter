@@ -7,7 +7,7 @@
     </a>
     <div class="sidebar">
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent nav-legacy  nav-compact"
+            <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent nav-legacy nav-compact"
                 data-widget="treeview" role="menu" data-accordion="false">
 
                 @foreach ($menu as $item)
@@ -25,7 +25,7 @@
                         <li
                             class="nav-item menu-is-opening  {{ request()->routeIs($item['active']) ? 'menu-open' : '' }}">
                             <a href="" class="nav-link {{ request()->routeIs($item['active']) ? 'active' : '' }}">
-                                <i class="fas fa-cog nav-icon"></i>
+                                <i class="{{ $item['icon'] }} nav-icon"></i>
                                 <p>{{ $item['title'] }}</p>
                                 <i class="right fas fa-angle-left"></i>
                             </a>

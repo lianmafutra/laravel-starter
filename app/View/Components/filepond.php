@@ -4,32 +4,15 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class filepond extends Component
+class Filepond extends Component
 {
-   public $id;
-   public $label;
-   public $max;
-   public $required;
-   public $info;
-
-
-
-
-   /**
-    * Create a new component instance.
-    *
-    * @return void
-    */
-   public function __construct( $label, $required, $info='')
-   {
-      //
-     
-      $this->label = $label;
-      $this->required = $required;
-      $this->info = $info;
-    
+   public function __construct(
+      public string $id,
+      public string $label,
+      public string $info = "",
+      public string $name="",
+   ) {
    }
-
 
 
    /**
@@ -39,6 +22,9 @@ class filepond extends Component
     */
    public function render()
    {
+      if ($this->name == "") {
+         $this->name = $this->id;
+      }
       return view('components.filepond');
    }
 }

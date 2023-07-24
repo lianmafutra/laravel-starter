@@ -8,7 +8,7 @@
        
             <div  class=" col-lg-3 col-6">
 
-                <div class="small-box bg-info">
+                <div class="small-box card">
                     <div class="inner">
                         <h3></h3>
                         <p>Surat Masuk</p>
@@ -22,7 +22,7 @@
 
             <div class="col-lg-3 col-6">
 
-                <div class="small-box bg-success">
+                <div class="small-box card">
                     <div class="inner">
                         <h3></h3>
                         <p>Consulting</p>
@@ -36,7 +36,7 @@
 
             <div class="col-lg-3 col-6">
 
-                <div class="small-box bg-warning">
+                <div class="small-box card">
                     <div class="inner">
                      <h3></h3>
                         <p>Assurance</p>
@@ -50,7 +50,7 @@
 
             <div class="col-lg-3 col-6">
 
-                <div class="small-box bg-danger">
+                <div class="small-box card">
                     <div class="inner">
                      <h3></h3>
 

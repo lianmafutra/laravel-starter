@@ -264,7 +264,7 @@
 
         })
         // dropdown datatable 
-        $('.table_fixed').on('show.bs.dropdown', function(e) {
+        $('.custom-datatable').on('show.bs.dropdown', function(e) {
             dropdownMenu = $(e.target).find('.dropdown-menu');
             $('body').append(dropdownMenu.detach());
             var eOffset = $(e.target).offset();

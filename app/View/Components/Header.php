@@ -8,7 +8,7 @@ class Header extends Component
 {
 
    public function __construct(
-      public string $title,
+      public string $title="",
    ) {
    }
 

@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\SampleCrudController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -14,5 +14,6 @@ Route::middleware(['auth'])->group(function () {
       Route::get('user/profile/{user_id}', 'show')->name('user.show');
       Route::put('user/profile/photo/change', 'changePhoto')->name('user.change.photo');
    });
- 
+
+   Route::resource('sample-crud', SampleCrudController::class);
 });

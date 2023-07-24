@@ -80,8 +80,8 @@
         </div>
     </div>
 @endsection
-@section('js')
+@push('js')
     <script>
         $(function() {})
     </script>
-@endsection
+@endpush

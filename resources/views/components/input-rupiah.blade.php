@@ -1,15 +1,15 @@
 <div class="form-group">
-    <label>{{ $label }}
-        @if ($required == 'true')
-            <span style="color: red">*</span>
-        @endif
-    </label>
+   <label>{{ $label }}
+      @if ($attributes['required'] == 'true')
+          <span style="color: red">*</span>
+      @endif
+  </label>
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             <span class="input-group-text">Rp</span>
         </div>
-        <input id="{{ $id }}" type="text" class="form-control input rupiah" name="{{ $id }}"
-            placeholder="0"  autocomplete="off"  @if ($required == 'true') required @endif>
+        <input id="{{ $id }}" name="{{ $name }}" type="text" class="form-control input rupiah"
+            placeholder="0"  autocomplete="off" {{ $attributes }}>
         <span class="text-danger error error-text {{ $id }}_err"></span>
     </div>
 </div>

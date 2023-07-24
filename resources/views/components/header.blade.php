@@ -4,7 +4,6 @@
            <div class="col-sm-6">
                <h5 class="m-0">{{ $title }}</h5>
            </div>
-       </div><!-- /.row -->
+       </div>
    </div>
-   <!-- /.container-fluid -->
 </div>

@@ -4,21 +4,13 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class datepicker extends Component
+class Datepicker extends Component
 {
-   public $label,$required,$id;
-
-    /**
-     * Create a new component instance.
-     *
-     * @return void
-     */
-    public function __construct($label, $required = false, $id)
-    {
-        //
-      $this->label = $label;
-      $this->required = $required ;
-      $this->id = $id;
+   public function __construct(
+      public string $id,
+      public string $label,
+      public string $name = "",
+   ) {
    }
 
     /**
@@ -28,6 +20,9 @@ class datepicker extends Component
      */
     public function render()
     {
+      if ($this->name == "") {
+         $this->name = $this->id;
+      }
         return view('components.datepicker');
     }
 }

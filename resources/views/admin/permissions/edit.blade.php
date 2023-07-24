@@ -54,7 +54,7 @@
 @endsection
 @include('admin.permissions.modal-create-edit')
 @include('admin.permissions.modal-create-multi')
-@section('js')
+@push('js')
     <script src="{{ asset('template/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2-min.js') }}"></script>
     <script src="{{ asset('template/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -235,4 +235,4 @@
             })
         })
     </script>
-@endsection
+@endpush

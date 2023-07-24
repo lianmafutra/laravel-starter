@@ -1,28 +1,19 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\checkbox;
 
 use Illuminate\View\Component;
 
-class modal_preview_file extends Component
+class CheckBox extends Component
 {
-
-   public $title;
-
-   public $id;
-
-   public $size;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($title, $id, $size)
+    public function __construct(public string $label="")
     {
-       //
-       $this->title = $title;
-       $this->id = $id;
-       $this->size = $size;
+        //
     }
 
     /**
@@ -32,6 +23,6 @@ class modal_preview_file extends Component
      */
     public function render()
     {
-        return view('components.modal_preview_file');
+        return view('components.checkbox.check-box');
     }
 }

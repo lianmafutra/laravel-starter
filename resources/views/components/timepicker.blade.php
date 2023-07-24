@@ -1,13 +1,13 @@
 <div class="form-group">
    <div class="bd-highlight">
-       <label>{{ $label }}
-           @if ($required == 'true')
-               <span style="color: red">*</span>
-           @endif
-       </label>
+      <label>{{ $label }}
+         @if ($attributes['required'] == 'true')
+             <span style="color: red">*</span>
+         @endif
+     </label>
        <div style="padding: 0 !important; width: 100%" class="input-group ">
-           <input style="width: 90%" id="{{ $id }}"  @if ($required == 'true') required @endif autocomplete="off" name="{{ $id }}"
-               class="form-control jam" type="text" placeholder="waktu" data-input>
+           <input style="width: 90%" id="{{ $id }}" autocomplete="off" name="{{ $name }}"
+               class="form-control jam" type="text" placeholder="{{ $placeholder ?? "" }}" data-input {{ $attributes }}>
            <div class="input-group-append">
                <div class="input-group-text"><i class="fa fa-calendar"></i>
                </div>

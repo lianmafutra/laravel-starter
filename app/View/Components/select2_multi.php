@@ -4,34 +4,21 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class select2_multi extends Component
+class Select2_multi extends Component
 {
-   public $required;
- 
-
-   public $id;
-
-   public $label;
-
-   public $placeholder;
-
-    public function __construct($required, $id, $label, $placeholder='')
-    {
-    
-      $this->required = $required;
-    
-      $this->id = $id;
-      $this->label = $label;
-      $this->placeholder = $placeholder;
+   public function __construct(
+      public string $id,
+      public string $label,
+      public string $name = "",
+   ) {
    }
 
-    /**
-     * Get the view / contents that represent the component.
-     *
-     * @return \Illuminate\Contracts\View\View|\Closure|string
-     */
+   
     public function render()
     {
+      if ($this->name == "") {
+         $this->name = $this->id;
+      }
         return view('components.select2_multi');
     }
 }

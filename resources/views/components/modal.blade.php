@@ -13,7 +13,7 @@
        }
    }
 </style>
-<div class="modal fade" id="{{ $id }}">
+<div {{ $attributes->merge(['class' => 'modal fade']) }} id="{{ $id ?? "" }}" >
    <div class="modal-dialog modal-{{ $size }}">
        <div class="modal-content">
            <div class="modal-header">

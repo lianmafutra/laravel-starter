@@ -4,24 +4,21 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class coloris extends Component
+class Coloris extends Component
 {
-   public $label;
-
-   public $id;
+ 
 
    /**
     * Create a new component instance.
     *
     * @return void
     */
-   public function __construct($label, $id)
-   {
-      //
-      $this->label = $label;
-      $this->id = $id;
+    public function __construct(
+      public string $id,
+      public string $label,
+      public string $name = "",
+   ) {
    }
-
    /**
     * Get the view / contents that represent the component.
     *
@@ -29,6 +26,9 @@ class coloris extends Component
     */
    public function render()
    {
+      if ($this->name == "") {
+         $this->name = $this->id;
+      }
       return view('components.coloris');
    }
 }

@@ -4,13 +4,9 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class datatable extends Component
+class Datatable extends Component
 {
-   public $id;
-
-   public $th;
-   public $class;
-
+ 
 
 
     /**
@@ -18,12 +14,9 @@ class datatable extends Component
      *
      * @return void
      */
-    public function __construct($id, $th=[], $class="")
+    public function __construct(public string $id, public array $th=[], public string $class="")
     {
-        //
-       $this->id = $id;
-      $this->th = $th;
-      $this->class = $class;
+
    }
 
     /**

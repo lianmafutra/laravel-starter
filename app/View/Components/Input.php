@@ -6,33 +6,15 @@ use Illuminate\View\Component;
 
 class Input extends Component
 {
-    /**
-     * Create a new component instance.
-     *
-     * @return void
-     */
-    public $id, $label, $required;
-    public $action;
-    public $type;
-    public $value;
-
-    public $info;
-
-   public $name;
-
-    public function __construct($label, $required= false, $type='text', $value='', $action='', $info='', $name="",$id="")
-    {
+   public function __construct(
      
-    
-      $this->label = $label;
-      $this->required = $required;
-       $this->type = $type;
-      $this->value = $value;
-      $this->action = $action;
-      $this->info = $info;
-        $this->id = $id;
-      $this->name = $name;
+      public string $label,
+      public string $info="",
+      public string $name = "",
+      public string $id="",
+   ) {
    }
+
 
     /**
      * Get the view / contents that represent the component.
@@ -41,6 +23,9 @@ class Input extends Component
      */
     public function render()
     {
+      if ($this->name == "") {
+         $this->name = $this->id;
+      }
         return view('components.input');
     }
 }

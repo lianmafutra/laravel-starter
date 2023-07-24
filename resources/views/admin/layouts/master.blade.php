@@ -13,19 +13,32 @@
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/progress-bar/pace-theme-default.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/progress-bar/flash.css') }}">
+    <script src="{{ asset('template/admin/plugins/jquery/jquery.min.js?v=4') }}"></script>
+    <script src="{{ asset('template/admin/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+    @if (Cache::store('styles')->get('fixed_action'))
+        @push('css')
+            <link rel="stylesheet" href="{{ asset('plugins/datatable/fixedColumns.dataTables.min.css') }}">
+        @endpush
+    @endif
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @stack('css')
-
+    @include('partials.css-settings')
     <style>
+        .select2-selection--multiple .select2-search__field {
+            width: 100% !important;
+        }
+
         table.dataTable tbody tr.selected>* {
             box-shadow: inset 0 0 0 9999px rgb(13 110 253 / 90%) !important;
             color: white !important;
         }
 
+
         /* fix modal open, problem auto add padding on body */
         body {
             padding-right: 0 !important
         }
+
 
         /* settings style from cache file */
         :root {
@@ -68,17 +81,17 @@
         @include('admin.layouts.footer')
     </div>
 
-    <script src="{{ asset('template/admin/plugins/jquery/jquery.min.js?v=4') }}"></script>
-    <script src="{{ asset('template/admin/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+
     <script src="{{ asset('template/admin/plugins/bootstrap/js/bootstrap.bundle.js') }}"></script>
     <script src="{{ asset('template/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
     <script src="{{ asset('template/admin/dist/js/adminlte.min.js') }}"></script>
     <script src="{{ asset('plugins/progress-bar/pace.min.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2-min.js') }}"></script>
-
-    @yield('js')
-    @stack('js')
-    @stack('script')
+    @if (Cache::store('styles')->get('fixed_action'))
+        @push('js')
+            <script src="{{ asset('plugins/datatable/dataTables.fixedColumns.min.js') }}"></script>
+        @endpush
+    @endif
     <script>
         $.ajaxSetup({
             headers: {
@@ -185,7 +198,8 @@
         })
 
         // dropdown datatable 
-        $('.table_fixed').on('show.bs.dropdown', function(e) {
+        // dropdown datatable 
+        $('.custom-datatable').on('show.bs.dropdown', function(e) {
             dropdownMenu = $(e.target).find('.dropdown-menu');
             $('body').append(dropdownMenu.detach());
             var eOffset = $(e.target).offset();
@@ -195,8 +209,7 @@
                 'top': eOffset.top + $(e.target).outerHeight(),
                 'left': eOffset.left - 50
             });
-        });
-
+        })
 
         const Toast = Swal.mixin({
             toast: true,
@@ -231,7 +244,38 @@
             })
 
         }
+
+        window.dtSettings = function(datatable, options) {
+            @if (Cache::store('styles')->get('action_button'))
+                Object.assign(options, {
+                    dom: "<'row' <'col-sm-12 col-md-1'l>  <'col-sm-12 col-md-4'B> <'col-sm-12 col-md-6'f> >" +
+                        "<'row'<'col-sm-12'tr> >" +
+                        "<'row' <'col-sm-12 col-md-5' i> <'col-sm-12 col-md-7 text-right'p> >",
+                    initComplete: function() {},
+                    buttons: {
+                        dom: {
+                            button: {
+                                className: 'btn btn-sm btn-default'
+                            }
+                        },
+                        "buttons": @json(Cache::store('styles')->get('action_button')),
+                    },
+                });
+            @endif
+            Object.assign(options, {
+                fixedColumns: {
+                    leftColumns: @json(Cache::store('styles')->get('left_fixed_action', 0)),
+                    rightColumns: @json(Cache::store('styles')->get('right_fixed_action', 0))
+                },
+            });
+            datatable.DataTable(options);
+        }
     </script>
+
+    @yield('js')
+    @stack('script')
+    @stack('js')
+    @include('partials.script-settings')
 </body>
 
 </html>

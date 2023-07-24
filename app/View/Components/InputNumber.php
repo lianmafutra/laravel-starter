@@ -6,31 +6,18 @@ use Illuminate\View\Component;
 
 class InputNumber extends Component
 {
-   /**
-     * Create a new component instance.
-     *
-     * @return void
-     */
-    public $id, $label, $required;
-    public $type;
-    public $placeholder;
-
-    public function __construct($id, $label, $required= false, $type='text', $placeholder='')
-    {
-      $this->id = $id;
-      $this->label = $label;
-      $this->required = $required;
-       $this->type = $type;
-      $this->placeholder = $placeholder;
+   public function __construct(
+      public string $id,
+      public string $label,
+      public string $name = "",
+   ) {
    }
 
-    /**
-     * Get the view / contents that represent the component.
-     *
-     * @return \Illuminate\Contracts\View\View|\Closure|string
-     */
     public function render()
     {
+      if ($this->name == "") {
+         $this->name = $this->id;
+      }
         return view('components.input-number');
     }
 }

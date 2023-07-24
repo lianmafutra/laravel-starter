@@ -1,10 +1,5 @@
 <?php
 
-use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\API\JadwalController;
-use App\Http\Controllers\API\LokasiController;
-use App\Http\Controllers\API\PesananController;
-use App\Http\Controllers\API\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,18 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('user/register', [AuthController::class, 'register']);
-Route::post('user/login', [AuthController::class, 'login'])->name('login');
-Route::put('user/password/lupa', [AuthController::class, 'lupaPassword']);
-
-// Route::post('notif/send', [NotifController::class, 'send']);
 Route::middleware(['auth:api'])->group(function () {
-   Route::get('lokasi', [LokasiController::class, 'getLokasi']);
-   Route::get('user/detail', [UserController::class, 'getUserDetail']);
-   Route::post('jadwal/lokasi', [JadwalController::class, 'getJadwalByLokasi']);
-   Route::get('jadwal/{id}', [JadwalController::class, 'getJadwalDetail']);
-   Route::post('pesanan/review', [PesananController::class, 'kirimReview']);
-   Route::get('pesanan/mobil/{id}/review', [PesananController::class, 'listReviewByMobil']);
+ 
 
 });
 

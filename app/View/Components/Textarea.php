@@ -6,30 +6,13 @@ use Illuminate\View\Component;
 
 class Textarea extends Component
 {
-   public $id;
-
-   public $label;
-
-   public $hint;
-
-   public $required;
-
-   public $value;
-
-   /**
-    * Create a new component instance.
-    *
-    * @return void
-    */
-   public function __construct($id, $label, $hint, $required, $value="")
-   {
-      //
-      $this->id = $id;
-      $this->label = $label;
-      $this->hint = $hint;
-      $this->required = $required;
-      $this->value = $value;
+   public function __construct(
+      public string $id,
+      public string $label,
+      public string $name = "",
+   ) {
    }
+
 
    /**
     * Get the view / contents that represent the component.
@@ -38,6 +21,9 @@ class Textarea extends Component
     */
    public function render()
    {
+      if ($this->name == "") {
+         $this->name = $this->id;
+      }
       return view('components.textarea');
    }
 }

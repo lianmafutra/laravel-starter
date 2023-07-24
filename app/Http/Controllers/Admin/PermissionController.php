@@ -18,7 +18,7 @@ class PermissionController extends Controller
 
    public function index(){
       $data = DB::table('permissions')
-      ->select('permissions.*','permission_group.name as group','permissions.name as name')
+      ->select('permissions.*','permission_group.name as group')
       ->leftJoin('permission_group', 'permission_group.id', '=','permissions.permission_group_id');
 
       $groupIndex = PermissionGroup::get();

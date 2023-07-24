@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Cache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Session;
 use Spatie\ResponseCache\Facades\ResponseCache;
 
 class SettingsController extends Controller
@@ -85,4 +84,36 @@ class SettingsController extends Controller
          return redirect()->back()->with('error', config('language.alert-error.store'), 400);
       }
    }
+
+   public function datatableUpdate(Request $request)
+   {
+   
+   
+      try {
+         if($request->has('left_fixed_action')){
+            Cache::store('styles')->forever('left_fixed_action', $request->left_fixed_action);
+         }else{
+            Cache::store('styles')->forever('left_fixed_action', $request->left_fixed_action);
+         }
+
+         if($request->has('right_fixed_action')){
+            Cache::store('styles')->forever('right_fixed_action', $request->right_fixed_action);
+         }else{
+            Cache::store('styles')->forever('right_fixed_action', $request->right_fixed_action);
+         }
+
+         if($request->has('action_button')){
+            Cache::store('styles')->forever('action_button', $request->action_button);
+         }else{
+            Cache::store('styles')->forever('action_button', $request->action_button);
+         }
+
+        
+       
+         return redirect()->back()->with('success', config('language.alert-success.store'), 200);
+      } catch (\Throwable $th) {
+         return redirect()->back()->with('error', config('language.alert-error.store'), 400);
+      }
+   }
+
 }

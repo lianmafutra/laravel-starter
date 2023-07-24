@@ -24,9 +24,9 @@ div.dataTables_wrapper {
    margin: 0 auto;
 }
 
-.table_fixed  th:last-child,
- .table_fixed  td:last-child,
- .table_fixed td:last-child {
+.custom-datatable  th:last-child,
+ .custom-datatable  td:last-child,
+ .custom-datatable td:last-child {
    border-right-width: 1px;
    /* border-left-width: 1px; */
    box-shadow: -6px 6px 10px 1px #7c7c7c36;

@@ -48,6 +48,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
    Route::resource('permission', PermissionController::class);
    Route::get('settings/', [SettingsController::class, 'index'])->name('settings.index');
    Route::post('settings/update', [SettingsController::class, 'update'])->name('settings.update');
+   Route::put('settings/datatable', [SettingsController::class, 'datatableUpdate'])->name('settings.datatable');
    Route::post('settings/reset/{cache_key}', [SettingsController::class, 'reset'])->name('settings.reset');
 
    Route::get('/', [DashboardController::class, 'index'])->name('admin');

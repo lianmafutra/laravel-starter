@@ -1,13 +1,13 @@
 
     <div class="form-group">
-        <label> {{ $label }}
-            @if ($required == 'true')
-                <span style="color: red">*</span>
-            @endif
-        </label>
-        <select id="{{ $id }}"  @if ($required == 'true') required @endif type=""
+      <label>{{ $label }}
+         @if ($attributes['required'] == 'true')
+             <span style="color: red">*</span>
+         @endif
+     </label>
+        <select id="{{ $id }}" name="{{ $name }}"
             class="select2 select2-{{ $id }} form-control select2bs4"
-            data-placeholder="-- {{ $placeholder }} --" style="width: 100%;" {{ $attributes }}>
+            data-placeholder="-- {{ $attributes['placeholder'] }} --" style="width: 100%;" {{ $attributes }}>
             <option></option>
             {{ $slot }}
         </select>

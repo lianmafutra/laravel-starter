@@ -53,7 +53,7 @@
 
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-4">
                         <div class="card-body">
                             <x-coloris id="btn_primary" label="Btn Primary : "></x-coloris>
                             <x-coloris id="btn_secondary" label="Btn Secondary : "></x-coloris>
@@ -85,7 +85,7 @@
                     <x-input id="app_name" name='app_name' placeholder='Header App Name' label='Header App Name'
                         required='false' />
                     <x-input id="footer_text" name='footer_text' placeholder='Footer Text' label='Footer Text'
-                        required='false' />
+                        required='false' /> 
                     <x-input id="footer_right" name='footer_right' placeholder='Footer Right' label='Footer Right'
                         required='false' />
                 </div>
@@ -96,6 +96,7 @@
         </div>
     </div>
 @endsection
+
 @push('js')
     <script src="{{ asset('plugins/coloris/coloris.min.js') }}"></script>
     <script>

@@ -1845,19 +1845,29 @@
       $__default["default"](window).resize(function () {
         _this.fixLayoutHeight();
       });
-      setTimeout(function () {
-        $__default["default"]('body.hold-transition').removeClass('hold-transition');
-      }, 50);
+      // setTimeout(function () {
+      //   $__default["default"]('body.hold-transition').removeClass('hold-transition');
+      // }, 50);
+      $("body").css("overflow", "hidden");
       setTimeout(function () {
         var $preloader = $__default["default"](SELECTOR_PRELOADER);
-
+        $preloader.fadeOut(500);
         if ($preloader) {
-          $preloader.css('height', 0);
+         //  $preloader.css('height', 0);
           setTimeout(function () {
             $preloader.children().hide();
-          }, 200);
+            setTimeout(function () {
+               $preloader.children().hide();
+               $("body").css("overflow", "visible").animate({opacity:"show"});
+             }, 200);
+          
+          }, 500);
+
+         
         }
-      }, this._config.preloadDuration);
+      }, 
+      
+      this._config.preloadDuration);
     };
 
     _proto._max = function _max(numbers) {

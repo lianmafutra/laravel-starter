@@ -3,6 +3,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }} ">
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    @include('partials.datatable-css-settings')
 @endpush
 @section('header')
     <x-header title="Permission List"></x-header>
@@ -26,7 +27,7 @@
                                 title="Collapse">Filter
                                 <i class="fas fa-filter"></i>
                             </button>
-                            @include('partials.datatable-settings')
+                            @include('partials.datatable-js-settings')
                         </div>
                     </div>
                 </div>
@@ -83,7 +84,15 @@
     <script src="{{ asset('plugins/sweetalert2/sweetalert2-min.js') }}"></script>
     <script src="{{ asset('template/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
-
+    <script src="//cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.bootstrap4.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.colVis.min.js"></script>
+    <script src="{{ asset('plugins/datatable/dataTables.fixedColumns.min.js') }}"></script>
 
     <script>
         $(function() {
@@ -97,16 +106,13 @@
                 serverSide: true,
                 processing: true,
                 lengthChange: true,
-
-
                 paginate: true,
                 aaSorting: [],
                 scrollX: true,
-                //  bAutoWidth: true,
-                //  initComplete: function(settings, json) {
-                //      $('body').find('.dataTables_scrollBody').addClass("scrollbar");
-                //  },
-
+                fixedColumns: {
+                    leftColumns: @json(Cache::store('styles')->get('left_fixed_action', 0)),
+                    rightColumns: @json(Cache::store('styles')->get('right_fixed_action', 0))
+                },
                 ajax: route('permission.index'),
                 columns: [{
                         data: "DT_RowIndex",
@@ -167,14 +173,38 @@
                 ],
             }
 
-            
+         
+                Object.assign(tableOptions, {
+                    dom: "<'row' <'col-sm-12 col-md-1'l>  <'col-sm-12 col-md-4'B> <'col-sm-12 col-md-6'f> >" +
+                        "<'row'<'col-sm-12'tr> >" +
+                        "<'row' <'col-sm-12 col-md-5' i> <'col-sm-12 col-md-7 text-right'p> >",
+                    initComplete: function() {
+                        $('body').find('.dataTables_scrollBody').addClass("scrollbar");
+                    },
+                    buttons: {
+                        dom: {
+                            button: {
+                                className: 'btn btn-sm btn-default'
+                            }
+                        },
+                        "buttons": @json(Cache::store('styles')->get('action_button')),
+                    },
+                });
+        
 
+
+
+            Object.assign(tableOptions, {
+               
+            });
+
+            datatable.DataTable(tableOptions);
             // datatable.DataTable(tableOptions);
             // $('#datatable').DataTable().clear().destroy();
 
-          
 
-           dtSettings(datatable, tableOptions)
+
+
 
 
             // datatable.columns([2]).every(function() {

@@ -6,17 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use OwenIt\Auditing\Auditable as AuditingAuditable;
 use Spatie\Permission\Models\Permission;
-use OwenIt\Auditing\Contracts\Auditable;
 
-class PermissionGroup extends Model implements Auditable
+class PermissionGroup extends Model
 {
     use HasFactory;
     protected $table = 'permission_group';
     protected $guarded = [];
-    
-    use AuditingAuditable;
+
 
     /**
      * Get the user that owns the PermissionGroup

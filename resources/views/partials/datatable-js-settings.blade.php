@@ -1,3 +1,9 @@
+@if (Cache::store('styles')->get('fixed_action'))
+@push('js')
+
+ 
+@endpush
+@endif
 <button type="button" class="float-right btn btn-tool btn_datatable_settings">Settings
     <i class="fas fa-cog"></i>
 </button>
@@ -7,17 +13,13 @@
         @csrf
         @method('PUT')
         <div class="modal-body">
-
-            <x-input label="Left Fixed Coloumn" id="left_fixed_action" info="Info : Separated with comma"  />
+            <x-input label="Left Fixed Coloumn" id="left_fixed_action" info="Info : Separated with comma" />
             <x-input label="Right Fixed Coloumn" id="right_fixed_action" info="Info : Separated with comma" />
-
             <x-select2 id="action_button" name="action_button[]" label="Action Button"
                 placeholder="Select Action Button" multiple>
                 @foreach (['copy', 'csv', 'excel', 'pdf', 'print', 'colvis'] as $item)
                     <option value="{{ $item }}">{{ $item }}</option>
                 @endforeach
-
-
             </x-select2>
 
         </div>
@@ -34,11 +36,8 @@
     $('.btn_datatable_settings').click(function(e) {
         e.preventDefault();
         $('.modal_datatable_settings').modal('show');
-
-       $('#left_fixed_action').val(@json(Cache::store('styles')->get('left_fixed_action')));
-       $('#right_fixed_action').val(@json(Cache::store('styles')->get('right_fixed_action')));
-
-  
+        $('#left_fixed_action').val(@json(Cache::store('styles')->get('left_fixed_action')));
+        $('#right_fixed_action').val(@json(Cache::store('styles')->get('right_fixed_action')));
     });
 
     $("#form_datatable_settings").submit(function(e) {

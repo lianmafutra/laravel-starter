@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Utils\LmFile;
 use App\Utils\uploadFile;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
@@ -19,7 +17,6 @@ class UserController extends Controller
 {
    public function index()
    {
-      // 
       $x['title']     = 'User';
       $x['data']      = User::get();
       $x['role']      = Role::get();
@@ -28,7 +25,6 @@ class UserController extends Controller
 
    public function show($user_id){
       $user = User::find($user_id);
-
       return view('admin.profile.index', compact('user'));
    }
 
@@ -36,8 +32,6 @@ class UserController extends Controller
    {
       $x['title']     = 'Profile';
       $user = User::with('bidang')->find(auth()->user()->id);
-
-    
       return view('admin.profile.index', $x, compact('user'));
    }
 
@@ -63,7 +57,6 @@ class UserController extends Controller
    public function changePhoto(Request $request, LmFile $uploadFile)
    {
       try {
-         // $user = User::find(auth()->user()->id);
          $files = $request->file('foto');
 
          $data = User::where('id', auth()->user()->id)->first();
@@ -117,9 +110,6 @@ class UserController extends Controller
       }
       return back();
    }
-
-
-  
 
    public function destroy(Request $request)
    {

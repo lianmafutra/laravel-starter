@@ -5,8 +5,8 @@
              <span style="color: red">*</span>
          @endif
      </label>
-       <div style="padding: 0 !important; width: 100%" class="input-group ">
-           <input style="width: 90%" id="{{ $id }}" autocomplete="off" name="{{ $name }}"
+       <div style="padding: 0 !important;" class="input-group ">
+           <input style="width: 80%" id="{{ $id }}" autocomplete="off" name="{{ $name }}"
                class="form-control jam" type="text" placeholder="{{ $placeholder ?? "" }}" data-input {{ $attributes }}>
            <div class="input-group-append">
                <div class="input-group-text"><i class="fa fa-calendar"></i>

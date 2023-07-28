@@ -343,10 +343,6 @@ a.brand-link {
     background-color: var(--content_wrapper_bg_color);
 }
 
-.layout-navbar-fixed .wrapper .sidebar-dark-primary .brand-link:not([class*=navbar]) {
-    /* background-color: #eff7ff  !important; */
-}
-
 /* .profile-user-img {
    height: 100px !important;
    border: 3px solid #adb5bd;

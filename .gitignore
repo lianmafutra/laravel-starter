@@ -1,6 +1,6 @@
 /node_modules
 /public/hot
-# /public/storage
+/public/storage
 /storage/*.key
 /vendor
 
@@ -13,7 +13,5 @@ yarn-error.log
 /.idea
 /.vscode
 .env
-storage/
-
-/storage/framework/cache/styles
-styles
+storage/app/*
+!storage/framework/cache/styles/*

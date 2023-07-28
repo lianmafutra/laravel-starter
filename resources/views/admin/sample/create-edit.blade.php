@@ -25,21 +25,21 @@
                 </div>
                 <div class="card-body">
                     <x-input label="Book Titte" id="title" info="Info : Sample Data Description Info"
-                        placeholder="Book Name" required />
-                    <x-textarea id="desc" label="Short Description" required placeholder="Description" />
-                    <x-select2 id="category_id" label="Category" placeholder="Select Category" required>
+                        placeholder="Book Name" />
+                    <x-textarea id="desc" label="Short Description" placeholder="Description" />
+                    <x-select2 id="category_id" label="Category" placeholder="Select Category">
                         <option value="fiction">Fiction</option>
                         <option value="biography">Biography</option>
                     </x-select2>
                     <x-select2 id="category_multi_id" name="category_multi_id[]" label="Category Multiple"
-                        placeholder="Select Category" multiple required>
+                        placeholder="Select Category" multiple>
                         <option value="fiction">Fiction</option>
                         <option value="biography">Biography</option>
                     </x-select2>
 
                     <x-select-days id="days" label="Select Days" placeholder="Select Days" />
                     <x-select-month id="month" label="Select Month" placeholder="Select Month" />
-                    <x-date-picker-column label="Date Range Column" required>
+                    <x-date-picker-column label="Date Range Column">
                         <x-slot:date_start>
                             <x-datepicker id='start_date' label='Start Date' />
                         </x-slot:date_start>
@@ -47,12 +47,12 @@
                             <x-datepicker id='end_date' label='End Date' />
                         </x-slot:date_end>
                     </x-date-picker-column>
-                    <x-datepicker id="date_publisher" label="Date Publisher" required />
-                    <x-datepicker id='date_range' label='Deadline Range' required />
-                    <x-timepicker id="time" label="Time Publisher" required placeholder="Time" />
-                    <x-input-rupiah id="price" label="Price" required />
-                    <x-input-password id="password" placeholder="Password" label="Password" required />
-                    <x-input-phone id="contact" label="Contact Number" placeholder="Nomor Telepon Aktif" required />
+                    <x-datepicker id="date_publisher" label="Date Publisher" />
+                    <x-datepicker id='date_range' label='Deadline Range' />
+                    <x-timepicker id="time" label="Time Publisher" placeholder="Time" />
+                    <x-input-rupiah id="price" label="Price" />
+                    <x-input-password id="password" placeholder="Password" label="Password" />
+                    <x-input-phone id="contact" label="Contact Number" placeholder="Nomor Telepon Aktif" />
                     <x-check-box label="Checkbox Select">
                         <x-checkbox.item id="check_ya" name="check" text="Option 1" type="checkbox"></x-checkbox.item>
                         <x-checkbox.item id="check_tidak" name="check" text="Option 2" type="checkbox"></x-checkbox.item>
@@ -63,7 +63,7 @@
                         <x-checkbox.item id="radio_2" name="check" text="Tidak" type="radio" color="primary">
                         </x-checkbox.item>
                     </x-check-box>
-                    <x-filepond id="file_cover" label='File Cover' required info='( Format File JPG/PNG , Maks 5 MB)' />
+                    <x-filepond id="file_cover" label='File Cover' info='( Format File JPG/PNG , Maks 5 MB)' />
                     <x-summernote id="summernote" label="Summenote Editor">
                         Place <em>some</em> <u>text</u> <strong>here</strong>
                     </x-summernote>
@@ -104,13 +104,14 @@
 
     <script>
         $(function() {
+
        
 
             $('.select2bs4').select2({
                 theme: 'bootstrap4',
             })
 
-           
+
             AutoNumeric.multiple('.rupiah', {
                 digitGroupSeparator: '.',
                 decimalPlaces: 0,

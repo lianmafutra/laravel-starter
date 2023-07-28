@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SampleCrudRequest;
 use App\Models\PermissionGroup;
 use App\Models\SampleCrud;
 use App\Utils\ApiResponse;
@@ -63,9 +64,15 @@ class SampleCrudController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SampleCrudRequest $request)
     {
-       
+      try {
+         return $this->success('ok');
+      } catch (\Throwable $th) {
+         return $this->error('gagal', 400);
+      }
+      // $validatedData = $request->validated();
+      // dd($validatedData)
     }
 
     /**

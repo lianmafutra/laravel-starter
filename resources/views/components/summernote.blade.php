@@ -5,4 +5,5 @@
          {{ $slot }}
     </textarea>
    </div>
+   <span class="text-danger error-text {{ $id }}_err"></span>
 </div>

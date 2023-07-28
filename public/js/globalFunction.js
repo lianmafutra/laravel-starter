@@ -20,10 +20,14 @@ function printErrorMsg(msg) {
          let id = $(this).attr("class").split(" ").pop()
             .slice(0, -4)
          error.push(id)
+        
       });
       error_array.push(key)
       $('.' + key + '_err').text(value);
       $('.' + key + '_err').show();
+      $([document.documentElement, document.body]).animate({
+         scrollTop: $("#"+key)
+     }, 1000);
    });
    let uniqueChars = [...new Set(error)];
    getDifference(uniqueChars, error_array).forEach(element => {
@@ -36,7 +40,6 @@ function getDifference(a, b) {
       return !b.includes(element);
    });
 }
-
 
 window._showError = function (response) {
    $('.error').hide();
@@ -54,7 +57,14 @@ window._showError = function (response) {
       icon: 'error',
       title: 'Terjadi Kesalahan...',
       text: text,
-   })
+   }).then(
+      result => {
+          if (result.value) {
+           
+          } 
+      }
+  );
+ 
 }
 
 window._showLoading = function (title = 'Processing', message = 'Please Wait...') {

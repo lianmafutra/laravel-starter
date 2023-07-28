@@ -68,7 +68,7 @@
                     </x-summernote>
                 </div>
                 <div class="card-footer">
-                  <button type="submit" class="btn_submit btn btn-primary">Save</button>
+                    <button type="submit" class="btn_submit btn btn-primary">Save</button>
                 </div>
             </div>
         </form>
@@ -120,25 +120,16 @@
 
             const date_publisher = flatpickr("#date_publisher", {
                 allowInput: true,
-                dateFormat: "d/m/Y",
-                locale: "id",
-                disableMobile: "true",
                 defaultDate: ''
             });
 
             const start_date = flatpickr("#start_date", {
                 allowInput: true,
-                dateFormat: "d/m/Y",
-                locale: "id",
-                disableMobile: "true",
                 defaultDate: ''
             });
 
             const end_date = flatpickr("#end_date", {
                 allowInput: true,
-                dateFormat: "d/m/Y",
-                locale: "id",
-                disableMobile: "true",
                 defaultDate: ''
             });
 
@@ -146,7 +137,6 @@
             const time = flatpickr("#time", {
                 enableTime: true,
                 noCalendar: true,
-                disableMobile: "true",
                 dateFormat: "H:i",
                 time_24hr: true
             });
@@ -154,9 +144,7 @@
 
             const date_range = $("#date_range").flatpickr({
                 allowInput: true,
-                dateFormat: "d/m/Y",
                 mode: "range",
-                locale: "id",
                 onChange: function(dates, dateStr, instance) {
                     if (dates.length == 2) {
                         let dateStart = instance.formatDate(dates[0], "Y-m-d");

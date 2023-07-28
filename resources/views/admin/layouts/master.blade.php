@@ -90,7 +90,7 @@
             <img class="img-circle"
                 src="{{ asset('img/' . Cache::store('styles')->get('fav_icon', 'img/logo_laravel.jpeg')) }}"
                 alt="AdminLTELogo" height="60" width="60">
-                <div sty class=" loader_custom"></div>
+            <div class="loader_custom"></div>
         </div>
         @include('admin.layouts.navbar')
         @include('admin.layouts.sidebar')
@@ -126,7 +126,7 @@
             }
         })
         $('.loader_custom').addClass('spinner');
-    
+
 
         // fix problem with select2 multiple not show placeholder
         $('.select2-search__field').css('width', '100%');
@@ -227,7 +227,6 @@
         })
 
         // dropdown datatable 
-        // dropdown datatable 
         $('.custom-datatable').on('show.bs.dropdown', function(e) {
             dropdownMenu = $(e.target).find('.dropdown-menu');
             $('body').append(dropdownMenu.detach());
@@ -272,6 +271,15 @@
                 title: title
             })
 
+        }
+
+        // flatpicker config default 
+        if (typeof flatpickr !== "undefined") {
+            flatpickr.setDefaults({
+                dateFormat: "d/m/Y",
+                locale: "id",
+                disableMobile: "true",
+            })
         }
     </script>
 

@@ -36,6 +36,7 @@
                         <option value="fiction">Fiction</option>
                         <option value="biography">Biography</option>
                     </x-select2>
+
                     <x-select-days id="days" label="Select Days" placeholder="Select Days" />
                     <x-select-month id="month" label="Select Month" placeholder="Select Month" />
                     <x-date-picker-column label="Date Range Column" required>
@@ -103,11 +104,13 @@
 
     <script>
         $(function() {
+       
 
             $('.select2bs4').select2({
                 theme: 'bootstrap4',
             })
 
+           
             AutoNumeric.multiple('.rupiah', {
                 digitGroupSeparator: '.',
                 decimalPlaces: 0,
@@ -132,7 +135,6 @@
                 allowInput: true,
                 defaultDate: ''
             });
-
 
             const time = flatpickr("#time", {
                 enableTime: true,
@@ -194,7 +196,7 @@
                 processData: false,
                 dataType: 'json',
                 beforeSend: function() {
-                    showLoading()
+                    _showLoading()
                 },
                 success: (response) => {
                     if (response) {
@@ -203,7 +205,7 @@
                     }
                 },
                 error: function(response) {
-                    showError(response)
+                    _showError(response)
                 }
             })
         })

@@ -126,7 +126,7 @@
             
             $('#btn_create_user').click(function (e) { 
                e.preventDefault()
-               clearInput()
+               _clearInput()
                $('#modal_create_edit_user').modal('show')
                $('.modal-title').text('Input user')
                $('#btn_action').text('Simpan')
@@ -145,7 +145,7 @@
                     processData: false,
                     dataType: 'json',
                     beforeSend: function() {
-                        showLoading()
+                        _showLoading()
                     },
                     success: (response) => {
                         if (response) {
@@ -159,20 +159,20 @@
                                 showCancelButton: false,
                                 allowOutsideClick: false,
                             }).then((result) => {
-                                swal.hideLoading()
+                                swal._hideLoading()
                                 datatable.ajax.reload();
                             })
-                            swal.hideLoading()
+                            swal._hideLoading()
                         }
                     },
                     error: function(response) {
-                        showError(response)
+                        _showError(response)
                     }
                 })
             })
 
             $('#datatable').on('click', '.btn_edit', function(e) {
-               clearInput()
+               _clearInput()
                 $('#modal_create_edit_user').modal('show')
                 $('.modal-title').text('Ubah Data')
                 $('.error').hide();

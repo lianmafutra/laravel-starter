@@ -125,7 +125,7 @@
 
         $('#btn_create_user').click(function(e) {
             e.preventDefault()
-            clearInput()
+            _clearInput()
             $('#modal_create_edit_user').modal('show')
             $('.modal-title').text('Add New user')
         })
@@ -142,7 +142,7 @@
                 processData: false,
                 dataType: 'json',
                 beforeSend: function() {
-                    showLoading()
+                    _showLoading()
                 },
                 success: (response) => {
                     if (response) {
@@ -153,7 +153,7 @@
                     }
                 },
                 error: function(response) {
-                    showError(response)
+                    _showError(response)
                 }
             })
         })
@@ -169,7 +169,7 @@
                 processData: false,
                 dataType: 'json',
                 beforeSend: function() {
-                    showLoading()
+                    _showLoading()
                 },
                 success: (response) => {
                     if (response) {
@@ -180,13 +180,13 @@
                     }
                 },
                 error: function(response) {
-                    showError(response)
+                    _showError(response)
                 }
             })
         })
 
         $('#datatable').on('click', '.btn_edit', function(e) {
-            clearInput()
+            _clearInput()
             $('#modal_create_edit_user').modal('show')
             $('.modal-title').text('Ubah Data')
             $('.error').hide();
@@ -222,14 +222,14 @@
                         },
                         url: $(this).attr('data-url'),
                         beforeSend: function() {
-                            showLoading()
+                            _showLoading()
                         },
                         success: (response) => {
                             datatable.ajax.reload()
                             alertSuccess(response.message)
                         },
                         error: function(response) {
-                            showError(response)
+                            _showError(response)
                         }
                     })
                 }

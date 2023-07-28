@@ -159,7 +159,7 @@
             }
         });
 
-        window.clearInput = function() {
+        window._clearInput = function() {
             $('.modal').find('.input').val('')
             $('.modal').find('.error').hide()
             $('.modal').find('form').trigger("reset")
@@ -168,7 +168,7 @@
 
         window.showError = function(response) {
             $('.error').hide();
-            swal.hideLoading()
+            swal._hideLoading()
             let text = '';
             if (response.status == 422) {
                 printErrorMsg(response.responseJSON.errors);
@@ -191,7 +191,7 @@
                 allowEscapeKey: false,
                 allowOutsideClick: false,
                 didOpen: () => {
-                    Swal.showLoading()
+                    Swal._showLoading()
                 }
             });
         }

@@ -50,7 +50,7 @@
             contentType: false,
             processData: false,
             beforeSend: function() {
-                showLoading()
+                _showLoading()
             },
             success: (response) => {
                 if (response) {
@@ -59,7 +59,7 @@
                 }
             },
             error: function(response) {
-                showError(response)
+                _showError(response)
             }
         })
     })

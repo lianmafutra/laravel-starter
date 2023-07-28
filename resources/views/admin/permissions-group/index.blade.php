@@ -89,7 +89,7 @@
 
             $('#btn_add_group').click(function(e) {
                 e.preventDefault()
-                clearInput()
+                _clearInput()
                 $('#modal_edit_create_group').modal('show')
             })
 
@@ -103,7 +103,7 @@
                     contentType: false,
                     processData: false,
                     beforeSend: function() {
-                        showLoading()
+                        _showLoading()
                     },
                     success: (response) => {
                         if (response) {
@@ -113,7 +113,7 @@
                         }
                     },
                     error: function(response) {
-                        showError(response)
+                        _showError(response)
                     }
                 })
             })
@@ -152,7 +152,7 @@
                             },
                             url: $(this).attr('data-url'),
                             beforeSend: function() {
-                                showLoading()
+                                _showLoading()
                             },
                             success: (response) => {
 
@@ -160,7 +160,7 @@
                                 alertSuccess(response.message)
                             },
                             error: function(response) {
-                                showError(response)
+                                _showError(response)
                             }
                         })
                     }

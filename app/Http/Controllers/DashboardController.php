@@ -14,6 +14,8 @@ class DashboardController extends Controller
       // $x['user']          = User::get();
       // $x['role']          = Role::get();
       // $x['permission']    = Permission::get();
+     
+
 
       return view('admin.dashboard', $x);
    }

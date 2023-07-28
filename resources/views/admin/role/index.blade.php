@@ -95,7 +95,7 @@
 
             $('#btn_add').click(function(e) {
                 e.preventDefault()
-                clearInput()
+                _clearInput()
                 $('#modal_create_edit').modal('show')
             })
 
@@ -110,7 +110,7 @@
                     contentType: false,
                     processData: false,
                     beforeSend: function() {
-                        showLoading()
+                        _showLoading()
                     },
                     success: (response) => {
                         if (response) {
@@ -120,7 +120,7 @@
                         }
                     },
                     error: function(response) {
-                        showError(response)
+                        _showError(response)
                     }
                 })
             })
@@ -146,14 +146,14 @@
                             },
                             url: $(this).attr('data-url'),
                             beforeSend: function() {
-                                showLoading()
+                                _showLoading()
                             },
                             success: (response) => {
                                 datatable.ajax.reload()
                                 alertSuccess(response.message)
                             },
                             error: function(response) {
-                                showError(response)
+                                _showError(response)
                             }
                         })
                     }

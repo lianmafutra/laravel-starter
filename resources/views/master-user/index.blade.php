@@ -232,7 +232,7 @@
 
             $('.btn_tambah_user').click(function(e) {
                 e.preventDefault();
-                clearInput()
+                _clearInput()
                 $('#modal_tambah_user').modal('show')
             });
 
@@ -259,7 +259,7 @@
 
             $('body').on('click', '.btn_edit', function(e) {
                 e.preventDefault();
-                clearInput()
+                _clearInput()
                 $('#modal_edit_user').modal('show')
                 let url = $(this).attr('data-url');
                 $.ajax({
@@ -273,7 +273,7 @@
                         $('#username_edit').val(response.data.username)
                     },
                     error: function(response) {
-                        showError(response)
+                        _showError(response)
                     }
                 });
             });
@@ -307,7 +307,7 @@
                         });
                     },
                     error: function(response) {
-                        showError(response)
+                        _showError(response)
                     }
                 });
             });
@@ -324,7 +324,7 @@
                     processData: false,
                     dataType: 'json',
                     beforeSend: function() {
-                        showLoading()
+                        _showLoading()
                     },
                     success: (response) => {
                         if (response) {
@@ -338,14 +338,14 @@
                                 showCancelButton: false,
                                 allowOutsideClick: false,
                             }).then((result) => {
-                                swal.hideLoading()
+                                swal._hideLoading()
                                 tabel_user.ajax.reload();
                             })
-                            swal.hideLoading()
+                            swal._hideLoading()
                         }
                     },
                     error: function(response) {
-                        showError(response)
+                        _showError(response)
                     }
                 });
             });
@@ -362,7 +362,7 @@
                     processData: false,
                     dataType: 'json',
                     beforeSend: function() {
-                        showLoading()
+                        _showLoading()
                     },
                     success: (response) => {
                         if (response) {
@@ -376,14 +376,14 @@
                                 showCancelButton: false,
                                 allowOutsideClick: false,
                             }).then((result) => {
-                                swal.hideLoading()
+                                swal._hideLoading()
                                 tabel_user.ajax.reload();
                             })
-                            swal.hideLoading()
+                            swal._hideLoading()
                         }
                     },
                     error: function(response) {
-                        showError(response)
+                        _showError(response)
                     }
                 });
             });
@@ -401,7 +401,7 @@
                     contentType: false,
                     processData: false,
                     beforeSend: function() {
-                        showLoading()
+                        _showLoading()
                     },
                     success: (response) => {
                         if (response) {
@@ -414,15 +414,15 @@
                                 showCancelButton: false,
                                 allowOutsideClick: false,
                             }).then((result) => {
-                                swal.hideLoading()
+                                swal._hideLoading()
                                 tabel_user.ajax.reload();
                                 $('#modal_edit_user').modal('hide')
                             })
-                            swal.hideLoading()
+                            swal._hideLoading()
                         }
                     },
                     error: function(response) {
-                        showError(response)
+                        _showError(response)
                     }
                 });
             });
@@ -440,7 +440,7 @@
                     contentType: false,
                     processData: false,
                     beforeSend: function() {
-                        showLoading()
+                        _showLoading()
                     },
                     success: (response) => {
                         if (response) {
@@ -453,15 +453,15 @@
                                 showCancelButton: false,
                                 allowOutsideClick: false,
                             }).then((result) => {
-                                swal.hideLoading()
+                                swal._hideLoading()
                                 tabel_user_ttd.ajax.reload();
                                 $('#modal_edit_user_ttd').modal('hide')
                             })
-                            swal.hideLoading()
+                            swal._hideLoading()
                         }
                     },
                     error: function(response) {
-                        showError(response)
+                        _showError(response)
                     }
                 });
             });

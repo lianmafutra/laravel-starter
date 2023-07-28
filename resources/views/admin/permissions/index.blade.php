@@ -107,7 +107,7 @@
                     contentType: false,
                     processData: false,
                     beforeSend: function() {
-                        showLoading()
+                        _showLoading()
                     },
                     success: (response) => {
                         if (response) {
@@ -117,7 +117,7 @@
                         }
                     },
                     error: function(response) {
-                        showError(response)
+                        _showError(response)
                     }
                 })
             })
@@ -131,7 +131,7 @@
                     contentType: false,
                     processData: false,
                     beforeSend: function() {
-                        showLoading()
+                        _showLoading()
                     },
                     success: (response) => {
                         if (response) {
@@ -141,7 +141,7 @@
                         }
                     },
                     error: function(response) {
-                        showError(response)
+                        _showError(response)
                     }
                 })
             })
@@ -155,7 +155,7 @@
                     contentType: false,
                     processData: false,
                     beforeSend: function() {
-                        showLoading()
+                        _showLoading()
                     },
                     success: (response) => {
                         if (response) {
@@ -165,25 +165,25 @@
                         }
                     },
                     error: function(response) {
-                        showError(response)
+                        _showError(response)
                     }
                 })
             })
             $('#btn_add_permission').click(function(e) {
                 e.preventDefault()
-                clearInput()
+                _clearInput()
                 $('#modal_create_edit').modal('show')
                 $('#modal_create_edit .modal-title').text('Create New Permission')
             })
             $('#btn_add_multi_permission').click(function(e) {
                 e.preventDefault()
-                clearInput()
+                _clearInput()
                 $('#modal_create_multi').modal('show')
                 $('#modal_create_edit .modal-title').text('Create New Permission')
             })
             $('#datatable').on('click', '.btn_edit', function(e) {
                 e.preventDefault()
-                clearInput()
+                _clearInput()
                 $('#modal_create_edit').modal('show')
                 $('#modal_create_edit .modal-title').text('Edit Permission')
                 $('.error').hide();
@@ -216,14 +216,14 @@
                             },
                             url: $(this).attr('data-url'),
                             beforeSend: function() {
-                                showLoading()
+                                _showLoading()
                             },
                             success: (response) => {
                                 datatable.ajax.reload()
                                 alertSuccess(response.message)
                             },
                             error: function(response) {
-                                showError(response)
+                                _showError(response)
                             }
                         })
                     }

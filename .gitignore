@@ -13,6 +13,7 @@ yarn-error.log
 /.idea
 /.vscode
 .env
-!storage/framework/cache/styles/
 storage/
 
+/storage/framework/cache/styles
+styles

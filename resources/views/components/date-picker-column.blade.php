@@ -15,5 +15,7 @@
            {{ $date_end }}
          </div>
         </div>
+        <span class="text-danger error-text {{ $id ?? '' }}_err"></span>
     </div>
+   
 </div>

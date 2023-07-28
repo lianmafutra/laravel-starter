@@ -7,4 +7,5 @@
    <div class="input">
       {{ $slot }}
    </div>
+   <span class="text-danger error-text {{ $id ?? '' }}_err"></span>
 </div>

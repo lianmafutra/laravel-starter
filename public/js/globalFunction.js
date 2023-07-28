@@ -20,14 +20,14 @@ function printErrorMsg(msg) {
          let id = $(this).attr("class").split(" ").pop()
             .slice(0, -4)
          error.push(id)
-        
+
       });
       error_array.push(key)
       $('.' + key + '_err').text(value);
       $('.' + key + '_err').show();
       $([document.documentElement, document.body]).animate({
-         scrollTop: $("#"+key)
-     }, 1000);
+         scrollTop: $("#" + key)
+      }, 1500);
    });
    let uniqueChars = [...new Set(error)];
    getDifference(uniqueChars, error_array).forEach(element => {
@@ -42,32 +42,36 @@ function getDifference(a, b) {
 }
 
 window._showError = function (response) {
-   $('.error').hide();
-   swal.hideLoading()
-   let text = '';
-   if (response.status == 422) {
-      printErrorMsg(response.responseJSON.errors);
-      text = "Periksa kembali inputan anda"
-   }
-   if (response.status == 400) {
-      text = response.responseJSON.message
-   }
-   
-   Swal.fire({
-      icon: 'error',
-      title: 'Terjadi Kesalahan...',
-      text: text,
-   }).then(
-      result => {
-          if (result.value) {
-           
-          } 
+   setTimeout(function () {
+      $('.error').hide();
+      swal.hideLoading()
+      let text = '';
+      if (response.status == 422) {
+         printErrorMsg(response.responseJSON.errors);
+         text = "Periksa kembali inputan anda"
       }
-  );
- 
+      if (response.status == 400) {
+         text = response.responseJSON.message
+      }
+   
+      Swal.fire({
+         icon: 'error',
+         title: 'Terjadi Kesalahan...',
+         text: text,
+      }).then(
+         result => {
+            if (result.value) {
+   
+            }
+         }
+      );
+   }, 700);
+   
+
 }
 
 window._showLoading = function (title = 'Processing', message = 'Please Wait...') {
+  
    Swal.fire({
       title: title,
       html: message,

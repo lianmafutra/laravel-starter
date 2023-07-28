@@ -4,6 +4,7 @@
        <textarea id="{{ $id }}" name="{{ $name }}"> 
          {{ $slot }}
     </textarea>
+    <span class="text-danger error-text {{ $id }}_err"></span>
    </div>
-   <span class="text-danger error-text {{ $id }}_err"></span>
+ 
 </div>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,20 +18,28 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @stack('css')
     <style>
-body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown), html.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) { height: 100% !important; overflow-y: visible !important; }+
-        table.dataTable tbody tr.selected>* {
+        body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown),
+        html.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
+            height: 100% !important;
+            overflow-y: visible !important;
+        }
+
+        +table.dataTable tbody tr.selected>* {
             box-shadow: inset 0 0 0 9999px rgb(13 110 253 / 90%) !important;
             color: white !important;
         }
+
         /* fix modal open, problem auto add padding on body */
         body {
             padding-right: 0 !important
         }
+
         @keyframes spinner {
             to {
                 transform: rotate(360deg);
             }
         }
+
         .spinner:before {
             content: '';
             box-sizing: border-box;
@@ -46,6 +55,7 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown), html.swal2-sho
             border-right: 2px solid transparent;
             animation: spinner .6s linear infinite;
         }
+
         /* settings style from cache file */
         :root {
             --sidebar_primary: {{ Cache::store('styles')->get('sidebar_color') }};
@@ -63,8 +73,17 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown), html.swal2-sho
             --btn_warning: {{ Cache::store('styles')->get('btn_warning') }};
             --progress_bar: {{ Cache::store('styles')->get('progress_bar') }};
         }
+
+        .filepond--root {
+            margin-bottom: 0rem !important;
+        }
+
+        .note-editor.note-frame.card {
+            margin-bottom: 0 !important;
+        }
     </style>
 </head>
+
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed text-sm">
     <div class="wrapper">
         <div class="lds-ellipsis">
@@ -100,7 +119,7 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown), html.swal2-sho
         let successSession = @json(Session::has('success'));
         let errorSession = @json(Session::has('error'));
     </script>
-  
+
     <script src="{{ asset('template/admin/plugins/bootstrap/js/bootstrap.bundle.js') }}"></script>
     <script src="{{ asset('template/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
     <script src="{{ asset('template/admin/dist/js/adminlte.js') }}"></script>
@@ -118,4 +137,5 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown), html.swal2-sho
         })
     </script>
 </body>
+
 </html>

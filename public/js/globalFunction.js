@@ -49,6 +49,7 @@ window._showError = function (response) {
    if (response.status == 400) {
       text = response.responseJSON.message
    }
+   
    Swal.fire({
       icon: 'error',
       title: 'Terjadi Kesalahan...',

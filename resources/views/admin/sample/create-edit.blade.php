@@ -201,7 +201,7 @@
                 success: (response) => {
                     if (response) {
                         this.reset()
-                        alertSuccess(response.message)
+                        _alertSuccess(response.message)
                     }
                 },
                 error: function(response) {

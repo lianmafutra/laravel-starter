@@ -149,7 +149,7 @@
                         this.reset()
                         $('#modal_create_edit_user').modal('hide')
                         datatable.ajax.reload()
-                        alertSuccess(response.message)
+                        _alertSuccess(response.message)
                     }
                 },
                 error: function(response) {
@@ -176,7 +176,7 @@
                         this.reset()
                         $('#modal_reset_password').modal('hide')
                         datatable.ajax.reload()
-                        alertSuccess(response.message)
+                        _alertSuccess(response.message)
                     }
                 },
                 error: function(response) {
@@ -226,7 +226,7 @@
                         },
                         success: (response) => {
                             datatable.ajax.reload()
-                            alertSuccess(response.message)
+                            _alertSuccess(response.message)
                         },
                         error: function(response) {
                             _showError(response)

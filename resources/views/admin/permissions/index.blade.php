@@ -113,7 +113,7 @@
                         if (response) {
                             $('#modal_create_edit').modal('hide')
                             datatable.ajax.reload()
-                            alertSuccess(response.message)
+                            _alertSuccess(response.message)
                         }
                     },
                     error: function(response) {
@@ -137,7 +137,7 @@
                         if (response) {
                             $('#modal_create_edit').modal('hide')
                             datatable.ajax.reload()
-                            alertSuccess(response.message)
+                            _alertSuccess(response.message)
                         }
                     },
                     error: function(response) {
@@ -161,7 +161,7 @@
                         if (response) {
                             $('#modal_create_multi').modal('hide')
                             datatable.ajax.reload()
-                            alertSuccess(response.message)
+                            _alertSuccess(response.message)
                         }
                     },
                     error: function(response) {
@@ -220,7 +220,7 @@
                             },
                             success: (response) => {
                                 datatable.ajax.reload()
-                                alertSuccess(response.message)
+                                _alertSuccess(response.message)
                             },
                             error: function(response) {
                                 _showError(response)

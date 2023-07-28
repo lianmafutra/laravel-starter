@@ -25,7 +25,7 @@ if (errorSession) {
    })
 }
 
-window.alertSuccess = function (title = 'Success') {
+window._alertSuccess = function (title = 'Success') {
    Toast.fire({
       icon: 'success',
       title: title
@@ -33,7 +33,7 @@ window.alertSuccess = function (title = 'Success') {
 }
 
 
-window.alertError = function (title = 'Error') {
+window._alertError = function (title = 'Error') {
    Toast.fire({
       icon: 'error',
       title: title

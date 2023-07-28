@@ -157,7 +157,7 @@
                             success: (response) => {
 
                                 datatable.ajax.reload()
-                                alertSuccess(response.message)
+                                _alertSuccess(response.message)
                             },
                             error: function(response) {
                                 _showError(response)

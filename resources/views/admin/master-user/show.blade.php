@@ -324,7 +324,7 @@
                     this.reset()
                     $('#modal_create_direct_permission').modal('hide')
                     datatable.ajax.reload()
-                    alertSuccess(response.message)
+                    _alertSuccess(response.message)
                 }
             },
             error: function(response) {
@@ -359,7 +359,7 @@
                     },
                     success: (response) => {
                         datatable.ajax.reload()
-                        alertSuccess(response.message)
+                        _alertSuccess(response.message)
                     },
                     error: function(response) {
                         _showError(response)

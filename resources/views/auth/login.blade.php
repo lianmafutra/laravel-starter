@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <title>Login V6</title>
+    <title>Login</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+    <link rel="icon" type="image/x-icon"
+    href="{{ asset('img/' . Cache::store('styles')->get('fav_icon', 'img/logo_laravel.jpeg')) }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('template/login2/css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('template/login2/css/font-awesome.min.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('template/login2/css/material-design-iconic-font.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('template/login2/css/material-design-iconic-font.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('template/login2/css/animate.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('template/login2/css/hamburgers.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('template/login2/css/animsition.css') }}">
@@ -17,7 +16,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('template/login2/css/main.css') }}">
     <script src="{{ asset('template/login2/js/jquery-3.2.1.js') }}"></script>
 </head>
-
 <body>
     <div class="limiter">
         <div class="container-login100">
@@ -28,20 +26,16 @@
                         Welcome
                     </span>
                     <span class="login100-form-avatar">
-                        <img src="{{ asset('template/login2/img/avatar-01.jpg') }}" alt="AVATAR">
+                        <img src="{{ asset('img/logo_laravel.jpeg') }}" alt="AVATAR">
                     </span>
-
                     <div id="error_layout" style="display: none" class="alert alert-danger m-t-20 " role="alert">
                         {!! implode('<br>', $errors->all()) !!}
                     </div>
-
-
                     <div class="wrap-input100 validate-input m-t-80 m-b-35" data-validate="Enter username">
                         <input spellcheck="false" id="username" class="input100" type="text" name="username"
                             value="{{ old('username') }}" required>
                         <span class="focus-input100" data-placeholder="Username"></span>
                     </div>
-
                     @error('username')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -81,7 +75,6 @@
             </div>
         </div>
     </div>
-
     <script src="{{ asset('template/login2/js/animsition.js') }}"></script>
     <script src="{{ asset('template/login2/js/popper.js') }}"></script>
     <script src="{{ asset('template/login2/js/bootstrap.min.js') }}"></script>
@@ -93,12 +86,8 @@
             var len = input.val().length;
             input[0].focus();
             input[0].setSelectionRange(len, len);
-
-            $('#error_layout').fadeIn(600, function() {
-                // Animation complete
-            });
+            $('#error_layout').fadeIn(600);
         @endif
     </script>
 </body>
-
 </html>

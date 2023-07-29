@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="{{ asset('template/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
         <!-- Theme style -->
         <link rel="stylesheet" href="{{ asset('template/admin/dist/css/adminlte.min.css') }}">
-        {!! htmlScriptTagJsApi() !!}
+       
     </head>
     <body class="hold-transition login-page">
         @php

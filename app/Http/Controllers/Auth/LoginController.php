@@ -69,7 +69,7 @@ class LoginController extends Controller
          }
       }
       throw ValidationException::withMessages([
-         $this->username() => [trans('auth.failed')],
+         $this->username() => [trans('Username / password do not match')],
       ]);
    }
 }

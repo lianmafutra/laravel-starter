@@ -25,10 +25,11 @@ function printErrorMsg(msg) {
       error_array.push(key)
       $('.' + key + '_err').text(value);
       $('.' + key + '_err').show();
-      $([document.documentElement, document.body]).animate({
-         scrollTop: $("#" + key)
-      }, 1500);
+     
    });
+   $([document.documentElement, document.body]).animate({
+      scrollTop: $("#" + error_array[0])
+   }, 1500);
    let uniqueChars = [...new Set(error)];
    getDifference(uniqueChars, error_array).forEach(element => {
       $('.' + element + '_err').hide();

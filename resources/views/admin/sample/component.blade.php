@@ -58,9 +58,9 @@
                         <x-checkbox.item id="check_tidak" name="check" text="Option 2" type="checkbox"></x-checkbox.item>
                     </x-check-box>
                     <x-check-box label="Radio Button Select">
-                        <x-checkbox.item id="radio_1" name="radio" text="Ya" type="radio" color="primary">
+                        <x-checkbox.item id="radio_1" name="check" text="Ya" type="radio" color="primary">
                         </x-checkbox.item>
-                        <x-checkbox.item id="radio_2" name="radio" text="Tidak" type="radio" color="primary">
+                        <x-checkbox.item id="radio_2" name="check" text="Tidak" type="radio" color="primary">
                         </x-checkbox.item>
                     </x-check-box>
                     <x-filepond id="file_cover" label='File Cover' info='( Format File JPG/PNG , Maks 5 MB)' />
@@ -201,7 +201,7 @@
                 },
                 success: (response) => {
                     if (response) {
-                        // this.reset()
+                        this.reset()
                         _alertSuccess(response.message)
                     }
                 },

@@ -13,17 +13,16 @@ use Illuminate\Http\Request;
 class SampleCrudController extends Controller
 {
    use ApiResponse;
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(){
-      
+   /**
+    * Display a listing of the resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
+   public function index()
+   {
       $data = DB::table('permissions')
-      ->select('permissions.*','permission_group.name as group','permissions.name as name')
-      ->leftJoin('permission_group', 'permission_group.id', '=','permissions.permission_group_id');
-
+         ->select('permissions.*', 'permission_group.name as group', 'permissions.name as name')
+         ->leftJoin('permission_group', 'permission_group.id', '=', 'permissions.permission_group_id');
       $groupIndex = PermissionGroup::get();
       if (request()->ajax()) {
          return datatables()->of($data)
@@ -44,79 +43,78 @@ class SampleCrudController extends Controller
             ->rawColumns(['action', 'guard_name'])
             ->make(true);
       }
-
-      return view('admin.sample.index', compact('data','groupIndex'));
+      return view('admin.sample.index', compact('data', 'groupIndex'));
    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('admin.sample.create-edit');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(SampleCrudRequest $request)
-    {
+   /**
+    * Show the form for creating a new resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
+   public function create()
+   {
+      return view('admin.sample.create-edit');
+   }
+   /**
+    * Store a newly created resource in storage.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return \Illuminate\Http\Response
+    */
+   public function store(SampleCrudRequest $request)
+   {
+      
       try {
-         return $this->success('ok');
+         SampleCrud::updateOrCreate(
+            [
+               'id' => $request->sample_id
+            ],
+            $request->except('date_range')
+         );
+         return $this->success(__('trans.crud.success'));
       } catch (\Throwable $th) {
-         return $this->error('gagal', 400);
+         return $this->error(__('trans.crud.error').$th->getMessage(), 400);
       }
       // $validatedData = $request->validated();
-      // dd($validatedData)
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\SampleCrud  $sampleCrud
-     * @return \Illuminate\Http\Response
-     */
-    public function show(SampleCrud $sampleCrud)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\SampleCrud  $sampleCrud
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(SampleCrud $sampleCrud)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SampleCrud  $sampleCrud
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, SampleCrud $sampleCrud)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\SampleCrud  $sampleCrud
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(SampleCrud $sampleCrud)
-    {
-        //
-    }
+   }
+   /**
+    * Display the specified resource.
+    *
+    * @param  \App\Models\SampleCrud  $sampleCrud
+    * @return \Illuminate\Http\Response
+    */
+   public function show(SampleCrud $sampleCrud)
+   {
+      //
+   }
+   /**
+    * Show the form for editing the specified resource.
+    *
+    * @param  \App\Models\SampleCrud  $sampleCrud
+    * @return \Illuminate\Http\Response
+    */
+   public function edit(SampleCrud $sampleCrud)
+   {
+      //
+   }
+   /**
+    * Update the specified resource in storage.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @param  \App\Models\SampleCrud  $sampleCrud
+    * @return \Illuminate\Http\Response
+    */
+   public function update(Request $request, SampleCrud $sampleCrud)
+   {
+      //
+   }
+   /**
+    * Remove the specified resource from storage.
+    *
+    * @param  \App\Models\SampleCrud  $sampleCrud
+    * @return \Illuminate\Http\Response
+    */
+   public function destroy(SampleCrud $sampleCrud)
+   {
+      //
+   }
 }

@@ -4,7 +4,7 @@
             <span style="color: red">*</span>
         @endif
     </label>
-    <select id="{{ $id }}" class="select2 select2-{{ $id }} form-control select2bs4"
+    <select id="{{ $id }}" class="select2 select2-{{ $id }} form-control select2bs4" name="{{ $name }}"
         data-placeholder="-- {{ $attributes['placeholder'] }} --" style="width: 100%;" {{ $attributes }}>
         <option></option>
         <option value="1">Januari</option>

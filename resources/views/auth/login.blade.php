@@ -81,7 +81,6 @@
     <script src="{{ asset('template/login2/js/main.js') }}"></script>
     <script>
         @if (!$errors->isEmpty())
-            // $('#username').focus()
             var input =  $('#username');
             var len = input.val().length;
             input[0].focus();

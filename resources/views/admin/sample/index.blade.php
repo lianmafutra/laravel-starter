@@ -190,21 +190,11 @@
                     },
                 });
         
-
-
-
-            Object.assign(tableOptions, {
-               
-            });
+            Object.assign(tableOptions, {});
 
             datatable.DataTable(tableOptions);
             // datatable.DataTable(tableOptions);
             // $('#datatable').DataTable().clear().destroy();
-
-
-
-
-
 
             // datatable.columns([2]).every(function() {
             //     var column = this;
@@ -218,11 +208,6 @@
             //         });
 
             // });
-
-
-
-
-
 
             $("#form_edit_group").submit(function(e) {
                 e.preventDefault()
@@ -248,6 +233,7 @@
                     }
                 })
             })
+
             $("#form_create_edit_permission").submit(function(e) {
                 e.preventDefault()
                 const formData = new FormData(this)
@@ -272,6 +258,7 @@
                     }
                 })
             })
+
             $("#form_create_multi_permission").submit(function(e) {
                 e.preventDefault()
                 const formData = new FormData(this)
@@ -296,18 +283,21 @@
                     }
                 })
             })
+
             $('#btn_add_permission').click(function(e) {
                 e.preventDefault()
                 _clearInput()
                 $('#modal_create_edit').modal('show')
                 $('#modal_create_edit .modal-title').text('Create New Permission')
             })
+
             $('#btn_add_multi_permission').click(function(e) {
                 e.preventDefault()
                 _clearInput()
                 $('#modal_create_multi').modal('show')
                 $('#modal_create_edit .modal-title').text('Create New Permission')
             })
+
             $('#datatable').on('click', '.btn_edit', function(e) {
                 e.preventDefault()
                 _clearInput()
@@ -323,6 +313,7 @@
                     $("#permission_group_id").val(response.data.permission_group_id).change()
                 })
             })
+            
             $('#datatable').on('click', '.btn_delete', function(e) {
                 e.preventDefault()
                 Swal.fire({

@@ -68,7 +68,7 @@ class MenuSidebar
          ],
          [
             'type'   => 'header',
-            'title'  => 'Menu',
+            'title'  => 'Sample',
          ],
          [
             'type'   => 'tree',
@@ -79,11 +79,12 @@ class MenuSidebar
             'items' => [
                [
                   'type'   => 'menu',
-                  'title'  => 'Form Input',
+                  'title'  => 'Form Component',
                   'url'    => route('sample-crud.create'),
                   'icon'   => 'fas fa-folder-open',
                   'active' => ['sample-crud.create']
                ],
+               
                [
                   'type'   => 'menu',
                   'title'  => 'Datatable',

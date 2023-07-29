@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Utils\DateUtils;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SampleCrudRequest extends FormRequest
@@ -20,11 +21,43 @@ class SampleCrudRequest extends FormRequest
     *
     * @return array<string, mixed>
     */
+
+
+
    public function rules()
    {
+
+      // dd(request()->all());
+
+
       return [
-         'title' => 'required|min:10|max:50',
-         'desc' => 'required|min:10|max:50',
+         'title'             => 'required|min:10|max:50',
+         'desc'              => 'required|min:10|max:50',
+         'category_id'       => 'required',
+         'category_multi_id' => 'required|array',
+         'date_publisher'    => 'required',
+         'check'             => 'required',
+         'radio'             => 'required',
+         'time'              => 'required',
+         'price'             => 'required',
+         'password'          => 'required',
+         'contact'           => 'required',
+         'start_date'        => 'required',
+         'month'             => 'required',
+         'days'              => 'required',
+         'end_date'          => 'required',
+         'date_range'        => 'required',
+         'file_cover'        => 'required',
+         'summernote'        => 'required',
       ];
+   }
+
+   protected function prepareForValidation(): void
+   {
+      $this->merge([
+         'category_multi_id' => json_encode($this->category_multi_id),
+         'date_range_start'  => DateUtils::rangeDate($this->date_range)->get('start_date'),
+         'date_range_end'    => DateUtils::rangeDate($this->date_range)->get('end_date'),
+      ]);
    }
 }

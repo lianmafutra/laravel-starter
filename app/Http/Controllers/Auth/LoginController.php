@@ -10,7 +10,6 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use PhpParser\Node\Expr\Cast;
 
 class LoginController extends Controller
 {
@@ -55,7 +54,7 @@ class LoginController extends Controller
 
       if (Auth::attempt($credentials, false)) {
 
-         if (auth()->user()->getRoleName() == "inspektur" || auth()->user()->getRoleName() == "superadmin") {
+         if (auth()->user()->getRoleName() == "superadmin") {
             return to_route('dashboard');
          } else {
             if (auth()->user()->status == 'NONAKTIF') {

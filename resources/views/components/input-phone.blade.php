@@ -10,5 +10,5 @@
        </div>
        <input id="{{ $id }}" name="{{ $name }}" type="text" class="form-control" {{ $attributes }}>
    </div>
-
+   <span class="text-danger error error-text {{ $id }}_err"></span>
 </div>

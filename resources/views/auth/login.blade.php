@@ -30,14 +30,13 @@
                     <span class="login100-form-avatar">
                         <img src="{{ asset('template/login2/img/avatar-01.jpg') }}" alt="AVATAR">
                     </span>
-                    @if (!$errors->isEmpty())
-                        <div class="alert alert-danger m-t-20 " role="alert">
-                            {!! implode('<br>', $errors->all()) !!}
 
-                        </div>
-                    @endif
+                    <div id="error_layout" style="display: none" class="alert alert-danger m-t-20 " role="alert">
+                        {!! implode('<br>', $errors->all()) !!}
+                    </div>
 
-                    <div class="wrap-input100 validate-input m-t-50 m-b-35" data-validate="Enter username">
+
+                    <div class="wrap-input100 validate-input m-t-80 m-b-35" data-validate="Enter username">
                         <input spellcheck="false" id="username" class="input100" type="text" name="username"
                             value="{{ old('username') }}" required>
                         <span class="focus-input100" data-placeholder="Username"></span>
@@ -89,7 +88,15 @@
     <script src="{{ asset('template/login2/js/main.js') }}"></script>
     <script>
         @if (!$errors->isEmpty())
-           $('#username').focus()
+            // $('#username').focus()
+            var input =  $('#username');
+            var len = input.val().length;
+            input[0].focus();
+            input[0].setSelectionRange(len, len);
+
+            $('#error_layout').fadeIn(600, function() {
+                // Animation complete
+            });
         @endif
     </script>
 </body>

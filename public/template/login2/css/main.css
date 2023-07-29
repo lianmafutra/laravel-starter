@@ -272,7 +272,7 @@ iframe {
     -o-transition: all .4s;
     -moz-transition: all .4s;
     transition: all .4s;
-    background: #ff5252;
+    background: #ff525223;
 }
 
 .focus-input100::after {

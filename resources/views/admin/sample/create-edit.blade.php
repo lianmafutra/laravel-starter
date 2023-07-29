@@ -65,7 +65,7 @@
                     </x-check-box>
                     <x-filepond id="file_cover" label='File Cover' info='( Format File JPG/PNG , Maks 5 MB)' />
                     <x-summernote id="summernote" label="Summenote Editor">
-                        Place <em>some</em> <u>text</u> <strong>here</strong>
+                      
                     </x-summernote>
                 </div>
                 <div class="card-footer">
@@ -105,12 +105,9 @@
     <script>
         $(function() {
 
-       
-
             $('.select2bs4').select2({
                 theme: 'bootstrap4',
             })
-
 
             AutoNumeric.multiple('.rupiah', {
                 digitGroupSeparator: '.',

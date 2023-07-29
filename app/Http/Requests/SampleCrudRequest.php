@@ -28,26 +28,26 @@ class SampleCrudRequest extends FormRequest
    {
 
       // dd(request()->all());
-
-
       return [
-         'title'             => 'required|min:10|max:50',
-         'desc'              => 'required|min:10|max:50',
+         'title'             => 'required|min:10|max:50|string',
+         'desc'              => 'required|min:10|max:50|string',
          'category_id'       => 'required',
-         'category_multi_id' => 'required|array',
-         'date_publisher'    => 'required',
+         'category_multi_id' => 'required',
+         'date_publisher'    => 'required|date',
          'check'             => 'required',
          'radio'             => 'required',
          'time'              => 'required',
          'price'             => 'required',
          'password'          => 'required',
          'contact'           => 'required',
-         'start_date'        => 'required',
-         'month'             => 'required',
-         'days'              => 'required',
-         'end_date'          => 'required',
-         'date_range'        => 'required',
-         'file_cover'        => 'required',
+         'start_date'        => 'required|date',
+         'month'             => 'required|string',
+         'days'              => 'required|string',
+         'end_date'          => 'required|date',
+         'date_range'        => 'required|date',
+         'date_range_start'  => 'required|date',
+         'date_range_end'    => 'required|date',
+         'file_cover'        => 'required|file',
          'summernote'        => 'required',
       ];
    }

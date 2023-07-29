@@ -62,19 +62,18 @@ class SampleCrudController extends Controller
     */
    public function store(SampleCrudRequest $request)
    {
-      
       try {
          SampleCrud::updateOrCreate(
             [
                'id' => $request->sample_id
             ],
-            $request->except('date_range')
+            $request->safe()->except('date_range')
          );
          return $this->success(__('trans.crud.success'));
       } catch (\Throwable $th) {
          return $this->error(__('trans.crud.error').$th->getMessage(), 400);
       }
-      // $validatedData = $request->validated();
+    
    }
    /**
     * Display the specified resource.

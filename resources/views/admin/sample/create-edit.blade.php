@@ -11,6 +11,12 @@
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/summernote/summernote-bs4.min.css') }}">
+
+    <style>
+       #file_cover_multi .filepond--item {
+        width: calc(32% - 0.5em);
+    }
+    </style>
 @endpush
 @section('header')
     <x-header title="Sample Crud"></x-header>
@@ -65,9 +71,8 @@
                         </x-checkbox.item>
                     </x-check-box>
                     <x-filepond id="file_cover" label='File Cover' info='( Format File JPG/PNG , Maks 5 MB)' accept="image/jpeg, image/png" />
-                    <x-summernote id="summernote" label="Summenote Editor">
-                      
-                    </x-summernote>
+                    <x-filepond id="file_cover_multi" name="file_cover_multi[]" label='File Cover multiple' info='( Format File JPG/PNG , Maks 5 MB)' accept="image/jpeg, image/png" multiple />
+                    <x-summernote id="summernote" label="Summenote Editor"/>
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn_submit btn btn-primary">Save</button>
@@ -80,6 +85,7 @@
 @push('js')
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
 
+    <script src="{{ asset('template/admin/plugins/summernote/summernote-bs4.min.js') }}"></script>
     <script src="{{ asset('template/admin/plugins/summernote/summernote-bs4.min.js') }}"></script>
 
     {{-- currency format input --}}
@@ -96,6 +102,7 @@
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-size.js') }} "></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-image-preview.js') }}"></script>
+    
 
     {{-- password toggle show/hide --}}
     <script src="{{ asset('plugins/toggle-password.js') }}"></script>
@@ -167,20 +174,41 @@
                 storeAsFile: true
             });
 
+            FilePond.create(document.querySelector('#file_cover_multi'), {
+                storeAsFile: true,
+                styleItemPanelAspectRatio: 1,
+                imageCropAspectRatio: '1:1',
+                allowImagePreview: true,
+                allowMultiple: true,
+                allowReorder:true,
+                imagePreviewHeight: 300,
+                imagePreviewWidth: 300,
+                storeAsFile: true
+            });
+
+        
+
             $('#summernote').summernote({
-                lang: 'fr-FR',
+
                 height: 200,
                 imageTitle: {
                     specificAltField: true,
                 },
-                popover: {
-                    image: [
-                        ['image', ['resizeFull', 'resizeHalf', 'resizeQuarter', 'resizeNone']],
-                        ['float', ['floatLeft', 'floatRight', 'floatNone']],
-                        ['remove', ['removeMedia']],
-                        ['custom', ['imageTitle']],
-                    ],
-                },
+                imageAttributes: {
+							icon: '<i class="note-icon-pencil"/>',
+						  figureClass: 'figureClass',
+						  figcaptionClass: 'captionClass',
+						  captionText: 'Caption Goes Here.',
+						  manageAspectRatio: true // true = Lock the Image Width/Height, Default to true
+					  },
+                 popover: {
+						  image: [
+							  ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
+							  ['float', ['floatLeft', 'floatRight', 'floatNone']],
+							  ['remove', ['removeMedia']],
+							  ['custom', ['imageAttributes']],
+						  ],
+					  },
             })
         })
 

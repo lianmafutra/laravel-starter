@@ -166,6 +166,7 @@ return [
       RealRashid\SweetAlert\SweetAlertServiceProvider::class,
       Yajra\DataTables\DataTablesServiceProvider::class,
       Mews\Purifier\PurifierServiceProvider::class,
+      Intervention\Image\ImageServiceProvider::class,
 
       /*
          * Package Service Providers...
@@ -198,6 +199,7 @@ return [
       'ReCaptcha'     => Biscolab\ReCaptcha\Facades\ReCaptcha::class,
       'Setting'       => App\Helpers\SettingHelper::class,
       'Purifier' => Mews\Purifier\Facades\Purifier::class,
+      'Image' => Intervention\Image\Facades\Image::class
    ])->toArray(),
 
 ];

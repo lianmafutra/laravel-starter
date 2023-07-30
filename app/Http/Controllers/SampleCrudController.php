@@ -63,6 +63,7 @@ class SampleCrudController extends Controller
    public function store(SampleCrudRequest $request)
    {
 
+    
       // dd($request->safe());
       try {
          SampleCrud::updateOrCreate(

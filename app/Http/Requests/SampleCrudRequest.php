@@ -27,6 +27,7 @@ class SampleCrudRequest extends FormRequest
          'end_date'          => DateUtils::format($this->end_date),
          'summernote'        => clean($this->summernote),
          'price'             => Rupiah::clean($this->price),
+         'contact'            => trim(preg_replace('/[^0-9]/', '', $this->contact)),
       ]);
    }
 
@@ -42,7 +43,7 @@ class SampleCrudRequest extends FormRequest
          'time'              => 'required',
          'price'             => 'required',
          'password'          => 'required|string',
-         'contact'           => 'required|string',
+         'contact'           => 'required|string|numeric',
          'month'             => 'required|string',
          'days'              => 'required|string',
          'start_date'        => 'required|date_format:Y-m-d',

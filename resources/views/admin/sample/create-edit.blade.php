@@ -16,6 +16,7 @@
     <x-header title="Sample Crud"></x-header>
 @endsection
 @section('content')
+
     <div class="col-lg-8 col-sm-12">
         <form id="form_sample">
             @csrf

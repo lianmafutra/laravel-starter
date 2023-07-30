@@ -4,23 +4,29 @@ namespace App\Http\Requests;
 
 use App\Utils\DateUtils;
 use Illuminate\Foundation\Http\FormRequest;
+use Mews\Purifier\Facades\Purifier;
 
 class SampleCrudRequest extends FormRequest
 {
-   /**
-    * Determine if the user is authorized to make this request.
-    *
-    * @return bool
-    */
+
    public function authorize()
    {
       return true;
    }
-   /**
-    * Get the validation rules that apply to the request.
-    *
-    * @return array<string, mixed>
-    */
+
+   protected function prepareForValidation(): void
+   {
+    
+      $this->merge([
+         'category_multi_id' => json_encode($this->category_multi_id),
+         'date_range_start'  => DateUtils::rangeDate($this->date_range)->get('start_date'),
+         'date_range_end'    => DateUtils::rangeDate($this->date_range)->get('end_date'),
+         'date_publisher'    => DateUtils::format($this->date_publisher),
+         'start_date'        => DateUtils::format($this->start_date),
+         'end_date'          => DateUtils::format($this->end_date),
+         'summernote'        => clean($this->summernote),
+      ]);
+   }
 
    public function rules()
    {
@@ -37,23 +43,14 @@ class SampleCrudRequest extends FormRequest
          'contact'           => 'required|string',
          'month'             => 'required|string',
          'days'              => 'required|string',
-         'start_date'        => 'required|date_format:d/m/Y',
-         'end_date'          => 'required|after:start_date|date_format:d/m/Y',
-         'date_publisher'    => 'required|date_format:d/m/Y',
-         'date_range'        => 'required|',
+         'start_date'        => 'required|date_format:Y-m-d',
+         'end_date'          => 'required|after:start_date|date_format:Y-m-d',
+         'date_publisher'    => 'required|date_format:Y-m-d',
+         'date_range'        => 'required',
          'date_range_start'  => 'required',
          'date_range_end'    => 'required',
          'file_cover'        => 'required|file|mimes:jpeg,jpg,png|max:2048',
          'summernote'        => 'required',
       ];
-   }
-
-   protected function prepareForValidation(): void
-   {
-      $this->merge([
-         'category_multi_id' => json_encode($this->category_multi_id),
-         'date_range_start'  => DateUtils::rangeDate($this->date_range)->get('start_date'),
-         'date_range_end'    => DateUtils::rangeDate($this->date_range)->get('end_date'),
-      ]);
    }
 }

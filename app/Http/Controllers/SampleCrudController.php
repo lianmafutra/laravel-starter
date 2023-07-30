@@ -52,7 +52,8 @@ class SampleCrudController extends Controller
     */
    public function create()
    {
-      return view('admin.sample.create-edit');
+      $x['data'] = SampleCrud::first();
+      return view('admin.sample.create-edit', $x);
    }
    /**
     * Store a newly created resource in storage.
@@ -63,7 +64,7 @@ class SampleCrudController extends Controller
    public function store(SampleCrudRequest $request)
    {
 
-      dd($request->safe());
+      // dd($request->safe());
       try {
          SampleCrud::updateOrCreate(
             [
@@ -73,7 +74,7 @@ class SampleCrudController extends Controller
          );
          return $this->success(__('trans.crud.success'));
       } catch (\Throwable $th) {
-         return $this->error(__('trans.crud.error').$th->getMessage(), 400);
+         return $this->error(__('trans.crud.error').$th, 400);
       }
     
    }

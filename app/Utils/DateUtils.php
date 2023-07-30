@@ -17,7 +17,8 @@ class DateUtils
 
    public static function format($date)
    {
-      return Carbon::createFromFormat('d/m/Y', $date)?->format('Y-m-d');
+     
+      return Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
    }
 
    public static function rangeDate($dateRange)

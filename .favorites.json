@@ -1,20 +1,11 @@
 [
     {
-        "type": "Directory",
-        "name": "c:\\laragon\\www\\kinerja-pegawai\\doc",
-        "parent_id": null,
-        "fsPath": "c:\\laragon\\www\\kinerja-pegawai\\doc",
-        "workspaceRoot": null,
-        "workspacePath": null,
-        "id": "W2jQHwm8fZyRcdKB"
-    },
-    {
         "type": "File",
-        "name": "c:\\laragon\\www\\kinerja-pegawai\\resources\\views\\app\\task\\pengawasan\\create-pemeriksaan.blade.php",
+        "name": "c:\\laragon\\www\\laravel-starter\\app\\Http\\Controllers\\SampleCrudController.php",
         "parent_id": null,
-        "fsPath": "c:\\laragon\\www\\kinerja-pegawai\\resources\\views\\app\\task\\pengawasan\\create-pemeriksaan.blade.php",
+        "fsPath": "c:\\laragon\\www\\laravel-starter\\app\\Http\\Controllers\\SampleCrudController.php",
         "workspaceRoot": null,
         "workspacePath": null,
-        "id": "1O9cQCb5MqBvz68e"
+        "id": "oktZy1lXDRj7UB6J"
     }
 ]

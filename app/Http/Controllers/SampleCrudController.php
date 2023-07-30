@@ -6,9 +6,11 @@ use App\Http\Requests\SampleCrudRequest;
 use App\Models\PermissionGroup;
 use App\Models\SampleCrud;
 use App\Utils\ApiResponse;
+use App\Utils\LmFile;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
+
 
 class SampleCrudController extends Controller
 {
@@ -52,6 +54,11 @@ class SampleCrudController extends Controller
     */
    public function create()
    {
+  
+      $sampleCrud = SampleCrud::find(54);
+
+    dd(  $sampleCrud->field('file_cover')->getFile());
+
       return view('admin.sample.create-edit');
    }
    /**
@@ -60,20 +67,33 @@ class SampleCrudController extends Controller
     * @param  \Illuminate\Http\Request  $request
     * @return \Illuminate\Http\Response
     */
-   public function store(SampleCrudRequest $request)
+   public function store(SampleCrudRequest $request, LmFile $lmFile)
    {
-
-    
       // dd($request->safe());
+      DB::beginTransaction();
       try {
-         SampleCrud::updateOrCreate(
+
+        $sampleCrud = SampleCrud::updateOrCreate(
             [
                'id' => $request->sample_id
             ],
             $request->safe()->except('date_range')
          );
+
+         $sampleCrud
+         ->file($request->file_cover_multi)
+         ->field("file_cover")
+         ->path("cover")
+         ->multiple()
+         ->upload();
+
+       
+         dd(  $sampleCrud->field('file_cover')->getFilePath());
+
+         DB::commit();
          return $this->success(__('trans.crud.success'));
       } catch (\Throwable $th) {
+         DB::rollBack();
          return $this->error(__('trans.crud.error').$th, 400);
       }
     

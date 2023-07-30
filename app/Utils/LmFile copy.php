@@ -24,11 +24,15 @@ class LmFile
    protected $save;
    protected $multiple = false;
 
+
+
    public function file($file)
    {
       $this->file =  $file;
       return $this;
    }
+
+
 
    public function multiple($multiple)
    {

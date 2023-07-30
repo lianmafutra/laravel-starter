@@ -53,6 +53,7 @@ window._showError = function (response) {
       }
       if (response.status == 400) {
          text = response.responseJSON.message
+         $('.error-text').hide();
       }
    
       Swal.fire({

@@ -52,8 +52,7 @@ class SampleCrudController extends Controller
     */
    public function create()
    {
-      $x['data'] = SampleCrud::first();
-      return view('admin.sample.create-edit', $x);
+      return view('admin.sample.create-edit');
    }
    /**
     * Store a newly created resource in storage.

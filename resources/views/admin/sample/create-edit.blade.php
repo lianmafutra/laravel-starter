@@ -64,7 +64,7 @@
                         <x-checkbox.item id="radio_2" name="radio" text="Tidak" type="radio" color="primary">
                         </x-checkbox.item>
                     </x-check-box>
-                    <x-filepond id="file_cover" label='File Cover' info='( Format File JPG/PNG , Maks 5 MB)' />
+                    <x-filepond id="file_cover" label='File Cover' info='( Format File JPG/PNG , Maks 5 MB)' accept="image/jpeg, image/png" />
                     <x-summernote id="summernote" label="Summenote Editor">
                       
                     </x-summernote>

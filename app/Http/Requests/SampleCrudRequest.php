@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Utils\DateUtils;
+use App\Utils\Rupiah;
 use Illuminate\Foundation\Http\FormRequest;
 use Mews\Purifier\Facades\Purifier;
 
@@ -25,6 +26,7 @@ class SampleCrudRequest extends FormRequest
          'start_date'        => DateUtils::format($this->start_date),
          'end_date'          => DateUtils::format($this->end_date),
          'summernote'        => clean($this->summernote),
+         'price'             => Rupiah::clean($this->price),
       ]);
    }
 

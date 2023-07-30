@@ -20,7 +20,6 @@ class SampleCrud extends Model
           $this->attributes[$key] = DateUtils::format($value);
           return $this;
        }
-       
        return parent::setAttribute($key, $value);
     }
 

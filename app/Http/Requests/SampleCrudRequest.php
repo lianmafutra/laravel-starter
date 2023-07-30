@@ -22,32 +22,28 @@ class SampleCrudRequest extends FormRequest
     * @return array<string, mixed>
     */
 
-
-
    public function rules()
    {
-
-      // dd(request()->all());
       return [
          'title'             => 'required|min:10|max:50|string',
          'desc'              => 'required|min:10|max:50|string',
-         'category_id'       => 'required',
+         'category_id'       => 'required|string',
          'category_multi_id' => 'required',
-         'date_publisher'    => 'required|date',
          'check'             => 'required',
          'radio'             => 'required',
          'time'              => 'required',
          'price'             => 'required',
-         'password'          => 'required',
-         'contact'           => 'required',
-         'start_date'        => 'required|date',
+         'password'          => 'required|string',
+         'contact'           => 'required|string',
          'month'             => 'required|string',
          'days'              => 'required|string',
-         'end_date'          => 'required|date',
-         'date_range'        => 'required|date',
-         'date_range_start'  => 'required|date',
-         'date_range_end'    => 'required|date',
-         'file_cover'        => 'required|file',
+         'start_date'        => 'required|date_format:d/m/Y',
+         'end_date'          => 'required|after:start_date|date_format:d/m/Y',
+         'date_publisher'    => 'required|date_format:d/m/Y',
+         'date_range'        => 'required|',
+         'date_range_start'  => 'required',
+         'date_range_end'    => 'required',
+         'file_cover'        => 'required|file|mimes:jpeg,jpg,png|max:2048',
          'summernote'        => 'required',
       ];
    }

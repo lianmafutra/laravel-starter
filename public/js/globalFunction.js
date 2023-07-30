@@ -29,7 +29,7 @@ function printErrorMsg(msg) {
    });
    $([document.documentElement, document.body]).animate({
       scrollTop: $("#" + error_array[0])
-   }, 1500);
+   });
    let uniqueChars = [...new Set(error)];
    getDifference(uniqueChars, error_array).forEach(element => {
       $('.' + element + '_err').hide();
@@ -66,13 +66,12 @@ window._showError = function (response) {
             }
          }
       );
-   }, 700);
+   }, 500);
    
 
 }
 
 window._showLoading = function (title = 'Processing', message = 'Please Wait...') {
-  
    Swal.fire({
       title: title,
       html: message,
@@ -102,8 +101,6 @@ window._hideLoading = function (title = 'Processing', message = 'Please Wait...'
    Swal.close()
 }
 
-
-//component input  
 
 
 // flatpicker config default 
@@ -144,14 +141,12 @@ const rupiah = (number) => {
 // fix problem with select2 multiple not show placeholder
 $('.select2-search__field').css('width', '100%');
 
-// set auto focus
+// set auto focus select2
 $(document).on('select2:open', function (e) {
-   document.querySelector(`[aria-controls="select2-${e.target.id}-results"]`).focus();
+   document.querySelector('[aria-controls="select2-'+e.target.id+'-results"]').focus();
 })
 
-
 //   others
-
 $('.loader_custom').addClass('spinner');
 
 $('.modal-ajax').on('show.bs.modal', function () {

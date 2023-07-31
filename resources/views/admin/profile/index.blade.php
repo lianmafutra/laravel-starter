@@ -29,7 +29,8 @@
             <div class="card card-primary card-outline">
                 <div class="card-body box-profile">
                     <div class="text-center">
-                        <img class="profile-user-img img-fluid img-circle" src="{{ $user->getUrlFoto() }}"
+     
+                        <img class="profile-user-img img-fluid img-circle" src="{{ $user->field('foto')->getFile() }}"
                             alt="User profile picture">
                     </div>
                     <h6 class="profile-username text-center">{{ $user->nama_lengkap }}</h6>
@@ -82,8 +83,9 @@
                                     <option value='P'>Wanita</option>
                                 </x-select2>
 
-                                <x-textarea id="alamat" label="Alamat" hint="Alamat" required="false"
-                                    value="{{ $user->alamat }}" spellcheck="false" />
+                                <x-textarea id="alamat" label="Alamat" name="alamat" hint="Alamat" required="false" spellcheck="false">
+                                 {{ $user->alamat }}
+                                </x-textarea>
 
                                 <div class="modal-footer ">
                                     <div class="float-right">

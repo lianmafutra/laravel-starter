@@ -5,7 +5,11 @@ namespace App\Utils;
 use App\Models\File;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File as FacadesFile;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Image;
+
+use function PHPUnit\Framework\throwException;
 
 trait LmFileTrait
 {
@@ -15,6 +19,11 @@ trait LmFileTrait
    protected $field;
    protected $multiple = false;
    protected $getFile;
+   protected $getFiles;
+   protected $getThumb;
+   protected $withThumb = false;
+
+   protected $withThumb_size = null;
 
    public function file($file)
    {
@@ -42,7 +51,12 @@ trait LmFileTrait
       return  $this;
    }
 
-
+   public function withThumb($size)
+   {
+      $this->withThumb_size    = $size;
+      $this->withThumb = true;
+      return  $this;
+   }
 
    public function getPath($folder)
    {
@@ -50,6 +64,7 @@ trait LmFileTrait
       $bulan       = Carbon::now()->format('m');
       $custom_path = $tahun . '/' . $bulan . '/' . $folder . '/';
       $path        = storage_path('app/public/' . $custom_path);
+
       if (!FacadesFile::isDirectory($path)) {
          FacadesFile::makeDirectory($path, 0777, true, true);
       }
@@ -75,35 +90,108 @@ trait LmFileTrait
          $this->field => $file_uuid
       ]);
       $name_origin = $file->getClientOriginalName();
-      $name_uniqe =  RemoveSpace::removeDoubleSpace(pathinfo($name_origin, PATHINFO_FILENAME) . '-' . Str::uuid()->toString() . '-' . Str::random(50));
+      $name_uniqe  = RemoveSpace::removeDoubleSpace(pathinfo($name_origin, PATHINFO_FILENAME) . '-' . Str::uuid()->toString() . '-' . Str::random(50));
       $custom_path = $this->getPath($this->path);
+      $name_file_with_extension  = $name_uniqe . '.' . strtolower($file->getClientOriginalExtension());
+      $thumb_file_with_extension = $name_uniqe . '-thumb.' . $file->getClientOriginalExtension();
 
-      $file = File::create([
+      File::create([
          'file_id'     => $file_uuid,
          'model_id'    => $model->id,
          'name_origin' => $name_origin,
-         'name_hash'   => $name_uniqe . '.' . strtolower($file->getClientOriginalExtension()),
+         'name_hash'   => $name_file_with_extension,
          'path'        => $custom_path,
          'created_by'  => auth()->user()->id,
          'mime'        => $file->getMimeType(),
          'order'       => $order,
          'size'        => $file->getSize(),
       ]);
+
+      $file->storeAs('public/' . $custom_path, $name_file_with_extension);
+
+
+
+
+      if ($this->withThumb) {
+         $this->generateThumbnail($file, 'public/' . $custom_path . '/' . $thumb_file_with_extension);
+      }
+
+
+      $check_file = Storage::exists('public/' . $custom_path . '/' . $name_file_with_extension);
+      $check_file_thumb = Storage::exists('public/' . $custom_path . '/' . $thumb_file_with_extension);
+
+      if ($check_file == false || $check_file_thumb == false) {
+         Storage::delete('public/' . $custom_path . '/' . $name_file_with_extension);
+         Storage::delete('public/' . $custom_path . '/' . $thumb_file_with_extension);
+         throw new Exception("Error Processing Request", 1);
+      }
+
+
       return $this;
+   }
+
+   public function generateThumbnail($file, $path)
+   {
+      $thumbImage = Image::make($file->getRealPath());
+      $thumbImage->resize(null, $this->withThumb_size, function ($constraint) {
+         $constraint->aspectRatio();
+      });
+      $thumbImage->stream();
+      Storage::put($path, $thumbImage);
    }
 
    public function getFile()
    {
+
       $data = $this->field;
       $file_id = $this->getModel()->$data;
-    
+
       $file = File::where('file_id',  $file_id)->where('model_id', $this->getModel()->id)->orderBy('order', 'ASC')->get();
-      $file->map(function ($item)  {
-         $item['full_path'] = url('storage/'.$item->path.$item->name_hash);
+      $file->map(function ($item) {
+         $item['full_path'] = url('storage/' . $item->path . $item->name_hash);
          return $item;
       });
-      return $file->toArray();
+      return $file->toArray()[0]['full_path'];
    }
 
-   
+   public function getFiles()
+   {
+      $data = $this->field;
+      $file_id = $this->getModel()->$data;
+
+      $file = File::where('file_id',  $file_id)->where('model_id', $this->getModel()->id)->orderBy('order', 'ASC')->get();
+      $file->map(function ($item) {
+         $item['full_path'] = url('storage/' . $item->path . $item->name_hash);
+         return $item;
+      });
+      return $file->pluck('full_path');
+   }
+
+
+   public function getThumb()
+   {
+      return $this->makeThumbsAttribute()->toArray()[0]['full_path'];
+   }
+
+   public function getThumbs()
+   {
+
+      return $this->makeThumbsAttribute()->pluck('full_path');
+   }
+
+   public function makeThumbsAttribute()
+   {
+      $data = $this->field;
+      $file_id = $this->getModel()->$data;
+      $file = File::where('file_id',  $file_id)->where('model_id', $this->getModel()->id)->orderBy('order', 'ASC')->get();
+      $file->map(function ($item) {
+         $addString = "-thumb";
+         $fileInfo = pathinfo($item->name_hash);
+         $newFileName = $fileInfo['filename'] . $addString . '.' . $fileInfo['extension'];
+         $item['full_path'] = url('storage/' . $item->path . $newFileName);
+         return $item;
+      });
+
+      return $file;
+   }
 }

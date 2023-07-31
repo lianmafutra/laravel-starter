@@ -18,7 +18,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @stack('css')
     <style>
-     
         table.dataTable tbody tr.selected>* {
             box-shadow: inset 0 0 0 9999px rgb(13 110 253 / 90%) !important;
             color: white !important;
@@ -110,10 +109,7 @@
         @routes {{-- route library https://github.com/tighten/ziggy --}}
         @include('admin.layouts.footer')
     </div>
-    <script>
-        let successSession = @json(Session::has('success'));
-        let errorSession = @json(Session::has('error'));
-    </script>
+
 
     <script src="{{ asset('template/admin/plugins/bootstrap/js/bootstrap.bundle.js') }}"></script>
     <script src="{{ asset('template/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
@@ -122,7 +118,6 @@
     <script src="{{ asset('plugins/sweetalert2/sweetalert2-min.js') }}"></script>
     @stack('js')
     <script src="{{ asset('js/globalFunction.js') }}"></script>
-    <script src="{{ asset('js/globalAlert.js') }}"></script>
 
     <script>
         $.ajaxSetup({
@@ -130,6 +125,48 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         })
+
+
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
+        if (@json(Session::has('success'))) {
+            Toast.fire({
+                icon: 'success',
+                title: @json(Session::get('success'))
+            })
+        }
+
+        if (@json(Session::has('error'))) {
+            Toast.fire({
+                icon: 'error',
+                title: @json(Session::get('error'))
+            })
+        }
+
+        window._alertSuccess = function(title = 'Success') {
+            Toast.fire({
+                icon: 'success',
+                title: title
+            })
+        }
+
+
+        window._alertError = function(title = 'Error') {
+            Toast.fire({
+                icon: 'error',
+                title: title
+            })
+        }
     </script>
 </body>
 

@@ -24,12 +24,14 @@ class UserController extends Controller
    }
 
    public function show($user_id){
+     
       $user = User::find($user_id);
       return view('admin.profile.index', compact('user'));
    }
 
    public function profile()
    {
+    
       $x['title']     = 'Profile';
       $user = User::with('bidang')->find(auth()->user()->id);
       return view('admin.profile.index', $x, compact('user'));
@@ -64,15 +66,15 @@ class UserController extends Controller
          if ($data->foto == null) {
             $data->foto = $files  ? Str::uuid()->toString() : NULL;
          }
-
          $data->save();
 
-         $uploadFile
-            ->file($files)
-            ->path('profile')
-            ->uuid($data->uuid)
-            ->parent_id($data->id)
-            ->update($data->foto);
+
+         $data->file($files)
+         ->field("foto")
+         ->path("profile")
+         ->withThumb(100)
+         ->upload();
+         
 
          DB::commit();
          return redirect()->back()->with('success', __('trans.crud.success'));

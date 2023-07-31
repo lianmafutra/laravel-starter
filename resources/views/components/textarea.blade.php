@@ -5,6 +5,6 @@
       @endif
   </label>
     <textarea spellcheck="false" id="{{ $id }}" name="{{ $name }}" class="form-control" rows="3"
-       {{ $attributes }}></textarea>
+       {{ $attributes }}> {{ $slot }}</textarea>
        <span class="text-danger error-text {{ $id }}_err"></span>
 </div>

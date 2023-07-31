@@ -55,9 +55,9 @@ class SampleCrudController extends Controller
    public function create()
    {
   
-      $sampleCrud = SampleCrud::find(54);
+   //    $sampleCrud = SampleCrud::find(54);
 
-    dd(  $sampleCrud->field('file_cover')->getFile());
+   //  dd(  $sampleCrud->field('file_cover')->getFile());
 
       return view('admin.sample.create-edit');
    }

@@ -4,17 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Utils\LmFile;
+use App\Utils\LmFileTrait;
 use App\Utils\uploadFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
-
+use phpDocumentor\Reflection\Types\This;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {
+   use LmFileTrait;
+
    public function index()
    {
       $x['title']     = 'User';
@@ -34,6 +37,7 @@ class UserController extends Controller
     
       $x['title']     = 'Profile';
       $user = User::with('bidang')->find(auth()->user()->id);
+
       return view('admin.profile.index', $x, compact('user'));
    }
 
@@ -53,36 +57,39 @@ class UserController extends Controller
          DB::rollback();
          return redirect()->back()->with('error', __('trans.crud.error'));
       }
-      return back();
    }
 
-   public function changePhoto(Request $request, LmFile $uploadFile)
+   public function changePhoto(Request $request)
    {
       try {
          $files = $request->file('foto');
 
          $data = User::where('id', auth()->user()->id)->first();
 
+      
+
+         
          if ($data->foto == null) {
             $data->foto = $files  ? Str::uuid()->toString() : NULL;
          }
          $data->save();
 
-
-         $data->file($files)
+         $data
+         ->addFile($files)
          ->field("foto")
          ->path("profile")
+         ->compress(60)
          ->withThumb(100)
          ->upload();
-         
 
+      
          DB::commit();
          return redirect()->back()->with('success', __('trans.crud.success'));
       } catch (\Throwable $th) {
          DB::rollback();
-         return redirect()->back()->with('error', __('trans.crud.error'). $th);
+         return redirect()->back()->with('error', __('trans.crud.error'). $th->getMessage());
       }
-      return back();
+     
    }
 
    public function store(Request $request)

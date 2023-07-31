@@ -167,6 +167,7 @@ return [
       Yajra\DataTables\DataTablesServiceProvider::class,
       Mews\Purifier\PurifierServiceProvider::class,
       Intervention\Image\ImageServiceProvider::class,
+      Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
       /*
          * Package Service Providers...

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SampleCrudRequest;
 use App\Models\PermissionGroup;
 use App\Models\SampleCrud;
+use App\Models\User;
 use App\Utils\ApiResponse;
 use App\Utils\LmFile;
 use Carbon\Carbon;
@@ -55,9 +56,8 @@ class SampleCrudController extends Controller
    public function create()
    {
   
-   //    $sampleCrud = SampleCrud::find(54);
+   
 
-   //  dd(  $sampleCrud->field('file_cover')->getFile());
 
       return view('admin.sample.create-edit');
    }
@@ -81,15 +81,15 @@ class SampleCrudController extends Controller
          );
 
          $sampleCrud
-         ->file($request->file_cover_multi)
+         ->addFile($request->file_cover_multi)
          ->field("file_cover")
          ->path("cover")
+         ->compress(60)
+         ->withThumb(100)
          ->multiple()
          ->upload();
 
        
-         dd(  $sampleCrud->field('file_cover')->getFilePath());
-
          DB::commit();
          return $this->success(__('trans.crud.success'));
       } catch (\Throwable $th) {

@@ -86,16 +86,17 @@ trait LmFileTrait
 
    public function upload()
    {
+      $file_uuid = Str::uuid();
       if ($this->multiple) {
          foreach ($this->file as $key => $value) {
-            $this->uploadFileProcess($value, $key + 1);
+            $this->uploadFileProcess($value, $key + 1,  $file_uuid);
          }
       } else {
-         $this->uploadFileProcess($this->file, 1);
+         $this->uploadFileProcess($this->file, 1, $file_uuid);
       }
    }
 
-   public function uploadFileProcess($file, $order)
+   public function uploadFileProcess($file, $order, $file_uuid)
    {
     
 
@@ -131,7 +132,7 @@ trait LmFileTrait
       }
 
       // if check file success upload store to DB
-      $file_uuid = Str::uuid();
+
       $model = $this->getModel();
       $model->update([
          $this->field => $file_uuid
@@ -164,29 +165,35 @@ trait LmFileTrait
 
    public function getFile()
    {
-
-      $data = $this->field;
-      $file_id = $this->getModel()->$data;
-
-      $file = File::where('file_id',  $file_id)->where('model_id', $this->getModel()->id)->orderBy('order', 'ASC')->get();
-      $file->map(function ($item) {
-         $item['full_path'] = url('storage/' . $item->path . $item->name_hash);
-         return $item;
-      });
-      return $file->toArray()[0]['full_path'];
+      return $this->makeFileAttribute()->toArray()[0]['full_path'];
    }
 
    public function getFiles()
    {
-      $data = $this->field;
-      $file_id = $this->getModel()->$data;
+      return $this->makeFileAttribute()->pluck('full_path');
+   }
 
-      $file = File::where('file_id',  $file_id)->where('model_id', $this->getModel()->id)->orderBy('order', 'ASC')->get();
-      $file->map(function ($item) {
-         $item['full_path'] = url('storage/' . $item->path . $item->name_hash);
-         return $item;
-      });
-      return $file->pluck('full_path');
+
+   public function getFileAttribute()
+   {
+      return $this->makeFileAttribute()->first();
+   }
+
+
+   public function getFilesAttribute()
+   {
+      return $this->makeFileAttribute();
+   }
+
+   public function getThumbAttribute()
+   {
+      return $this->makeFileAttribute()->first();
+   }
+
+
+   public function getThumbsAttribute()
+   {
+      return $this->makeFileAttribute();
    }
 
 
@@ -202,6 +209,22 @@ trait LmFileTrait
    }
 
    public function makeThumbsAttribute()
+   {
+      $data = $this->field;
+      $file_id = $this->getModel()->$data;
+      $file = File::where('file_id',  $file_id)->where('model_id', $this->getModel()->id)->orderBy('order', 'ASC')->get();
+      $file->map(function ($item) {
+         $addString = "-thumb";
+         $fileInfo = pathinfo($item->name_hash);
+         $newFileName = $fileInfo['filename'] . $addString . '.' . $fileInfo['extension'];
+         $item['full_path'] = url('storage/' . $item->path . $newFileName);
+         return $item;
+      });
+
+      return $file;
+   }
+
+   public function makeFileAttribute()
    {
       $data = $this->field;
       $file_id = $this->getModel()->$data;

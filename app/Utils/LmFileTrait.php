@@ -38,9 +38,8 @@ trait LmFileTrait
 
    public function extension($extension)
    {
-      if(!in_array($this->file->getClientOriginalExtension(), $extension)){
-         throw new Exception("Extension File not Allowed", 1);
-      }
+      $this->extension = $extension;
+
       return $this;
    }
 
@@ -89,14 +88,23 @@ trait LmFileTrait
       return $custom_path;
    }
 
+   public function filterExtension(){
+      if(!in_array($this->file->getClientOriginalExtension(), $this->extension)){
+         throw new Exception("Extension File not Allowed", 1);
+      }
+      return true;
+   }
+
    public function uploadFile()
    {
       $file_uuid = Str::uuid();
       if ($this->multiple) {
          foreach ($this->file as $key => $value) {
+            $this->filterExtension();
             $this->uploadFileProcess($value, $key + 1,  $file_uuid);
          }
       } else {
+         $this->filterExtension();
          $this->uploadFileProcess($this->file, 1, $file_uuid);
       }
    }

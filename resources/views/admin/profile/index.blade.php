@@ -142,7 +142,7 @@
                 @method('PUT')
                 <div class="modal-body">
                     <div class="form-group ">
-                        <input required type="file" data-max-file-size="3 MB" class="filepond" accept="image/*"
+                        <input required type="file" data-max-file-size="3 MB" class="filepond" 
                             name="foto">
                     </div>
                 </div>

@@ -4,12 +4,12 @@ namespace App\Utils;
 
 use App\Models\File;
 use Carbon\Carbon;
+use DB;
 use Exception;
 use Illuminate\Support\Facades\File as FacadesFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Image;
-
 
 trait LmFileTrait
 {
@@ -26,6 +26,8 @@ trait LmFileTrait
    protected $compressValue = 0;
 
    protected $withThumb_size = null;
+   protected $extension = [];
+
 
 
    public function addFile($file)
@@ -34,6 +36,13 @@ trait LmFileTrait
       return $this;
    }
 
+   public function extension($extension)
+   {
+      if(!in_array($this->file->getClientOriginalExtension(), $extension)){
+         throw new Exception("Extension File not Allowed", 1);
+      }
+      return $this;
+   }
 
    public function path(string $path)
    {
@@ -47,7 +56,6 @@ trait LmFileTrait
       return $this;
    }
 
-
    public function multiple()
    {
       $this->multiple = true;
@@ -60,7 +68,6 @@ trait LmFileTrait
       $this->withThumb      = true;
       return  $this;
    }
-
 
    public function compress($value)
    {
@@ -82,9 +89,7 @@ trait LmFileTrait
       return $custom_path;
    }
 
-
-
-   public function upload()
+   public function uploadFile()
    {
       $file_uuid = Str::uuid();
       if ($this->multiple) {
@@ -96,62 +101,81 @@ trait LmFileTrait
       }
    }
 
+   public function updateFile()
+   {
+     
+      $file_id = $this->field;
+      $old_file = File::where('model_id', $this->getModel()->id)->where('file_id', $this->getModel()->$file_id);
+      $custom_path = $this->getPath($this->path);
+      if ($old_file->exists()) {
+         if ($this->file->getClientOriginalName() != $old_file->first()->name_hash) {
+            Storage::disk('public')->delete(
+               $old_file->first()->path . $old_file->first()->name_hash
+            );
+            $old_file->delete();
+            $this->uploadFile();
+         }
+         else{
+            // abaikan use old file data
+         }
+      } else {
+         $this->uploadFile();
+      }
+   }
+
+   public function updateFileProcess()
+   {
+   }
+
    public function uploadFileProcess($file, $order, $file_uuid)
    {
-    
-
-      $name_origin = $file->getClientOriginalName();
-      $name_uniqe  = RemoveSpace::removeDoubleSpace(pathinfo($name_origin, PATHINFO_FILENAME) . '-' . Str::uuid()->toString() . '-' . Str::random(50));
-      $custom_path = $this->getPath($this->path);
-      $name_file_with_extension  = $name_uniqe . '.' . strtolower($file->getClientOriginalExtension());
-      $thumb_file_with_extension = $name_uniqe . '-thumb.' . $file->getClientOriginalExtension();
-
-      if ($this->compress) {
-         $imgWidth = Image::make($file->getRealPath())->width();
-         $imgWidth -= $imgWidth * $this->compressValue / 100;
-         $compressImage = Image::make($file->getRealPath())->resize($imgWidth, null, function ($constraint) {
-            $constraint->aspectRatio();
-         });
-         $compressImage->stream();
-         Storage::put('public/' . $custom_path . '/' . $name_file_with_extension,  $compressImage);
-      } else {
-         $file->storeAs('public/' . $custom_path, $name_file_with_extension);
-      }
-
-
-      if ($this->withThumb) {
-         $this->generateThumbnail($file, 'public/' . $custom_path . '/' . $thumb_file_with_extension);
-      }
-
-
-      $check_file = Storage::exists('public/' . $custom_path . '/' . $name_file_with_extension);
-      $check_file_thumb = Storage::exists('public/' . $custom_path . '/' . $thumb_file_with_extension);
-
-      if ($check_file == false || $check_file_thumb == false) {
-         throw new Exception("Error Processing Request", 1);
-      }
-
-      // if check file success upload store to DB
-
-      $model = $this->getModel();
-      $model->update([
-         $this->field => $file_uuid
-      ]);
-      File::create([
-         'file_id'     => $file_uuid,
-         'model_id'    => $model->id,
-         'name_origin' => $name_origin,
-         'name_hash'   => $name_file_with_extension,
-         'path'        => $custom_path,
-         'created_by'  => auth()->user()->id,
-         'mime'        => $file->getMimeType(),
-         'order'       => $order,
-         'size'        => $file->getSize(),
-      ]);
-
-
-      return $this;
+         $name_origin = $file->getClientOriginalName();
+         $name_uniqe  = RemoveSpace::removeDoubleSpace(pathinfo($name_origin, PATHINFO_FILENAME) . '-' . Str::uuid()->toString() . '-' . Str::random(50));
+         $custom_path = $this->getPath($this->path);
+         $name_file_with_extension  = $name_uniqe . '.' . strtolower($file->getClientOriginalExtension());
+         $thumb_file_with_extension = $name_uniqe . '-thumb.' . $file->getClientOriginalExtension();
+   
+         if ($this->compress) {
+            $imgWidth = Image::make($file->getRealPath())->width();
+            $imgWidth -= $imgWidth * $this->compressValue / 100;
+            $compressImage = Image::make($file->getRealPath())->resize($imgWidth, null, function ($constraint) {
+               $constraint->aspectRatio();
+            });
+            $compressImage->stream();
+            Storage::put('public/' . $custom_path . '/' . $name_file_with_extension,  $compressImage);
+         } else {
+            $file->storeAs('public/' . $custom_path, $name_file_with_extension);
+         }
+   
+   
+         if ($this->withThumb) {
+            $this->generateThumbnail($file, 'public/' . $custom_path . '/' . $thumb_file_with_extension);
+         }
+   
+   
+         // if check file success upload store to DB
+   
+         $model = $this->getModel();
+         $model->update([
+            $this->field => $file_uuid
+         ]);
+         File::create([
+            'file_id'     => $file_uuid,
+            'model_id'    => $model->id,
+            'name_origin' => $name_origin,
+            'name_hash'   => $name_file_with_extension,
+            'path'        => $custom_path,
+            'created_by'  => auth()->user()->id,
+            'mime'        => $file->getMimeType(),
+            'order'       => $order,
+            'size'        => $file->getSize(),
+         ]);
+        
+         return $this;
    }
+
+
+
 
    public function generateThumbnail($file, $path)
    {
@@ -165,11 +189,15 @@ trait LmFileTrait
 
    public function getFile()
    {
-      return $this->makeFileAttribute()->toArray()[0]['full_path'];
+      if ($this->makeFileAttribute()->toArray()) {
+         return $this->makeFileAttribute()->toArray()[0]['full_path'];
+      }
+      return "";
    }
 
    public function getFiles()
    {
+
       return $this->makeFileAttribute()->pluck('full_path');
    }
 
@@ -190,21 +218,21 @@ trait LmFileTrait
       return $this->makeFileAttribute()->first();
    }
 
-
    public function getThumbsAttribute()
    {
       return $this->makeFileAttribute();
    }
 
-
    public function getThumb()
    {
-      return $this->makeThumbsAttribute()->toArray()[0]['full_path'];
+      if ($this->makeThumbsAttribute()->toArray()) {
+         return $this->makeThumbsAttribute()->toArray()[0]['full_path'];
+      }
+      return "";
    }
 
    public function getThumbs()
    {
-
       return $this->makeThumbsAttribute()->pluck('full_path');
    }
 

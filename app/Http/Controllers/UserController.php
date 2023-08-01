@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Utils\LmFile;
 use App\Utils\LmFileTrait;
@@ -61,6 +62,7 @@ class UserController extends Controller
 
    public function changePhoto(Request $request)
    {
+      DB::beginTransaction();
       try {
          $files = $request->file('foto');
 
@@ -68,7 +70,6 @@ class UserController extends Controller
 
       
 
-         
          if ($data->foto == null) {
             $data->foto = $files  ? Str::uuid()->toString() : NULL;
          }
@@ -80,7 +81,8 @@ class UserController extends Controller
          ->path("profile")
          ->compress(60)
          ->withThumb(100)
-         ->upload();
+         ->extension(['jpg','png'])
+         ->uploadFile();
 
       
          DB::commit();

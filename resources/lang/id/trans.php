@@ -9,7 +9,7 @@ return [
    'crud' => [
       'success' => 'Save Data Successfully',
       'update' => 'Update Data Successfully',
-      'error' => 'Error, Failed to Process',
+      'error' => 'Error, Failed to Process : ',
    ]
 
 ];

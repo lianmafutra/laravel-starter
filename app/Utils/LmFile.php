@@ -161,7 +161,6 @@ class LmFile
             $name_uniqe =  RemoveSpace::removeDoubleSpace(pathinfo($name_ori, PATHINFO_FILENAME) . '-' . Str::uuid()->toString().'-'.Str::random(50));
           
             if ($cek == false) {
-
                File::create([
                   'file_id'        => $file_id,
                   'parent_file_id' => $this->parent_id,

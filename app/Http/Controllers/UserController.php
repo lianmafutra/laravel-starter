@@ -80,8 +80,8 @@ class UserController extends Controller
          ->path("profile")
          ->extension(['jpg','png'])
          ->compress(60)
-         // ->withThumb(100)
-         ->updateFile();
+         ->withThumb(100)
+         ->storeFile();
 
       
          DB::commit();

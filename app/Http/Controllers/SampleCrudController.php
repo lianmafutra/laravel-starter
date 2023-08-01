@@ -80,14 +80,24 @@ class SampleCrudController extends Controller
             $request->safe()->except('date_range')
          );
 
+         // $sampleCrud
+         // ->addFile($request->file_cover_multi)
+         // ->field("file_cover")
+         // ->path("cover")
+         // ->compress(60)
+         // ->withThumb(100)
+         // ->multiple()
+         // ->upload();
+
          $sampleCrud
          ->addFile($request->file_cover_multi)
          ->field("file_cover")
          ->path("cover")
+         ->extension(['jpg','png'])
          ->compress(60)
-         ->withThumb(100)
          ->multiple()
-         ->upload();
+         ->withThumb(100)
+         ->storeFile();
 
        
          DB::commit();

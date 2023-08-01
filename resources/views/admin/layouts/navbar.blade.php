@@ -24,6 +24,7 @@
                 <i class="fas fa-globe"></i>
             </a>
         </li>
+       
         <li class="nav-item dropdown user-menu">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                 <img style="object-fit: cover" src="{{ $fotoProfil }}" class="user-image img-circle elevation-2" alt="User Image">

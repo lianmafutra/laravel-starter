@@ -89,11 +89,15 @@ trait LmFileTrait
 
    public function filterExtension($file)
    {
-      // filter file by extension array value
-      if (!in_array($file->getClientOriginalExtension(), $this->extension)) {
-         throw new Exception("Extension File not Allowed", 1);
+      if ($this->multiple) {
+        
+      } else {
+         // filter file by extension array value
+         if (!in_array($file->getClientOriginalExtension(), $this->extension)) {
+            throw new Exception("Extension File not Allowed", 1);
+         }
+         return true;
       }
-      return true;
    }
 
    public function storeFile()
@@ -101,16 +105,16 @@ trait LmFileTrait
       $file_uuid = Str::uuid();
       // store multiple file Array
       if ($this->multiple) {
-         
-         if(!is_array($this->file)) throw new Exception("File Type Must Array", 1);
-         
+
+         if (!is_array($this->file)) throw new Exception("File Type Must Array", 1);
+
          foreach ($this->file as $key => $value) {
             $this->filterExtension($value);
             $this->storeFileProcess($value, $key + 1,  $file_uuid);
          }
       } else {
-         if(is_array($this->file)) throw new Exception("Array File not supported", 1);
-         
+         if (is_array($this->file)) throw new Exception("Array File not supported", 1);
+
          // store single file
          $this->filterExtension($this->file);
          $this->storeFileProcess($this->file, 1, $file_uuid);
@@ -120,6 +124,70 @@ trait LmFileTrait
    public function updateFile()
    {
 
+      $file_uuid = Str::uuid();
+      // store multiple file Array
+      if ($this->multiple) {
+         $this->updateMultiFileProcess($this->file);
+      } else {
+         if (is_array($this->file)) throw new Exception("Array File not supported", 1);
+
+         // store single file
+         $this->filterExtension($this->file);
+         $this->updateFileProcess($this->file, 1, $file_uuid);
+      }
+   }
+
+   public function updateMultiFileProcess($file)
+   {
+
+      // array_new [2]
+      // array_old [1]
+
+      //cari array terbaru -> upload 
+      // cari jika value array old tidak ada di array new maka hapus
+      // $this->filterExtension($value);
+      // $this->updateMultiFileProcess($value, $key + 1,  $file_uuid);
+
+      $newFile = collect($this->file)->map(function ($file) {
+         return $file->getClientOriginalName();
+      });
+
+      $oldFile = $this->getModel()->field($this->field)->getFilesAttribute()->pluck('name_hash');
+
+  
+   
+   
+      $file_uuid = Str::uuid();
+      foreach ($this->file as $key => $file) {
+         $this->storeFile();
+         
+      }
+
+      // delete file and database
+      $deleteFile = collect($this->getModel()->field('file_cover')->getFilesAttribute())->map(function ($file) {
+         return $file->path . $file->name_hash;
+      });
+
+      $deleteData = collect($this->getModel()->field('file_cover')->getFilesAttribute())->map(function ($file) {
+         return $file->name_hash;
+      });
+      
+
+      $collection2 = collect($deleteFile);
+      $deleteFile = $collection2->diff($newFile);
+      Storage::disk('public')->delete($deleteFile->all());
+
+      $collection3 = collect($deleteData);
+      $deleteData = $collection3->diff($newFile);
+      Storage::disk('public')->delete($deleteData->all());
+
+      //  File::where('model_id', $this->getModel()->id)->whereIn('name_hash', $deleteData->all())->delete();
+
+      return $this;
+   }
+
+   public function updateFileProcess($file, $order, $file_uuid)
+   {
       $file_id = $this->field;
       $old_file = File::where('model_id', $this->getModel()->id)->where('file_id', $this->getModel()->$file_id);
 
@@ -142,33 +210,38 @@ trait LmFileTrait
       }
    }
 
-   public function updateFileProcess()
-   {
-   }
-
    public function storeFileProcess($file, $order, $file_uuid)
    {
+
       $name_origin = $file->getClientOriginalName();
       $name_uniqe  = RemoveSpace::removeDoubleSpace(pathinfo($name_origin, PATHINFO_FILENAME) . '-' . Str::uuid()->toString() . '-' . Str::random(50));
       $custom_path = $this->getPath($this->path);
       $name_file_with_extension  = $name_uniqe . '.' . strtolower($file->getClientOriginalExtension());
       $thumb_file_with_extension = $name_uniqe . '-thumb.' . $file->getClientOriginalExtension();
-
+      
+      if ($this->withThumb) {
+       
+         $this->generateThumbnail($file, 'public/' . $custom_path . $thumb_file_with_extension);
+      }
+      
       if ($this->compress) {
+       
          $imgWidth = Image::make($file->getRealPath())->width();
          $imgWidth -= $imgWidth * $this->compressValue / 100;
          $compressImage = Image::make($file->getRealPath())->resize($imgWidth, null, function ($constraint) {
             $constraint->aspectRatio();
          });
          $compressImage->stream();
-         Storage::put('public/' . $custom_path . '/' . $name_file_with_extension,  $compressImage);
+     
+         Storage::put('public/' . $custom_path  . $name_file_with_extension,  $compressImage);
+         
+       
       } else {
+         
          $file->storeAs('public/' . $custom_path, $name_file_with_extension);
       }
-
-      if ($this->withThumb) {
-         $this->generateThumbnail($file, 'public/' . $custom_path . '/' . $thumb_file_with_extension);
-      }
+         
+      
 
       // if check file success upload store to DB
 

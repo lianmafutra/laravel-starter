@@ -11,7 +11,7 @@ use App\Utils\LmFile;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Collection;
 
 class SampleCrudController extends Controller
 {
@@ -55,8 +55,8 @@ class SampleCrudController extends Controller
     */
    public function create()
    {
-  
-   
+
+
 
 
       return view('admin.sample.create-edit');
@@ -73,7 +73,7 @@ class SampleCrudController extends Controller
       DB::beginTransaction();
       try {
 
-        $sampleCrud = SampleCrud::updateOrCreate(
+         $sampleCrud = SampleCrud::updateOrCreate(
             [
                'id' => $request->sample_id
             ],
@@ -89,24 +89,25 @@ class SampleCrudController extends Controller
          // ->multiple()
          // ->upload();
 
-         $sampleCrud
-         ->addFile($request->file_cover_multi)
-         ->field("file_cover")
-         ->path("cover")
-         ->extension(['jpg','png'])
-         ->compress(60)
-         ->multiple()
-         ->withThumb(100)
-         ->storeFile();
+        
 
-       
+         SampleCrud::find(76)
+            ->addFile($request->file_cover_multi)
+            ->field("file_cover")
+            ->path("cover")
+            // ->extension(['jpg', 'png'])
+            ->compress(60)
+            ->multiple()
+            ->withThumb(100)
+            ->updateFile();
+
+
          DB::commit();
          return $this->success(__('trans.crud.success'));
       } catch (\Throwable $th) {
          DB::rollBack();
-         return $this->error(__('trans.crud.error').$th, 400);
+         return $this->error(__('trans.crud.error') . $th, 400);
       }
-    
    }
    /**
     * Display the specified resource.

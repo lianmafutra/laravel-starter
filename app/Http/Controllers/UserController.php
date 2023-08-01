@@ -68,21 +68,20 @@ class UserController extends Controller
 
          $data = User::where('id', auth()->user()->id)->first();
 
-      
-
          if ($data->foto == null) {
             $data->foto = $files  ? Str::uuid()->toString() : NULL;
          }
-         $data->save();
 
+         $data->save();
+         
          $data
          ->addFile($files)
          ->field("foto")
          ->path("profile")
-         ->compress(60)
-         ->withThumb(100)
          ->extension(['jpg','png'])
-         ->uploadFile();
+         ->compress(60)
+         // ->withThumb(100)
+         ->updateFile();
 
       
          DB::commit();

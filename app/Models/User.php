@@ -62,6 +62,11 @@ use Storage;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User withThumb($value)
+ * @property-read mixed $file
+ * @property-read mixed $files
+ * @property-read mixed $thumb
+ * @property-read mixed $thumbs
  * @mixin \Eloquent
  */
 class User extends Authenticatable

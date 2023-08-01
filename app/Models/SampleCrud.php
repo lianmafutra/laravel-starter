@@ -56,6 +56,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|SampleCrud whereTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SampleCrud whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SampleCrud whereUpdatedAt($value)
+ * @property-read mixed $file
+ * @property-read mixed $files
+ * @property-read mixed $thumb
+ * @property-read mixed $thumbs
  * @mixin \Eloquent
  */
 class SampleCrud extends Model

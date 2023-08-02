@@ -52,7 +52,7 @@ class SampleCrudRequest extends FormRequest
          'date_range_start'  => 'required|date_format:Y-m-d',
          'date_range_end'    => 'required|date_format:Y-m-d',
          'file_cover'        => 'required|file|mimes:jpeg,jpg,png|max:2048',
-         // 'file_cover_multi.*'  => 'required|file|mimes:jpeg,jpg,png|max:2048',
+         'file_cover_multi.*'  => 'required|mimes:jpeg,jpg,png',
          'summernote'        => 'required|string|max:500',
       ];
    }

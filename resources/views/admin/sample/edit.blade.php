@@ -13,16 +13,17 @@
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/summernote/summernote-bs4.min.css') }}">
 
     <style>
-       #file_cover_multi .filepond--item {
-        width: calc(32% - 0.5em);
-    }
+        @media (min-width: 576px) {
+            #file_cover_multi .filepond--item {
+                width: calc(32% - 0.5em);
+            }
+        }
     </style>
 @endpush
 @section('header')
     <x-header title="Sample Crud"></x-header>
 @endsection
 @section('content')
-
     <div class="col-lg-8 col-sm-12">
         <form id="form_sample">
             @csrf
@@ -31,6 +32,7 @@
                     Data
                 </div>
                 <div class="card-body">
+                  <input hidden id="sample_id" name="sample_id">
                     <x-input label="Book Titte" id="title" info="Info : Sample Data Description Info"
                         placeholder="Book Name" />
                     <x-textarea id="desc" label="Short Description" placeholder="Description" />
@@ -70,9 +72,11 @@
                         <x-checkbox.item id="radio_2" name="radio" text="Tidak" type="radio" color="primary">
                         </x-checkbox.item>
                     </x-check-box>
-                    <x-filepond id="file_cover" label='File Cover' info='( Format File JPG/PNG , Maks 5 MB)' accept="image/jpeg, image/png" />
-                    <x-filepond id="file_cover_multi" name="file_cover_multi[]" label='File Cover multiple' info='( Format File JPG/PNG , Maks 5 MB)' accept="image/jpeg, image/png" multiple />
-                    <x-summernote id="summernote" label="Summenote Editor"/>
+                    <x-filepond id="file_cover" label='File Cover' info='( Format File JPG/PNG , Maks 5 MB)'
+                        accept="image/jpeg, image/png" />
+                    <x-filepond id="file_cover_multi" name="file_cover_multi[]" label='File Cover multiple'
+                        info='( Format File JPG/PNG , Maks 5 MB)' accept="image/jpeg, image/png" multiple />
+                    <x-summernote id="summernote" label="Summenote Editor" />
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn_submit btn btn-primary">Save</button>
@@ -81,7 +85,7 @@
         </form>
     </div>
 @endsection
-
+{{-- {{ Dd($sampleCrud->date_publisher) }} --}}
 @push('js')
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
 
@@ -102,7 +106,7 @@
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-size.js') }} "></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-image-preview.js') }}"></script>
-    
+
 
     {{-- password toggle show/hide --}}
     <script src="{{ asset('plugins/toggle-password.js') }}"></script>
@@ -150,9 +154,11 @@
             });
 
 
+
             const date_range = $("#date_range").flatpickr({
                 allowInput: true,
                 mode: "range",
+
                 onChange: function(dates, dateStr, instance) {
                     if (dates.length == 2) {
                         let dateStart = instance.formatDate(dates[0], "Y-m-d");
@@ -160,6 +166,7 @@
                     }
                 }
             })
+
 
             $('#date_publisher').mask('00/00/0000');
             $('#contact').mask('0000-0000-000000');
@@ -170,71 +177,101 @@
                 FilePondPluginFileValidateType,
                 FilePondPluginFileValidateSize)
 
-            FilePond.create(document.querySelector('#file_cover'), {
+            const file_cover = FilePond.create(document.querySelector('#file_cover'), {
                 storeAsFile: true
             });
 
-            FilePond.create(document.querySelector('#file_cover_multi'), {
+            const file_cover_multi = FilePond.create(document.querySelector('#file_cover_multi'), {
                 storeAsFile: true,
                 styleItemPanelAspectRatio: 1,
                 imageCropAspectRatio: '1:1',
                 allowImagePreview: true,
                 allowMultiple: true,
-                allowReorder:true,
+                allowReorder: true,
                 imagePreviewHeight: 300,
                 imagePreviewWidth: 300,
                 storeAsFile: true
             });
 
-        
-
             $('#summernote').summernote({
-
                 height: 200,
                 imageTitle: {
                     specificAltField: true,
                 },
                 imageAttributes: {
-							icon: '<i class="note-icon-pencil"/>',
-						  figureClass: 'figureClass',
-						  figcaptionClass: 'captionClass',
-						  captionText: 'Caption Goes Here.',
-						  manageAspectRatio: true // true = Lock the Image Width/Height, Default to true
-					  },
-                 popover: {
-						  image: [
-							  ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
-							  ['float', ['floatLeft', 'floatRight', 'floatNone']],
-							  ['remove', ['removeMedia']],
-							  ['custom', ['imageAttributes']],
-						  ],
-					  },
+                    icon: '<i class="note-icon-pencil"/>',
+                    figureClass: 'figureClass',
+                    figcaptionClass: 'captionClass',
+                    captionText: 'Caption Goes Here.',
+                    manageAspectRatio: true // true = Lock the Image Width/Height, Default to true
+                },
+                popover: {
+                    image: [
+                        ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
+                        ['float', ['floatLeft', 'floatRight', 'floatNone']],
+                        ['remove', ['removeMedia']],
+                        ['custom', ['imageAttributes']],
+                    ],
+                },
             })
-        })
 
-        $('#form_sample').submit(function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            $.ajax({
-                type: 'POST',
-                url: route('sample-crud.store'),
-                data: formData,
-                contentType: false,
-                processData: false,
-                dataType: 'json',
-                beforeSend: function() {
-                    _showLoading()
-                },
-                success: (response) => {
-                    if (response) {
-                        // this.reset()
-                        _alertSuccess(response.message)
+            $('#form_sample').submit(function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                $.ajax({
+                    type: 'POST',
+                    url: route('sample-crud.store'),
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    beforeSend: function() {
+                        _showLoading()
+                    },
+                    success: (response) => {
+                        if (response) {
+                            // this.reset()
+                            _alertSuccess(response.message)
+                        }
+                    },
+                    error: function(response) {
+                        _showError(response)
                     }
-                },
-                error: function(response) {
-                    _showError(response)
-                }
+                })
             })
+
+
+            //   setValue
+            $('#title').val(@json($sampleCrud->title))
+            $('#desc').val(@json($sampleCrud->desc))
+            $('#category_id').val(@json($sampleCrud->category_id)).change()
+            $("#category_multi_id").val(@json(json_decode($sampleCrud->category_multi_id))).change()
+            $('#days').val(@json($sampleCrud->days)).change()
+            $('#month').val(@json($sampleCrud->month)).change()
+            $('#contact').val(@json($sampleCrud->contact))
+            $('#sample_id').val(@json($sampleCrud->id))
+
+            AutoNumeric.getAutoNumericElement('#price').set(@json($sampleCrud->price))
+            start_date.setDate(@json($sampleCrud->start_date))
+            end_date.setDate(@json($sampleCrud->end_date))
+            date_publisher.setDate(@json($sampleCrud->date_publisher))
+            time.setDate(@json($sampleCrud->time));
+            date_range.setDate([@json($sampleCrud->end_date), @json($sampleCrud->start_date)]);
+
+            $("#summernote").summernote('code', @json(clean($sampleCrud->summernote)));
+
+            file_cover.setOptions({
+                storeAsFile: true,
+                files: @json($sampleCrud->field('file_cover')->getFile()),
+                allowDownloadByUrl: true,
+            })
+
+            file_cover_multi.setOptions({
+                storeAsFile: true,
+                files: @json($sampleCrud->field('file_cover_multi')->getFiles()),
+            })
+
+            
         })
     </script>
 @endpush

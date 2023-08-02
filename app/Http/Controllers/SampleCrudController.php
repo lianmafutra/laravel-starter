@@ -11,18 +11,15 @@ use App\Utils\LmFile;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
+
 
 class SampleCrudController extends Controller
 {
    use ApiResponse;
-   /**
-    * Display a listing of the resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
+
    public function index()
    {
+
       $data = DB::table('permissions')
          ->select('permissions.*', 'permission_group.name as group', 'permissions.name as name')
          ->leftJoin('permission_group', 'permission_group.id', '=', 'permissions.permission_group_id');
@@ -48,59 +45,47 @@ class SampleCrudController extends Controller
       }
       return view('admin.sample.index', compact('data', 'groupIndex'));
    }
-   /**
-    * Show the form for creating a new resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
+
+
    public function create()
    {
-
-
-
-
-      return view('admin.sample.create-edit');
+      return view('admin.sample.create');
    }
-   /**
-    * Store a newly created resource in storage.
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @return \Illuminate\Http\Response
-    */
+
+
    public function store(SampleCrudRequest $request, LmFile $lmFile)
    {
-      // dd($request->safe());
+   
       DB::beginTransaction();
       try {
 
          $sampleCrud = SampleCrud::updateOrCreate(
-            [
-               'id' => $request->sample_id
-            ],
+            ['id' => $request->sample_id ],
             $request->safe()->except('date_range')
          );
 
-         // $sampleCrud
-         // ->addFile($request->file_cover_multi)
-         // ->field("file_cover")
-         // ->path("cover")
-         // ->compress(60)
-         // ->withThumb(100)
-         // ->multiple()
-         // ->upload();
-
-        
-
-         SampleCrud::find(76)
-            ->addFile($request->file_cover_multi)
+         SampleCrud::find($sampleCrud->id)
+            ->addFile($request->file_cover)
             ->field("file_cover")
             ->path("cover")
+            ->extension(['jpg', 'png'])
+            ->compress(60)
+            ->withThumb(100)
+            ->updateFile();
+
+         SampleCrud::find($sampleCrud->id)
+            ->addFile($request->file_cover_multi)
+            ->field("file_cover_multi")
+            ->path("cover_multi")
             // ->extension(['jpg', 'png'])
             ->compress(60)
             ->multiple()
             ->withThumb(100)
             ->updateFile();
 
+            
+          
+            
 
          DB::commit();
          return $this->success(__('trans.crud.success'));
@@ -109,43 +94,23 @@ class SampleCrudController extends Controller
          return $this->error(__('trans.crud.error') . $th, 400);
       }
    }
-   /**
-    * Display the specified resource.
-    *
-    * @param  \App\Models\SampleCrud  $sampleCrud
-    * @return \Illuminate\Http\Response
-    */
+
    public function show(SampleCrud $sampleCrud)
    {
       //
    }
-   /**
-    * Show the form for editing the specified resource.
-    *
-    * @param  \App\Models\SampleCrud  $sampleCrud
-    * @return \Illuminate\Http\Response
-    */
+
    public function edit(SampleCrud $sampleCrud)
    {
-      //
+      return view('admin.sample.edit', compact('sampleCrud'));
    }
-   /**
-    * Update the specified resource in storage.
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @param  \App\Models\SampleCrud  $sampleCrud
-    * @return \Illuminate\Http\Response
-    */
+
    public function update(Request $request, SampleCrud $sampleCrud)
    {
       //
    }
-   /**
-    * Remove the specified resource from storage.
-    *
-    * @param  \App\Models\SampleCrud  $sampleCrud
-    * @return \Illuminate\Http\Response
-    */
+
+
    public function destroy(SampleCrud $sampleCrud)
    {
       //

@@ -45,6 +45,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|File wherePath($value)
  * @method static \Illuminate\Database\Eloquent\Builder|File whereSize($value)
  * @method static \Illuminate\Database\Eloquent\Builder|File whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 	class File extends \Eloquent {}
 }
@@ -58,7 +59,7 @@ namespace App\Models{
  * @property string|null $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Permission> $permissions
  * @property-read int|null $permissions_count
  * @method static \Illuminate\Database\Eloquent\Builder|PermissionGroup newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PermissionGroup newQuery()
@@ -68,6 +69,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|PermissionGroup whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PermissionGroup whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PermissionGroup whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 	class PermissionGroup extends \Eloquent {}
 }
@@ -123,6 +125,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|SampleCrud whereTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SampleCrud whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SampleCrud whereUpdatedAt($value)
+ * @property-read mixed $file
+ * @property-read mixed $files
+ * @property-read mixed $thumb
+ * @property-read mixed $thumbs
+ * @mixin \Eloquent
+ * @property string|null $file_cover_multi
+ * @method static \Illuminate\Database\Eloquent\Builder|SampleCrud whereFileCoverMulti($value)
  */
 	class SampleCrud extends \Eloquent {}
 }
@@ -152,6 +161,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Setting whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Setting whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Setting whereValue($value)
+ * @mixin \Eloquent
  */
 	class Setting extends \Eloquent {}
 }
@@ -208,6 +218,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User withThumb($value)
+ * @property-read mixed $file
+ * @property-read mixed $files
+ * @property-read mixed $thumb
+ * @property-read mixed $thumbs
+ * @mixin \Eloquent
  */
 	class User extends \Eloquent {}
 }

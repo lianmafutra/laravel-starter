@@ -55,6 +55,8 @@ class SampleCrudController extends Controller
 
    public function store(SampleCrudRequest $request, LmFile $lmFile)
    {
+
+      
    
       DB::beginTransaction();
       try {
@@ -64,29 +66,25 @@ class SampleCrudController extends Controller
             $request->safe()->except('date_range')
          );
 
-         SampleCrud::find($sampleCrud->id)
+         SampleCrud::find(114)
             ->addFile($request->file_cover)
-            ->field("file_cover")
             ->path("cover")
+            ->field("file_cover")
             ->extension(['jpg', 'png'])
             ->compress(60)
             ->withThumb(100)
             ->updateFile();
-
-         SampleCrud::find($sampleCrud->id)
-            ->addFile($request->file_cover_multi)
-            ->field("file_cover_multi")
-            ->path("cover_multi")
-            // ->extension(['jpg', 'png'])
-            ->compress(60)
-            ->multiple()
-            ->withThumb(100)
-            ->updateFile();
-
             
-          
+         // SampleCrud::find($request->sample_id)
+         //    ->addFile($request->file_cover_multi)
+         //    ->field("file_cover_multi")
+         //    ->path("cover_multi")
+         //    ->extension(['jpg', 'png'])
+         //    ->compress(60)
+         //    ->multiple()
+         //    ->withThumb(100)
+         //    ->updateFile();
             
-
          DB::commit();
          return $this->success(__('trans.crud.success'));
       } catch (\Throwable $th) {

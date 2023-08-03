@@ -23,25 +23,25 @@
       labelButtonDownload,
       allowDownloadByUrl
    ) => {
-    
-      
-         if((typeof item.source) === 'string'){
-            const info = el.querySelector('.filepond--file-info-main'),
+
+
+      if ((typeof item.source) === 'string') {
+         const info = el.querySelector('.filepond--file-info-main'),
             downloadIcon = getDownloadIcon(labelButtonDownload);
          info.prepend(downloadIcon);
          downloadIcon.addEventListener('click', () =>
             previewFile(item, allowDownloadByUrl)
          );
-   
-   
+
+
          const info2 = el.querySelector('.filepond--file-info-main'),
-         getDownloadBUtton = getDownloadButton(labelButtonDownload);
+            getDownloadBUtton = getDownloadButton(labelButtonDownload);
          info2.prepend(getDownloadBUtton);
          getDownloadBUtton.addEventListener('click', () =>
-         downloadFile2(item, allowDownloadByUrl)
+            downloadFile2(item, allowDownloadByUrl)
          );
-         }
-       
+      }
+
    };
    /**
     * Generates the download icon
@@ -61,7 +61,7 @@
 
       icon.title = labelButtonDownload;
       return icon;
-    };
+   };
    /**
     * Triggers the actual download of the uploaded file
     */
@@ -86,20 +86,20 @@
    const downloadFile2 = (item, allowDownloadByUrl) => {
       // if client want to download file from remote server
       if (allowDownloadByUrl && item.getMetadata('url')) {
-        location.href = item.getMetadata('url'); // full path to remote server is stored in metadata with key 'url'
+         location.href = item.getMetadata('url'); // full path to remote server is stored in metadata with key 'url'
       } else {
-        // create a temporary hyperlink to force the browser to download the file
-        const a = document.createElement('a');
-        const url = window.URL.createObjectURL(item.file);
-        document.body.appendChild(a);
-        a.style.display = 'none';
-        a.href = url;
-        a.download = item.file.name;
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
+         // create a temporary hyperlink to force the browser to download the file
+         const a = document.createElement('a');
+         const url = window.URL.createObjectURL(item.file);
+         document.body.appendChild(a);
+         a.style.display = 'none';
+         a.href = url;
+         a.download = item.file.name;
+         a.click();
+         window.URL.revokeObjectURL(url);
+         a.remove();
       }
-    };
+   };
 
 
    function openCenteredWindow(url) {

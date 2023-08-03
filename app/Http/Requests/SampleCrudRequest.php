@@ -23,10 +23,10 @@ class SampleCrudRequest extends FormRequest
          'date_range_end'    => DateUtils::rangeDate($this->date_range)->get('end_date'),
          'date_publisher'    => DateUtils::format($this->date_publisher),
          'start_date'        => DateUtils::format($this->start_date),
-         'end_date'          => DateUtils::format($this->end_date),
          'summernote'        => clean($this->summernote),
-         'price'             => Rupiah::clean($this->price),
+         'end_date'          => DateUtils::format($this->end_date),
          'contact'           => trim(preg_replace('/[^0-9]/', '', $this->contact)),
+         'price'             => Rupiah::clean($this->price),
       ]);
    }
 
@@ -52,7 +52,7 @@ class SampleCrudRequest extends FormRequest
          'date_range_start'  => 'required|date_format:Y-m-d',
          'date_range_end'    => 'required|date_format:Y-m-d',
          'file_cover'        => 'required|file|mimes:jpeg,jpg,png|max:2048',
-         'file_cover_multi.*'  => 'required|mimes:jpeg,jpg,png',
+         // 'file_cover_multi.*'=> 'required|mimes:jpeg,jpg,png',
          'summernote'        => 'required|string|max:500',
       ];
    }

@@ -11,6 +11,12 @@
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/summernote/summernote-bs4.min.css') }}">
+    <link rel="stylesheet"
+        href="https://nielsboogaard.github.io/filepond-plugin-get-file/dist/filepond-plugin-get-file.css">
+    <link rel="stylesheet"
+        href="https://nielsboogaard.github.io/filepond-plugin-image-overlay/dist/filepond-plugin-image-overlay.css">
+
+
 
     <style>
         @media (min-width: 576px) {
@@ -18,13 +24,30 @@
                 width: calc(32% - 0.5em);
             }
         }
+
+        .demo {
+            text-align: center;
+            font-family: Helvetica;
+            margin: 4em auto 0;
+            width: 450px;
+        }
+
+        a {
+            color: dodgerblue;
+            text-decoration: none;
+        }
+
+        a:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
     </style>
 @endpush
 @section('header')
     <x-header title="Sample Crud"></x-header>
 @endsection
 @section('content')
-    <div class="col-lg-8 col-sm-12">
+    <div class="col-lg-8 col-md-8 col-sm-12">
         <form id="form_sample">
             @csrf
             <div class="card">
@@ -32,7 +55,7 @@
                     Data
                 </div>
                 <div class="card-body">
-                  <input hidden id="sample_id" name="sample_id">
+                    <input hidden id="sample_id" name="sample_id">
                     <x-input label="Book Titte" id="title" info="Info : Sample Data Description Info"
                         placeholder="Book Name" />
                     <x-textarea id="desc" label="Short Description" placeholder="Description" />
@@ -60,7 +83,7 @@
                     <x-datepicker id='date_range' label='Deadline Range' />
                     <x-timepicker id="time" label="Time Publisher" placeholder="Time" />
                     <x-input-rupiah id="price" label="Price" />
-                    <x-input-password id="password" placeholder="Password" label="Password" />
+                    <x-input-password id="password" placeholder="Password" label="Password" value="123456" />
                     <x-input-phone id="contact" label="Contact Number" placeholder="Nomor Telepon Aktif" />
                     <x-check-box label="Checkbox Select">
                         <x-checkbox.item id="check_ya" name="check" text="Option 1" type="checkbox"></x-checkbox.item>
@@ -72,8 +95,10 @@
                         <x-checkbox.item id="radio_2" name="radio" text="Tidak" type="radio" color="primary">
                         </x-checkbox.item>
                     </x-check-box>
+
                     <x-filepond id="file_cover" label='File Cover' info='( Format File JPG/PNG , Maks 5 MB)'
                         accept="image/jpeg, image/png" />
+
                     <x-filepond id="file_cover_multi" name="file_cover_multi[]" label='File Cover multiple'
                         info='( Format File JPG/PNG , Maks 5 MB)' accept="image/jpeg, image/png" multiple />
                     <x-summernote id="summernote" label="Summenote Editor" />
@@ -106,6 +131,12 @@
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-size.js') }} "></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-image-preview.js') }}"></script>
+
+    <script src="{{ asset('https://nielsboogaard.github.io/filepond-plugin-get-file/dist/filepond-plugin-get-file.js') }}">
+    </script>
+    <script
+        src="{{ asset('https://nielsboogaard.github.io/filepond-plugin-image-overlay/dist/filepond-plugin-image-overlay.js') }}">
+    </script>
 
 
     {{-- password toggle show/hide --}}
@@ -171,9 +202,13 @@
             $('#date_publisher').mask('00/00/0000');
             $('#contact').mask('0000-0000-000000');
 
+        
+
             FilePond.registerPlugin(
                 FilePondPluginFileEncode,
                 FilePondPluginImagePreview,
+                FilePondPluginImageOverlay,
+                FilePondPluginGetFile,
                 FilePondPluginFileValidateType,
                 FilePondPluginFileValidateSize)
 
@@ -266,12 +301,14 @@
                 allowDownloadByUrl: true,
             })
 
+            
+
             file_cover_multi.setOptions({
                 storeAsFile: true,
                 files: @json($sampleCrud->field('file_cover_multi')->getFiles()),
             })
 
-            
+
         })
     </script>
 @endpush

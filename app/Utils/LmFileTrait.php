@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\File as FacadesFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Image;
-use Log;
 
 trait LmFileTrait
 {
@@ -25,6 +24,7 @@ trait LmFileTrait
    protected $withThumb = false;
    protected $compress = false;
    protected $compressValue = 0;
+   protected $sizeToCompress = 40000;
 
    protected $withThumb_size = null;
    protected $extension = [];
@@ -91,6 +91,11 @@ trait LmFileTrait
    public function filterExtension($file)
    {
       if ($this->multiple) {
+        foreach ($this->file as $key => $value) {
+         if (!in_array( $value->getClientOriginalExtension(), $this->extension)) {
+            throw new Exception("Extension File not Allowed", 1);
+         }
+        }
       } else {
          // filter file by extension array value
          if (!in_array($file->getClientOriginalExtension(), $this->extension)) {
@@ -124,21 +129,23 @@ trait LmFileTrait
    public function updateFile()
    {
 
-      $file_uuid = Str::uuid();
+    
       // store multiple file Array
       if ($this->multiple) {
+         $this->filterExtension($this->file);
          $this->updateMultiFileProcess();
       } else {
          if (is_array($this->file)) throw new Exception("Array File not supported", 1);
-
+       
          // store single file
          $this->filterExtension($this->file);
-         $this->updateFileProcess($this->file, 1, $file_uuid);
+         $this->updateFileProcess();
       }
    }
 
    public function updateMultiFileProcess()
    {
+
 
       /* 
          Delete old file and tabel file, 
@@ -148,41 +155,46 @@ trait LmFileTrait
          return $file->getClientOriginalName();
       });
 
-      $oldFileArrayNameHash = collect($this->getModel()->field('file_cover')->getFilesAttribute())->map(function ($file) {
+      $oldFileArrayNameHash = collect($this->getModel()->field($this->field)->getFilesAttribute())->map(function ($file) {
          return $file->name_hash;
       });
 
       //  Diff old file name hash with new name origin
       $filesToDelete = $oldFileArrayNameHash->diff($newFileArrayNameHash);
+  
 
       // Delete File origin, thumb and row database
       foreach (File::whereIn('name_hash', $filesToDelete)->get() as $key => $value) {
          Storage::disk('public')->delete($value->path . $value->name_hash);
          Storage::disk('public')->delete($value->path . $this->searchThumb($value->name_hash));
-         File::whereId('id', $value->id)->delete();
+         File::where('name_hash', $value->name_hash)->delete();
       }
 
       // $oldFileArray = $this->getModel()->field($this->field)->getFilesAttribute()->pluck('name_hash');
 
       // store file
+      $file_id = $this->field;
+      if($this->getModel()->$file_id != ""){
+         $uuid = Str::uuid();
+      }else{
+         $uuid = $this->getModel()->$file_id;
+      }
       foreach ($this->file as $key => $file) {
          if (!in_array($file->getClientOriginalName(), $oldFileArrayNameHash->toArray())) {
-            $this->storeFileProcess($file, $key + 1, Str::uuid());
+            $this->storeFileProcess($file, $key + 1, $uuid);
          }
       }
 
       return $this;
    }
 
-   public function updateFileProcess($file, $order, $file_uuid)
+   public function updateFileProcess()
    {
-      $file_id = $this->field;
-      $old_file = File::where('model_id', $this->getModel()->id)->where('file_id', $this->getModel()->$file_id);
-
+   
+      $old_file = File::where('model_id', $this->getModel()->id)->where('name_hash', $this->file->getClientOriginalName());
+    
       // delete old file data 
-      if ($old_file->exists()) {
-         if ($this->file->getClientOriginalName() != $old_file->first()->name_hash) {
-
+      if ($old_file->exists() && $this->file->getClientOriginalName() != $old_file->first()->name_hash) {   
             // delete old file origin and thumbnail
             Storage::disk('public')->delete(
                $old_file->first()->path . $old_file->first()->name_hash,
@@ -190,9 +202,6 @@ trait LmFileTrait
             );
             $old_file->delete();
             $this->storeFile();
-         } else {
-            // abaikan use old file data
-         }
       } else {
          $this->storeFile();
       }
@@ -201,9 +210,9 @@ trait LmFileTrait
    public function storeFileProcess($file, $order, $file_uuid)
    {
 
-      Log::info($this->field);
+   
       $name_origin = $file->getClientOriginalName();
-      $name_uniqe  = RemoveSpace::removeDoubleSpace(pathinfo($name_origin, PATHINFO_FILENAME) . '-' . Str::uuid()->toString() . '-' . Str::random(50));
+      $name_uniqe  = RemoveSpace::removeDoubleSpace(Str::random(10));
       $custom_path = $this->getPath($this->path);
       $name_file_with_extension  = $name_uniqe . '.' . strtolower($file->getClientOriginalExtension());
       $thumb_file_with_extension = $name_uniqe . '-thumb.' . $file->getClientOriginalExtension();
@@ -214,28 +223,40 @@ trait LmFileTrait
       }
 
       if ($this->compress) {
-
-         $imgWidth = Image::make($file->getRealPath())->width();
-         $imgWidth -= $imgWidth * $this->compressValue / 100;
-         $compressImage = Image::make($file->getRealPath())->resize($imgWidth, null, function ($constraint) {
-            $constraint->aspectRatio();
-         });
-         $compressImage->stream();
-
-         Storage::put('public/' . $custom_path  . $name_file_with_extension,  $compressImage);
+       
+         if($file->getSize() >= $this->sizeToCompress ){
+            $fileIntv =  Image::make($file->getRealPath());
+            $imgWidth =  $fileIntv->width();
+            $imgWidth -= $imgWidth * $this->compressValue / 100;
+            $fileIntv = $fileIntv->resize($imgWidth, null, function ($constraint) {
+               $constraint->aspectRatio();
+            });
+            $fileIntv->stream();
+           Storage::put('public/' . $custom_path  . $name_file_with_extension,  $fileIntv);
+         }else{
+            $file->storeAs('public/' . $custom_path, $name_file_with_extension);
+         }
       } else {
-
          $file->storeAs('public/' . $custom_path, $name_file_with_extension);
       }
-
-
 
       // if check file success upload store to DB
 
       $model = $this->getModel();
-      $model->update([
-         $this->field => $file_uuid
-      ]);
+      $old_uuid = $this->field;
+     dd($model);
+      $old_file = File::where('model_id', $this->getModel()->id)->where('name_hash', $this->file->getClientOriginalName());
+      if ($old_file->exists() && $this->file->getClientOriginalName() != $old_file->first()->name_hash) { 
+         $model->update([
+            $this->field => Str::uuid()
+         ]);
+      }else{
+         $model->update([
+            $this->field => $model->$old_uuid
+         ]);
+      
+      }
+   
       File::create([
          'file_id'     => $file_uuid,
          'model_id'    => $model->id,

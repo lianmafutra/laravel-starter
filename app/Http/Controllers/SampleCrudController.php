@@ -5,13 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SampleCrudRequest;
 use App\Models\PermissionGroup;
 use App\Models\SampleCrud;
-use App\Models\User;
 use App\Utils\ApiResponse;
 use App\Utils\LmFile;
 use Carbon\Carbon;
 use DB;
+use RahulHaque\Filepond\Facades\Filepond;
 use Illuminate\Http\Request;
-
 
 class SampleCrudController extends Controller
 {
@@ -56,35 +55,34 @@ class SampleCrudController extends Controller
    public function store(SampleCrudRequest $request, LmFile $lmFile)
    {
 
-      
-   
+
+    
       DB::beginTransaction();
       try {
 
          $sampleCrud = SampleCrud::updateOrCreate(
-            ['id' => $request->sample_id ],
+            ['id' => $request->sample_id],
             $request->safe()->except('date_range')
          );
 
-         SampleCrud::find(114)
+         $sampleCrud
             ->addFile($request->file_cover)
+            ->liveServer()
             ->path("cover")
             ->field("file_cover")
-            ->extension(['jpg', 'png'])
-            ->compress(60)
-            ->withThumb(100)
-            ->updateFile();
-            
-         // SampleCrud::find($request->sample_id)
-         //    ->addFile($request->file_cover_multi)
-         //    ->field("file_cover_multi")
-         //    ->path("cover_multi")
+            ->storeFile();
+
+         // SampleCrud::find(114)
+         //    ->addFile($request->file_cover)
+         //    ->path("cover")
+         //    ->field("file_cover")
          //    ->extension(['jpg', 'png'])
          //    ->compress(60)
-         //    ->multiple()
          //    ->withThumb(100)
          //    ->updateFile();
-            
+
+ 
+
          DB::commit();
          return $this->success(__('trans.crud.success'));
       } catch (\Throwable $th) {

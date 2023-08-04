@@ -13,9 +13,9 @@
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/summernote/summernote-bs4.min.css') }}">
 
     <style>
-       #file_cover_multi .filepond--item {
-        width: calc(32% - 0.5em);
-    }
+        #file_cover_multi .filepond--item {
+            width: calc(32% - 0.5em);
+        }
     </style>
 @endpush
 @section('header')
@@ -23,8 +23,8 @@
 @endsection
 @section('content')
     <div class="col-lg-8 col-sm-12">
-        <form id="form_sample">
-            @csrf
+      <form id="form_sample" action="{{ route('sample-crud.store') }}" method="post">
+         @csrf
             <div class="card">
                 <div class="card-header">
                     Data
@@ -69,9 +69,11 @@
                         <x-checkbox.item id="radio_2" name="radio" text="Tidak" type="radio" color="primary">
                         </x-checkbox.item>
                     </x-check-box>
-                    <x-filepond id="file_cover" label='File Cover' info='( Format File JPG/PNG , Maks 5 MB)' accept="image/jpeg, image/png" />
-                    <x-filepond id="file_cover_multi" name="file_cover_multi[]" label='File Cover multiple' info='( Format File JPG/PNG , Maks 5 MB)' accept="image/jpeg, image/png" multiple />
-                    <x-summernote id="summernote" label="Summenote Editor"/>
+                    <x-filepond id="file_cover" label='File Cover' info='( Format File JPG/PNG , Maks 5 MB)'
+                        accept="image/jpeg, image/png" />
+                    <x-filepond id="file_cover_multi" name="file_cover_multi[]" label='File Cover multiple'
+                        info='( Format File JPG/PNG , Maks 5 MB)' accept="image/jpeg, image/png" multiple />
+                    <x-summernote id="summernote" label="Summenote Editor" />
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn_submit btn btn-primary">Save</button>
@@ -101,7 +103,7 @@
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-size.js') }} "></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-image-preview.js') }}"></script>
-    
+
 
     {{-- password toggle show/hide --}}
     <script src="{{ asset('plugins/toggle-password.js') }}"></script>
@@ -169,8 +171,15 @@
                 FilePondPluginFileValidateType,
                 FilePondPluginFileValidateSize)
 
-            FilePond.create(document.querySelector('#file_cover'), {
-                storeAsFile: true
+            const file_cover = FilePond.create(document.querySelector('#file_cover'));
+
+            file_cover.setOptions({
+                server: {
+                    url: "{{ config('filepond.server.url') }}",
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ @csrf_token() }}",
+                    }
+                }
             });
 
             FilePond.create(document.querySelector('#file_cover_multi'), {
@@ -179,13 +188,13 @@
                 imageCropAspectRatio: '1:1',
                 allowImagePreview: true,
                 allowMultiple: true,
-                allowReorder:true,
+                allowReorder: true,
                 imagePreviewHeight: 300,
                 imagePreviewWidth: 300,
                 storeAsFile: true
             });
 
-        
+
 
             $('#summernote').summernote({
 
@@ -194,20 +203,20 @@
                     specificAltField: true,
                 },
                 imageAttributes: {
-							icon: '<i class="note-icon-pencil"/>',
-						  figureClass: 'figureClass',
-						  figcaptionClass: 'captionClass',
-						  captionText: 'Caption Goes Here.',
-						  manageAspectRatio: true // true = Lock the Image Width/Height, Default to true
-					  },
-                 popover: {
-						  image: [
-							  ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
-							  ['float', ['floatLeft', 'floatRight', 'floatNone']],
-							  ['remove', ['removeMedia']],
-							  ['custom', ['imageAttributes']],
-						  ],
-					  },
+                    icon: '<i class="note-icon-pencil"/>',
+                    figureClass: 'figureClass',
+                    figcaptionClass: 'captionClass',
+                    captionText: 'Caption Goes Here.',
+                    manageAspectRatio: true // true = Lock the Image Width/Height, Default to true
+                },
+                popover: {
+                    image: [
+                        ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
+                        ['float', ['floatLeft', 'floatRight', 'floatNone']],
+                        ['remove', ['removeMedia']],
+                        ['custom', ['imageAttributes']],
+                    ],
+                },
             })
         })
 

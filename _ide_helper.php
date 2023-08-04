@@ -18327,6 +18327,129 @@
      
 }
 
+    namespace RahulHaque\Filepond\Facades { 
+            /**
+     * 
+     *
+     * @see \RahulHaque\Filepond\Filepond
+     */ 
+        class Filepond {
+                    /**
+         * Set the FilePond field name
+         *
+         * @param string|array $field
+         * @return \RahulHaque\Filepond\Filepond 
+         * @static 
+         */ 
+        public static function field($field, $checkOwnership = true)
+        {
+                        /** @var \RahulHaque\Filepond\Filepond $instance */
+                        return $instance->field($field, $checkOwnership);
+        }
+                    /**
+         * Return file object from the field
+         *
+         * @return array|\Illuminate\Http\UploadedFile 
+         * @static 
+         */ 
+        public static function getFile()
+        {
+                        /** @var \RahulHaque\Filepond\Filepond $instance */
+                        return $instance->getFile();
+        }
+                    /**
+         * Get the filepond file as Data URL string
+         * More at - https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
+         *
+         * @return array|string 
+         * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+         * @static 
+         */ 
+        public static function getDataURL()
+        {
+                        /** @var \RahulHaque\Filepond\Filepond $instance */
+                        return $instance->getDataURL();
+        }
+                    /**
+         * Get the filepond database model for the FilePond field
+         *
+         * @return mixed 
+         * @static 
+         */ 
+        public static function getModel()
+        {
+                        /** @var \RahulHaque\Filepond\Filepond $instance */
+                        return $instance->getModel();
+        }
+                    /**
+         * Copy the FilePond files to destination
+         *
+         * @param string $path
+         * @param string $disk
+         * @param string $visibility
+         * @return array 
+         * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+         * @static 
+         */ 
+        public static function copyTo($path, $disk = '', $visibility = '')
+        {
+                        /** @var \RahulHaque\Filepond\Filepond $instance */
+                        return $instance->copyTo($path, $disk, $visibility);
+        }
+                    /**
+         * Copy the FilePond files to destination and delete
+         *
+         * @param string $path
+         * @param string $disk
+         * @param string $visibility
+         * @return array 
+         * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+         * @static 
+         */ 
+        public static function moveTo($path, $disk = '', $visibility = '')
+        {
+                        /** @var \RahulHaque\Filepond\Filepond $instance */
+                        return $instance->moveTo($path, $disk, $visibility);
+        }
+                    /**
+         * Delete files related to FilePond field
+         *
+         * @return void 
+         * @static 
+         */ 
+        public static function delete()
+        {
+                        /** @var \RahulHaque\Filepond\Filepond $instance */
+                        $instance->delete();
+        }
+                    /**
+         * 
+         *
+         * @return string 
+         * @static 
+         */ 
+        public static function getTempDisk()
+        {            //Method inherited from \RahulHaque\Filepond\AbstractFilepond         
+                        /** @var \RahulHaque\Filepond\Filepond $instance */
+                        return $instance->getTempDisk();
+        }
+                    /**
+         * 
+         *
+         * @param string $tempDisk
+         * @return \RahulHaque\Filepond\AbstractFilepond 
+         * @static 
+         */ 
+        public static function setTempDisk($tempDisk)
+        {            //Method inherited from \RahulHaque\Filepond\AbstractFilepond         
+                        /** @var \RahulHaque\Filepond\Filepond $instance */
+                        return $instance->setTempDisk($tempDisk);
+        }
+         
+    }
+     
+}
+
     namespace Spatie\LaravelIgnition\Facades { 
             /**
      * 
@@ -19141,6 +19264,28 @@
         public static function permission($permissions = [])
         {
                         return \Illuminate\Routing\Route::permission($permissions);
+        }
+         
+    }
+     
+}
+
+    namespace Illuminate\Validation { 
+            /**
+     * 
+     *
+     */ 
+        class Rule {
+                    /**
+         * 
+         *
+         * @see \RahulHaque\Filepond\FilepondServiceProvider::boot()
+         * @param mixed $args
+         * @static 
+         */ 
+        public static function filepond($args)
+        {
+                        return \Illuminate\Validation\Rule::filepond($args);
         }
          
     }
@@ -22997,6 +23142,7 @@ namespace  {
             class Setting extends \App\Helpers\SettingHelper {}
             class Purifier extends \Mews\Purifier\Facades\Purifier {}
             class Image extends \Intervention\Image\Facades\Image {}
+            class Filepond extends \RahulHaque\Filepond\Facades\Filepond {}
             class Flare extends \Spatie\LaravelIgnition\Facades\Flare {}
             class ResponseCache extends \Spatie\ResponseCache\Facades\ResponseCache {}
             class DataTables extends \Yajra\DataTables\Facades\DataTables {}

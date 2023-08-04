@@ -48,7 +48,7 @@
 @endsection
 @section('content')
     <div class="col-lg-8 col-md-8 col-sm-12">
-        <form id="form_sample">
+        <form id="form_sample" action="{{ route('sample-crud.store') }}" method="post">
             @csrf
             <div class="card">
                 <div class="card-header">
@@ -85,14 +85,18 @@
                     <x-input-rupiah id="price" label="Price" />
                     <x-input-password id="password" placeholder="Password" label="Password" value="123456" />
                     <x-input-phone id="contact" label="Contact Number" placeholder="Nomor Telepon Aktif" />
+
                     <x-check-box label="Checkbox Select">
-                        <x-checkbox.item id="check_ya" name="check" text="Option 1" type="checkbox"></x-checkbox.item>
+                        <x-checkbox.item id="check_ya" name="check" text="Option 1" type="checkbox"
+                            checked></x-checkbox.item>
                         <x-checkbox.item id="check_tidak" name="check" text="Option 2" type="checkbox"></x-checkbox.item>
                     </x-check-box>
+
                     <x-check-box label="Radio Button Select">
                         <x-checkbox.item id="radio_1" name="radio" text="Ya" type="radio" color="primary">
                         </x-checkbox.item>
-                        <x-checkbox.item id="radio_2" name="radio" text="Tidak" type="radio" color="primary">
+                        <x-checkbox.item id="radio_2" name="radio" text="Tidak" type="radio" color="primary"
+                            checked>
                         </x-checkbox.item>
                     </x-check-box>
 
@@ -101,7 +105,12 @@
 
                     <x-filepond id="file_cover_multi" name="file_cover_multi[]" label='File Cover multiple'
                         info='( Format File JPG/PNG , Maks 5 MB)' accept="image/jpeg, image/png" multiple />
+
                     <x-summernote id="summernote" label="Summenote Editor" />
+
+                    {{-- <x-filepond id="file_cover" label='File Cover Liver Server' info='( Format File JPG/PNG , Maks 5 MB)'
+                        accept="image/jpeg, image/png" /> --}}
+
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn_submit btn btn-primary">Save</button>
@@ -202,7 +211,7 @@
             $('#date_publisher').mask('00/00/0000');
             $('#contact').mask('0000-0000-000000');
 
-        
+
 
             FilePond.registerPlugin(
                 FilePondPluginFileEncode,
@@ -212,8 +221,15 @@
                 FilePondPluginFileValidateType,
                 FilePondPluginFileValidateSize)
 
-            const file_cover = FilePond.create(document.querySelector('#file_cover'), {
-                storeAsFile: true
+            const file_cover = FilePond.create(document.querySelector('#file_cover'));
+
+            file_cover.setOptions({
+                server: {
+                    url: "{{ config('filepond.server.url') }}",
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ @csrf_token() }}",
+                    }
+                }
             });
 
             const file_cover_multi = FilePond.create(document.querySelector('#file_cover_multi'), {
@@ -238,7 +254,7 @@
                     figureClass: 'figureClass',
                     figcaptionClass: 'captionClass',
                     captionText: 'Caption Goes Here.',
-                    manageAspectRatio: true // true = Lock the Image Width/Height, Default to true
+                    manageAspectRatio: true
                 },
                 popover: {
                     image: [
@@ -295,13 +311,11 @@
 
             $("#summernote").summernote('code', @json(clean($sampleCrud->summernote)));
 
-            file_cover.setOptions({
-                storeAsFile: true,
-                files: @json($sampleCrud->field('file_cover')->getFile()),
-                allowDownloadByUrl: true,
-            })
-
-            
+            // file_cover.setOptions({
+            //     storeAsFile: true,
+            //     files: @json($sampleCrud->field('file_cover')->getFile()),
+            //     allowDownloadByUrl: true,
+            // })
 
             file_cover_multi.setOptions({
                 storeAsFile: true,

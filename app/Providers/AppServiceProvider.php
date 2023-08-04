@@ -40,7 +40,8 @@ class AppServiceProvider extends ServiceProvider
 
       view()->composer('*', function ($view) {
          if (Auth::check()) {
-            $view->with('fotoProfil',    User::find(auth()->user()->id)->field('foto')->getThumb());
+            // $view->with('fotoProfil',    User::find(auth()->user()->id)->field('foto')->getThumb());
+            $view->with('fotoProfil',    '');
             $view->with('menu', MenuSidebar::render());
          }
       });

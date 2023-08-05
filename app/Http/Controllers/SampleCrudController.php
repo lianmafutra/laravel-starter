@@ -56,7 +56,7 @@ class SampleCrudController extends Controller
    {
 
 
-    
+
       DB::beginTransaction();
       try {
 
@@ -64,13 +64,21 @@ class SampleCrudController extends Controller
             ['id' => $request->sample_id],
             $request->safe()->except('date_range')
          );
-
+         $sampleCrud
+         ->addFile($request->file_cover_multi)
+         ->path("cover_multi")
+         ->field("file_cover_multi")
+         ->liveServer()
+         ->storeFile();
+     
          $sampleCrud
             ->addFile($request->file_cover)
-            ->liveServer()
             ->path("cover")
             ->field("file_cover")
+            ->liveServer()
             ->storeFile();
+
+      
 
          // SampleCrud::find(114)
          //    ->addFile($request->file_cover)
@@ -81,7 +89,7 @@ class SampleCrudController extends Controller
          //    ->withThumb(100)
          //    ->updateFile();
 
- 
+
 
          DB::commit();
          return $this->success(__('trans.crud.success'));

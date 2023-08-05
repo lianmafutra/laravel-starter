@@ -23,8 +23,8 @@
 @endsection
 @section('content')
     <div class="col-lg-8 col-sm-12">
-      <form id="form_sample" action="{{ route('sample-crud.store') }}" method="post">
-         @csrf
+        <form id="form_sample" action="{{ route('sample-crud.store') }}" method="post">
+            @csrf
             <div class="card">
                 <div class="card-header">
                     Data
@@ -182,18 +182,25 @@
                 }
             });
 
-            FilePond.create(document.querySelector('#file_cover_multi'), {
-                storeAsFile: true,
-                styleItemPanelAspectRatio: 1,
+            const file_cover_multi = FilePond.create(document.querySelector('#file_cover_multi'));
+
+            file_cover_multi.setOptions({
+               styleItemPanelAspectRatio: 1,
                 imageCropAspectRatio: '1:1',
                 allowImagePreview: true,
                 allowMultiple: true,
                 allowReorder: true,
                 imagePreviewHeight: 300,
                 imagePreviewWidth: 300,
-                storeAsFile: true
+                server: {
+                    url: "{{ config('filepond.server.url') }}",
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ @csrf_token() }}",
+                    }
+                }
             });
 
+           
 
 
             $('#summernote').summernote({

@@ -309,9 +309,11 @@
                     }
                 },
                 files: @json($sampleCrud->field('file_cover')->getFile())
+
             })
 
             const file_cover_multi = FilePond.create(document.querySelector('#file_cover_multi'));
+            console.log(@json($sampleCrud->field('file_cover_multi')->getFiles()))
             file_cover_multi.setOptions({
                 styleItemPanelAspectRatio: 1,
                 imageCropAspectRatio: '1:1',
@@ -336,6 +338,9 @@
                 },
                 files: @json($sampleCrud->field('file_cover_multi')->getFiles())
             });
+
+
+
         })
     </script>
 @endpush

@@ -92,7 +92,9 @@ trait LmFileTrait
       if (ModelsFile::where('name_hash', basename($this->file))->count() < 1) {
          $fileAttribute = $this->fileAttribute(Filepond::field($this->file)->getFile());
 
-         $deleteOld = ModelsFile::where('file_id', $this->getModel()->$field)->delete();
+         $deleteOldFile = ModelsFile::where('file_id', $this->getModel()->$field)->first();
+         $deleteOldData = Storage::disk('public')->delete($deleteOldFile->path.$deleteOldFile->name_hash);
+         $deleteOldFile->delete();
 
          // filter extension
          if ($this->extension) {
@@ -152,6 +154,8 @@ trait LmFileTrait
       $field = $this->field;
 
       $arrayFiles = []; //array files from form request
+
+      $this->deleteData();
 
       $file_uuid = $this->getModel()->$field ? $this->getModel()->$field : Str::uuid();
 
@@ -268,14 +272,19 @@ trait LmFileTrait
 
    public function getFile()
    {
-
+      $dataCollection = [];
       if ($this->makeFileAttribute()->toArray()) {
-         $dataCollection = [
+         $dataObject = [
             "source" => $this->makeFileAttribute()->toArray()[0]['full_path'],
             "options" => [
                "type" => "local",
             ]
          ];
+          array_push($dataCollection, $dataObject);
+         return $dataCollection;
+      }
+      else{
+         // dd("aa");
       }
      
    }

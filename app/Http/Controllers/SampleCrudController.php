@@ -61,8 +61,8 @@ class SampleCrudController extends Controller
     
 
     
-      DB::beginTransaction();
       try {
+         DB::beginTransaction();
 
          $sampleCrud = SampleCrud::updateOrCreate(
             ['id' => $request->sample_id],
@@ -73,7 +73,7 @@ class SampleCrudController extends Controller
             ->addFile($request->file_cover_multi)
             ->path("cover_multi")
             ->field("file_cover_multi")
-            // ->extension(['jpg', 'png'])
+            ->extension(['jpg', 'png'])
             ->liveServer()
             ->updateFile();
 
@@ -81,7 +81,7 @@ class SampleCrudController extends Controller
             ->addFile($request->file_cover)
             ->path("cover")
             ->field("file_cover")
-            // ->extension(['jpg', 'png'])
+            ->extension(['jpg', 'png'])
             ->liveServer()
             ->storeFile();
 

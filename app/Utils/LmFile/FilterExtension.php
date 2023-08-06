@@ -2,24 +2,25 @@
 
 namespace App\Utils\LmFile;
 
+use Exception;
 use Illuminate\Http\File;
 
 class FilterExtension
 {
-   public function run($file, array $allowExtensions){
-      if(is_array($file)){
-            foreach ($file as $key => $value) {
-               if (!in_array( $value->getClientOriginalExtension(), $allowExtensions)) {
-                  throw new Exc("Extension File not Allowed", 1);
-               }
-             return true;
+   public function run($file, array $allowExtensions)
+   {
+      if (is_array($file)) {
+         foreach ($file as $key => $value) {
+            if (!in_array($value->getClientOriginalExtension(), $allowExtensions)) {
+               throw new Exception("Extension File not Allowed", 1);
             }
-          } else {
-               if (!in_array($file->getClientOriginalExtension(), $allowExtensions)) {
-                  throw new Exception("Extension File not Allowed", 1);
-               }
-             return true;
-          }
+            return true;
+         }
+      } else {
+         if (!in_array($file->getClientOriginalExtension(), $allowExtensions)) {
+            throw new Exception("Extension File not Allowed", 1);
+         }
+         return true;
       }
    }
-
+}

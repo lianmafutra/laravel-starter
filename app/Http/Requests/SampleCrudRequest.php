@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Utils\DateUtils;
 use App\Utils\Rupiah;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SampleCrudRequest extends FormRequest
 {
@@ -32,6 +33,9 @@ class SampleCrudRequest extends FormRequest
 
    public function rules()
    {
+
+
+
       return [
          'title'             => 'required|min:10|max:50|string',
          'desc'              => 'required|min:10|max:50|string',
@@ -51,18 +55,19 @@ class SampleCrudRequest extends FormRequest
          'date_range'        => 'required|string',
          'date_range_start'  => 'required|date_format:Y-m-d',
          'date_range_end'    => 'required|date_format:Y-m-d',
-         // 'file_cover'        => 'required|file|mimes:jpeg,jpg,png|max:2048',
-         // 'file_cover_multi'   => 'required|mimes:jpeg,jpg,png',
-         'summernote'        => 'required|string|max:500',
+         // 'file_cover'        => Rule::filepond([
+         //    'required',
+         //    'file',
+         //    'mimes:jpeg,jpg,png',
+         //    'max:2048'
+         // ]),
+         // 'file_cover_multi.*'  => Rule::filepond([
+         //    'required',
+         //    'file',
+         //    'mimes:jpeg,jpg,png',
+         //    'max:2048'
+         // ]),
+         'summernote' => 'required|string|max:500',
       ];
    }
-
-
-
-
-
-
-  
-
-  
 }

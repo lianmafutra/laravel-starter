@@ -5,7 +5,7 @@
 
     <link rel="stylesheet" href="{{ asset('plugins/flatpicker/flatpickr.min.css') }}">
 
-    <link href="{{ asset('plugins/filepond/filepond.css') }}" rel="stylesheet" />
+    <link href="https://unpkg.com/filepond@4.30.4/dist/filepond.css" rel="stylesheet" />
     <link href="{{ asset('plugins/filepond/filepond-plugin-image-preview.css') }} " rel="stylesheet" />
 
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
@@ -134,7 +134,7 @@
     <script src="{{ asset('plugins/flatpicker/id.min.js') }}"></script>
 
     {{-- filepond --}}
-    <script src="{{ asset('plugins/filepond/filepond.js') }}"></script>
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-metadata.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-encode.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
@@ -223,26 +223,7 @@
 
             const file_cover = FilePond.create(document.querySelector('#file_cover'));
 
-            file_cover.setOptions({
-                server: {
-                    url: "{{ config('filepond.server.url') }}",
-                    headers: {
-                        'X-CSRF-TOKEN': "{{ @csrf_token() }}",
-                    }
-                }
-            });
 
-            const file_cover_multi = FilePond.create(document.querySelector('#file_cover_multi'), {
-                storeAsFile: true,
-                styleItemPanelAspectRatio: 1,
-                imageCropAspectRatio: '1:1',
-                allowImagePreview: true,
-                allowMultiple: true,
-                allowReorder: true,
-                imagePreviewHeight: 300,
-                imagePreviewWidth: 300,
-                storeAsFile: true
-            });
 
             $('#summernote').summernote({
                 height: 200,
@@ -311,18 +292,50 @@
 
             $("#summernote").summernote('code', @json(clean($sampleCrud->summernote)));
 
-            // file_cover.setOptions({
-            //     storeAsFile: true,
-            //     files: @json($sampleCrud->field('file_cover')->getFile()),
-            //     allowDownloadByUrl: true,
-            // })
 
-            file_cover_multi.setOptions({
-                storeAsFile: true,
-                files: @json($sampleCrud->field('file_cover_multi')->getFiles()),
+            file_cover.setOptions({
+                server: {
+                    url: "{{ config('filepond.server.url') }}",
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ @csrf_token() }}",
+                    },
+                    load: (source, load, error, progress, abort, headers) => {
+                        let request = new XMLHttpRequest();
+                        request.open('GET', source);
+                        request.responseType = "blob";
+                        request.onreadystatechange = () => request.readyState === 4 && load(request
+                            .response);
+                        request.send();
+                    }
+                },
+                files: @json($sampleCrud->field('file_cover')->getFile())
             })
 
-
+            const file_cover_multi = FilePond.create(document.querySelector('#file_cover_multi'));
+            file_cover_multi.setOptions({
+                styleItemPanelAspectRatio: 1,
+                imageCropAspectRatio: '1:1',
+                allowImagePreview: true,
+                allowMultiple: true,
+                allowReorder: true,
+                imagePreviewHeight: 300,
+                imagePreviewWidth: 300,
+                server: {
+                    url: "{{ config('filepond.server.url') }}",
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ @csrf_token() }}",
+                    },
+                    load: (source, load, error, progress, abort, headers) => {
+                        let request = new XMLHttpRequest();
+                        request.open('GET', source);
+                        request.responseType = "blob";
+                        request.onreadystatechange = () => request.readyState === 4 && load(request
+                            .response);
+                        request.send();
+                    }
+                },
+                files: @json($sampleCrud->field('file_cover_multi')->getFiles())
+            });
         })
     </script>
 @endpush

@@ -70,7 +70,7 @@
                         </x-checkbox.item>
                     </x-check-box>
                     <x-filepond id="file_cover" label='File Cover' info='( Format File JPG/PNG , Maks 5 MB)'
-                        accept="image/jpeg, image/png" />
+                       />
                     <x-filepond id="file_cover_multi" name="file_cover_multi[]" label='File Cover multiple'
                         info='( Format File JPG/PNG , Maks 5 MB)' accept="image/jpeg, image/png" multiple />
                     <x-summernote id="summernote" label="Summenote Editor" />

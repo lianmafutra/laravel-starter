@@ -11,6 +11,8 @@ use Carbon\Carbon;
 use DB;
 use RahulHaque\Filepond\Facades\Filepond;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Storage;
 
 class SampleCrudController extends Controller
 {
@@ -55,41 +57,33 @@ class SampleCrudController extends Controller
    public function store(SampleCrudRequest $request, LmFile $lmFile)
    {
 
+     
+    
 
-
+    
       DB::beginTransaction();
       try {
 
          $sampleCrud = SampleCrud::updateOrCreate(
             ['id' => $request->sample_id],
-            $request->safe()->except('date_range')
+            $request->safe()->except('date_range', 'file_cover', 'file_cover_multi')
          );
+
          $sampleCrud
-         ->addFile($request->file_cover_multi)
-         ->path("cover_multi")
-         ->field("file_cover_multi")
-         ->liveServer()
-         ->storeFile();
-     
+            ->addFile($request->file_cover_multi)
+            ->path("cover_multi")
+            ->field("file_cover_multi")
+            // ->extension(['jpg', 'png'])
+            ->liveServer()
+            ->updateFile();
+
          $sampleCrud
             ->addFile($request->file_cover)
             ->path("cover")
             ->field("file_cover")
+            // ->extension(['jpg', 'png'])
             ->liveServer()
             ->storeFile();
-
-      
-
-         // SampleCrud::find(114)
-         //    ->addFile($request->file_cover)
-         //    ->path("cover")
-         //    ->field("file_cover")
-         //    ->extension(['jpg', 'png'])
-         //    ->compress(60)
-         //    ->withThumb(100)
-         //    ->updateFile();
-
-
 
          DB::commit();
          return $this->success(__('trans.crud.success'));

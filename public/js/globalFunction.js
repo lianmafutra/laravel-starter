@@ -27,6 +27,7 @@ function printErrorMsg(msg) {
       $('.' + key + '_err').show();
      
    });
+  
    $([document.documentElement, document.body]).animate({
       scrollTop: $("#" + error_array[0])
    });

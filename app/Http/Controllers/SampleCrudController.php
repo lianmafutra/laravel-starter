@@ -56,10 +56,6 @@ class SampleCrudController extends Controller
 
    public function store(SampleCrudRequest $request, LmFile $lmFile)
    {
-
-     
-    
-
     
       try {
          DB::beginTransaction();
@@ -70,6 +66,15 @@ class SampleCrudController extends Controller
          );
 
          $sampleCrud
+         ->addFile($request->file_cover)
+         ->path("cover")
+         ->field("file_cover")
+         ->extension(['jpg', 'png'])
+         ->liveServer()
+         ->storeFile();
+
+         
+         $sampleCrud
             ->addFile($request->file_cover_multi)
             ->path("cover_multi")
             ->field("file_cover_multi")
@@ -77,13 +82,7 @@ class SampleCrudController extends Controller
             ->liveServer()
             ->updateFile();
 
-         $sampleCrud
-            ->addFile($request->file_cover)
-            ->path("cover")
-            ->field("file_cover")
-            ->extension(['jpg', 'png'])
-            ->liveServer()
-            ->storeFile();
+        
 
          DB::commit();
          return $this->success(__('trans.crud.success'));

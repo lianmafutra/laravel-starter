@@ -309,12 +309,12 @@
                         request.send();
                     }
                 },
-                files: @json($sampleCrud->field('file_cover')->getFile())
+                files: @json($sampleCrud->field('file_cover')->getFilepond())
 
             })
 
             const file_cover_multi = FilePond.create(document.querySelector('#file_cover_multi'));
-            console.log(@json($sampleCrud->field('file_cover_multi')->getFiles()))
+     
             file_cover_multi.setOptions({
                 styleItemPanelAspectRatio: 1,
                 imageCropAspectRatio: '1:1',
@@ -337,7 +337,7 @@
                         request.send();
                     }
                 },
-                files: @json($sampleCrud->field('file_cover_multi')->getFiles())
+                files: @json($sampleCrud->field('file_cover_multi')->getFileponds())
             });
 
 

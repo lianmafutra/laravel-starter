@@ -64,8 +64,10 @@ trait LmFileTrait
 
    public function withThumb($size)
    {
+    
       $this->withThumb_size = $size;
       $this->withThumb      = true;
+      
       return  $this;
    }
 
@@ -187,6 +189,7 @@ trait LmFileTrait
          $filesToDelete = $oldFiles->diff($filenames);
          foreach (ModelsFile::whereIn('name_hash', $filesToDelete->toArray())->get() as $key => $value) {
             Storage::disk('public')->delete($value->path . $value->name_hash);
+            Storage::disk('public')->delete($value->path . $this->searchThumb($value->name_hash));
             ModelsFile::where('name_hash', $value->name_hash)->delete();
          }
 
@@ -196,6 +199,7 @@ trait LmFileTrait
 
          $oldFiles = ModelsFile::where('file_id', $this->getModel()->$field)->first();
          Storage::disk('public')->delete($oldFiles->path . $oldFiles->name_hash);
+         Storage::disk('public')->delete($oldFiles->path . $this->searchThumb($oldFiles->name_hash));
          $oldFiles->delete();
 
          return $this;

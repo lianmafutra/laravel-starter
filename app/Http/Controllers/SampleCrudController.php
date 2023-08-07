@@ -71,8 +71,9 @@ class SampleCrudController extends Controller
             ->path("cover")
             ->field("file_cover")
             ->extension(['jpg', 'png'])
+            ->withThumb(100)
             ->liveServer()
-            ->storeFile();
+            ->updateFile();
 
 
          $sampleCrud
@@ -80,6 +81,7 @@ class SampleCrudController extends Controller
             ->path("cover_multi")
             ->field("file_cover_multi")
             ->extension(['jpg', 'png'])
+            ->withThumb(100)
             ->liveServer()
             ->updateFile();
 

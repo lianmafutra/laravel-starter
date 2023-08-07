@@ -168,6 +168,7 @@
             FilePond.registerPlugin(
                 FilePondPluginFileEncode,
                 FilePondPluginImagePreview,
+                
                 FilePondPluginFileValidateType,
                 FilePondPluginFileValidateSize)
 

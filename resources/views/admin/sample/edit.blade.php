@@ -5,16 +5,14 @@
 
     <link rel="stylesheet" href="{{ asset('plugins/flatpicker/flatpickr.min.css') }}">
 
-  
-
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/summernote/summernote-bs4.min.css') }}">
 
-    <link href="{{ asset('plugins/filepond/filepond.css') }}" rel="stylesheet" />
-    <link href="{{ asset('plugins/filepond/filepond-plugin-image-preview.css') }} " rel="stylesheet" />
-    <link rel="stylesheet" href="{{ asset('plugins/filepond/filepond-get-files.js') }}">
-    <link rel="stylesheet" href="https://nielsboogaard.github.io/filepond-plugin-image-overlay/dist/filepond-plugin-image-overlay.css">
+    <link rel="stylesheet" href="{{ asset('plugins/filepond/filepond.css') }}" />
+    <link rel="stylesheet" href="{{ asset('plugins/filepond/filepond-plugin-image-preview.css') }}" />
+    <link rel="stylesheet" href="{{ asset('plugins/filepond/filepond-plugin-get-file.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/filepond/filepond-plugin-image-overlay.css') }}">
 
     <style>
         @media (min-width: 576px) {
@@ -135,8 +133,10 @@
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-size.js') }} "></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-image-preview.js') }}"></script>
-    <script src="{{ asset('plugins/filepond/filepond-get-files.js') }}"></script>
+   
     <script src="{{ asset('plugins/filepond/filepond-plugin-image-overlay.js') }}"></script>
+    <script src="{{ asset('plugins/filepond/filepond-get-files.js') }}"></script>
+
 
     {{-- password toggle show/hide --}}
     <script src="{{ asset('plugins/toggle-password.js') }}"></script>
@@ -199,13 +199,14 @@
             $('#contact').mask('0000-0000-000000');
 
             FilePond.registerPlugin(
+               FilePondPluginGetFile,
                 FilePondPluginFileEncode,
                 FilePondPluginImagePreview,
+         
                 FilePondPluginImageOverlay,
                 FilePondPluginFileValidateType,
                 FilePondPluginFileValidateSize)
 
-        
 
             $('#summernote').summernote({
                 height: 200,
@@ -278,6 +279,7 @@
 
             const file_cover = FilePond.create(document.querySelector('#file_cover'));
             file_cover.setOptions({
+               allowDownloadByUrl: true,
                 server: {
                     url: "{{ config('filepond.server.url') }}",
                     headers: {
@@ -292,6 +294,7 @@
 
             const file_cover_multi = FilePond.create(document.querySelector('#file_cover_multi'));
             file_cover_multi.setOptions({
+               allowDownloadByUrl: true, // by default downloading by URL disabled
                 styleItemPanelAspectRatio: 1,
                 imageCropAspectRatio: '1:1',
                 allowImagePreview: true,
@@ -310,6 +313,15 @@
                 },
                 files: @json($sampleCrud->field('file_cover_multi')->getFileponds())
             });
+
+
+            window._filepondPreview = function(data){
+              
+
+               let path = data.serverId;
+               alert(path)
+             
+            }
 
         })
     </script>

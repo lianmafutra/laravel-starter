@@ -62,7 +62,7 @@ class SampleCrudRequest extends FormRequest
          'file_cover_multi.*' => Rule::filepond([
             'file',
             'mimes:jpeg,jpg,png',
-            'max:1000'
+            'max:10000'
          ]),
       ];
    }

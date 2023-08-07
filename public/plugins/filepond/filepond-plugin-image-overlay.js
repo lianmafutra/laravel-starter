@@ -37,6 +37,7 @@
    */
 
   const registerFullSizeOverlay = (item, el, labelButtonOverlay) => {
+
     const info = el.querySelector('.filepond--file-info-main'),
       magnifyIcon = getMagnifyIcon(labelButtonOverlay);
     info.prepend(magnifyIcon);
@@ -65,17 +66,8 @@
    */
 
   const createFullSizeOverlay = (item) => {
-    const overlay = document.createElement('div');
-    overlay.className = 'filepond--fullsize-overlay';
-    const imgContainer = document.createElement('div');
-    const imgUrl = URL.createObjectURL(item.file);
-    imgContainer.className = 'image-container';
-    imgContainer.style.backgroundImage = 'url(' + imgUrl + ')';
-    determineImageOverlaySize(imgUrl, imgContainer);
-    let body = document.getElementsByTagName('body')[0];
-    overlay.appendChild(imgContainer);
-    body.appendChild(overlay);
-    overlay.addEventListener('click', () => overlay.remove());
+    const data = URL.createObjectURL(item.file);
+   _filepondPreview(item)
   };
   /**
    * Determines whether the image is larger than the viewport.

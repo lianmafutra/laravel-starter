@@ -77,8 +77,8 @@ class UserController extends Controller
          ->path("foto")
          ->field("foto")
          ->extension(['jpg', 'png'])
+         ->compress(40)
          ->withThumb(100)
-         ->liveServer()
          ->updateFile();
 
       

@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use App\Utils\DateUtils;
 use App\Utils\Rupiah;
-use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -34,10 +33,7 @@ class SampleCrudRequest extends FormRequest
 
    public function rules()
    {
-
-
-
-      $validation = [
+      return [
          'title'             => 'required|min:10|max:50|string',
          'desc'              => 'required|min:10|max:50|string',
          'category_id'       => 'required|string',
@@ -56,45 +52,18 @@ class SampleCrudRequest extends FormRequest
          'date_range'        => 'required|string',
          'date_range_start'  => 'required|date_format:Y-m-d',
          'date_range_end'    => 'required|date_format:Y-m-d',
-
-         
-         'summernote' => 'required|string|max:500',
+         'summernote'        => 'required|string|max:500',
+         'file_cover'        => 'required', Rule::filepond([
+            'file',
+            'mimes:jpeg,jpg,png',
+            'max:20000'
+         ]),
+         'file_cover_multi'   => 'required',
+         'file_cover_multi.*' => Rule::filepond([
+            'file',
+            'mimes:jpeg,jpg,png',
+            'max:1000'
+         ]),
       ];
-      try {
-
-         foreach (request()->file_cover_multi as $key => $value) {
-           dd($value);
-            if (decrypt($value)) {
-               $validation = [
-                  'file_cover_multi'  => Rule::filepond([
-                     'required',
-                     'file',
-                     'mimes:jpeg,jpg,png',
-                     'max:1'
-                  ])
-               ];
-            }
-         }
-        
-         if (decrypt(request()->file_cover)) {
-           
-            $validation = [
-               'file_cover'        => Rule::filepond([
-                  'required',
-                  'file',
-                  'mimes:jpeg,jpg,png',
-                  'max:20'
-               ]),
-            ];
-         }
-       
-       
-        
-      } catch (DecryptException $e) {
-         //
-      }
-
-
-      return $validation;
    }
 }

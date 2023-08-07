@@ -13,20 +13,30 @@ window._clearInput = function () {
 }
 
 function printErrorMsg(msg) {
+   
+
+
    let error = [];
    let error_array = [];
+  
    $.each(msg, function (key, value) {
+     
       $('.text-danger').each(function () {
          let id = $(this).attr("class").split(" ").pop()
             .slice(0, -4)
          error.push(id)
 
       });
-      error_array.push(key)
-      $('.' + key + '_err').text(value);
-      $('.' + key + '_err').show();
+
+      baru = key.replace(/\.0$/, '');
      
+      error_array.push(baru)
+      $('.' + baru + '_err').text(JSON.stringify(value[0]).replace(/\.0/g, ''));
+      $('.' + baru + '_err').show();
+
    });
+
+
   
    $([document.documentElement, document.body]).animate({
       scrollTop: $("#" + error_array[0])
@@ -49,6 +59,7 @@ window._showError = function (response) {
       swal.hideLoading()
       let text = '';
       if (response.status == 422) {
+      
          printErrorMsg(response.responseJSON.errors);
          text = "Periksa kembali inputan anda"
       }

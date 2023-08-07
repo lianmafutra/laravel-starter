@@ -57,6 +57,7 @@ class SampleCrudController extends Controller
    public function store(SampleCrudRequest $request, LmFile $lmFile)
    {
     
+    
       try {
          DB::beginTransaction();
 

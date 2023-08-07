@@ -5,9 +5,6 @@ namespace App\Utils;
 use App\Models\File as ModelsFile;
 use App\Utils\LmFile\FilterExtension;
 use App\Utils\LmFile\GeneratePath;
-use File;
-use Log;
-use PgSql\Lob;
 use RahulHaque\Filepond\Facades\Filepond;
 use Storage;
 use Str;
@@ -64,37 +61,59 @@ trait LmFileTrait
 
    public function fileAttribute($fileRequest)
    {
-      $name_origin = $fileRequest->getClientOriginalName();
-      $name_uniqe  = RemoveSpace::removeDoubleSpace(Str::random(15));
-      $name_file_with_extension  = $name_uniqe . '.' . strtolower($fileRequest->getClientOriginalExtension());
-      $thumb_file_with_extension = $name_uniqe . '-thumb.' . $fileRequest->getClientOriginalExtension();
-      $mime = $fileRequest->getMimeType();
-      $size = $fileRequest->getSize();
-
-      return collect([
-         'name_origin'               => $name_origin,
-         'mime'                      => $mime,
-         'size'                      => $size,
-         'name_uniqe'                => $name_uniqe,
-         'name_file_with_extension'  => $name_file_with_extension,
-         'custom_path'               => $this->custom_path,
-         'thumb_file_with_extension' => $thumb_file_with_extension,
-         'thumb_file_with_extension' => $thumb_file_with_extension,
-
-      ]);
+      if($this->file != null){
+         $name_origin = $fileRequest->getClientOriginalName();
+         $name_uniqe  = RemoveSpace::removeDoubleSpace(Str::random(15));
+         $name_file_with_extension  = $name_uniqe . '.' . strtolower($fileRequest->getClientOriginalExtension());
+         $thumb_file_with_extension = $name_uniqe . '-thumb.' . $fileRequest->getClientOriginalExtension();
+         $mime = $fileRequest->getMimeType();
+         $size = $fileRequest->getSize();
+   
+         return collect([
+            'name_origin'               => $name_origin,
+            'mime'                      => $mime,
+            'size'                      => $size,
+            'name_uniqe'                => $name_uniqe,
+            'name_file_with_extension'  => $name_file_with_extension,
+            'custom_path'               => $this->custom_path,
+            'thumb_file_with_extension' => $thumb_file_with_extension,
+            'thumb_file_with_extension' => $thumb_file_with_extension,
+   
+         ]);
+      }
+     
    }
 
    public function storeFileSingle()
    {
+
+
+
       $file_uuid = Str::uuid(); // UUID always generate new upload image
       $field = $this->field;
+
+      if ($this->file == null) {
+       
+         $deleteOldFile = ModelsFile::where('file_id', $this->getModel()->$field)->first();
+         if( $deleteOldFile){
+            Storage::disk('public')->delete($deleteOldFile->path . $deleteOldFile->name_hash);
+            $deleteOldFile->delete();
+            return true;
+         }
+         return true;
+      }
+
 
       if (ModelsFile::where('name_hash', basename($this->file))->count() < 1) {
          $fileAttribute = $this->fileAttribute(Filepond::field($this->file)->getFile());
 
          $deleteOldFile = ModelsFile::where('file_id', $this->getModel()->$field)->first();
-         $deleteOldData = Storage::disk('public')->delete($deleteOldFile->path.$deleteOldFile->name_hash);
-         $deleteOldFile->delete();
+         
+         if( $deleteOldFile){
+             Storage::disk('public')->delete($deleteOldFile->path . $deleteOldFile->name_hash);
+            $deleteOldFile->delete();
+         }
+       
 
          // filter extension
          if ($this->extension) {
@@ -152,6 +171,12 @@ trait LmFileTrait
    public function updateFileMultiple()
    {
       $field = $this->field;
+
+      // if ($this->file == null) {
+      //   $this->deleteData();
+      //    return true;
+      // }
+
 
       $arrayFiles = []; //array files from form request
 
@@ -280,13 +305,10 @@ trait LmFileTrait
                "type" => "local",
             ]
          ];
-          array_push($dataCollection, $dataObject);
+         array_push($dataCollection, $dataObject);
          return $dataCollection;
+      } else {
       }
-      else{
-       
-      }
-     
    }
 
    public function getFiles()

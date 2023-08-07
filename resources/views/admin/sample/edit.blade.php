@@ -267,6 +267,7 @@
                         }
                     },
                     error: function(response) {
+                        // console.log(response.responseJSON.errors)
                         _showError(response)
                     }
                 })

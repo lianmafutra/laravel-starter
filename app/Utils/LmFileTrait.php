@@ -61,14 +61,14 @@ trait LmFileTrait
 
    public function fileAttribute($fileRequest)
    {
-      if($this->file != null){
+      if ($this->file != null) {
          $name_origin = $fileRequest->getClientOriginalName();
          $name_uniqe  = RemoveSpace::removeDoubleSpace(Str::random(15));
          $name_file_with_extension  = $name_uniqe . '.' . strtolower($fileRequest->getClientOriginalExtension());
          $thumb_file_with_extension = $name_uniqe . '-thumb.' . $fileRequest->getClientOriginalExtension();
          $mime = $fileRequest->getMimeType();
          $size = $fileRequest->getSize();
-   
+
          return collect([
             'name_origin'               => $name_origin,
             'mime'                      => $mime,
@@ -78,10 +78,9 @@ trait LmFileTrait
             'custom_path'               => $this->custom_path,
             'thumb_file_with_extension' => $thumb_file_with_extension,
             'thumb_file_with_extension' => $thumb_file_with_extension,
-   
+
          ]);
       }
-     
    }
 
    public function storeFileSingle()
@@ -93,9 +92,9 @@ trait LmFileTrait
       $field = $this->field;
 
       if ($this->file == null) {
-       
+
          $deleteOldFile = ModelsFile::where('file_id', $this->getModel()->$field)->first();
-         if( $deleteOldFile){
+         if ($deleteOldFile) {
             Storage::disk('public')->delete($deleteOldFile->path . $deleteOldFile->name_hash);
             $deleteOldFile->delete();
             return true;
@@ -108,12 +107,12 @@ trait LmFileTrait
          $fileAttribute = $this->fileAttribute(Filepond::field($this->file)->getFile());
 
          $deleteOldFile = ModelsFile::where('file_id', $this->getModel()->$field)->first();
-         
-         if( $deleteOldFile){
-             Storage::disk('public')->delete($deleteOldFile->path . $deleteOldFile->name_hash);
+
+         if ($deleteOldFile) {
+            Storage::disk('public')->delete($deleteOldFile->path . $deleteOldFile->name_hash);
             $deleteOldFile->delete();
          }
-       
+
 
          // filter extension
          if ($this->extension) {
@@ -295,7 +294,7 @@ trait LmFileTrait
       }
    }
 
-   public function getFile()
+   public function getFilepond()
    {
       $dataCollection = [];
       if ($this->makeFileAttribute()->toArray()) {
@@ -311,7 +310,7 @@ trait LmFileTrait
       }
    }
 
-   public function getFiles()
+   public function getFileponds()
    {
       $dataCollection = [];
       $dataObject = [];
@@ -325,6 +324,18 @@ trait LmFileTrait
          array_push($dataCollection, $dataObject);
       }
       return $dataCollection;
+   }
+
+   public function getFile()
+   {
+      if ($this->makeFileAttribute()->toArray()) {
+         return $this->makeFileAttribute()->toArray()[0]['full_path'];
+      }
+   }
+
+   public function getFiles()
+   {
+      return $this->makeFileAttribute()->pluck('full_path');
    }
 
    public function makeFileAttribute()

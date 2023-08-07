@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,11 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+         'foto'        => Rule::filepond([
+            'file',
+            'mimes:jpeg,jpg,png',
+            'max:20000'
+         ]),
         ];
     }
 }

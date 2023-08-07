@@ -29,7 +29,8 @@
             <div class="card card-primary card-outline">
                 <div class="card-body box-profile">
                     <div class="text-center">
-                        <img class="profile-user-img img-fluid img-circle" src="{{ $user->field('foto')->getFile() }}"
+                 
+                        <img class="profile-user-img img-fluid img-circle" src="{{ $user->field('foto')->getFile()}}"
                             alt="User profile picture">
                     </div>
                     <h6 class="profile-username text-center">{{ $user->nama_lengkap }}</h6>
@@ -76,14 +77,15 @@
                                 <x-input id='email' value='{{ $user->email }}' name='email' placeholder='Email'
                                     label='Email' required='true' />
 
-                                <x-select2 required="true" id="jenis_kelamin" label="Jenis Kelamin" placeholder="Jenis Kelamin"
-                                    name="jenis_kelamin">
+                                <x-select2 required="true" id="jenis_kelamin" label="Jenis Kelamin"
+                                    placeholder="Jenis Kelamin" name="jenis_kelamin">
                                     <option value='L'>Pria</option>
                                     <option value='P'>Wanita</option>
                                 </x-select2>
 
-                                <x-textarea id="alamat" label="Alamat" name="alamat" hint="Alamat" required="false" spellcheck="false">
-                                 {{ $user->alamat }}
+                                <x-textarea id="alamat" label="Alamat" name="alamat" hint="Alamat" required="false"
+                                    spellcheck="false">
+                                    {{ $user->alamat }}
                                 </x-textarea>
 
                                 <div class="modal-footer ">
@@ -141,7 +143,7 @@
                 @method('PUT')
                 <div class="modal-body">
                     <div class="form-group ">
-                        <input required type="file" data-max-file-size="3 MB" class="filepond" 
+                        <input id="foto" required type="file" data-max-file-size="3 MB" class="filepond"
                             name="foto">
                     </div>
                 </div>
@@ -177,16 +179,24 @@
         FilePondPluginImagePreview,
         FilePondPluginFileValidateType,
         FilePondPluginFileValidateSize);
-    const inputElements = document.querySelectorAll('input.filepond');
-    Array.from(inputElements).forEach(inputElement => {
-        FilePond.create(inputElement, {
-            storeAsFile: true,
-            labelIdle: `Upload File Foto <span class="filepond--label-action">Browse</span>`,
-            imageCropAspectRatio: '1:1',
-            allowImagePreview: true,
-            imagePreviewHeight: 300,
-            imagePreviewWidth: 300,
-        });
-    });
+    const file_cover = FilePond.create(document.querySelector('#foto'));
+    file_cover.setOptions({
+        server: {
+            url: "{{ config('filepond.server.url') }}",
+            headers: {
+                'X-CSRF-TOKEN': "{{ @csrf_token() }}",
+            },
+            load: (source, load, error, progress, abort, headers) => {
+                let request = new XMLHttpRequest();
+                request.open('GET', source);
+                request.responseType = "blob";
+                request.onreadystatechange = () => request.readyState === 4 && load(request
+                    .response);
+                request.send();
+            }
+        },
+     
+
+    })
 </script>
 @endpush

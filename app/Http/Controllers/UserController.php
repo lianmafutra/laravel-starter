@@ -60,27 +60,24 @@ class UserController extends Controller
       }
    }
 
-   public function changePhoto(Request $request)
+   public function changePhoto(UserRequest $request)
    {
-      DB::beginTransaction();
+    
       try {
-         $files = $request->file('foto');
 
-         $data = User::where('id', auth()->user()->id)->first();
+         DB::beginTransaction();
 
-         if ($data->foto == null) {
-            $data->foto = $files  ? Str::uuid()->toString() : NULL;
-         }
+         $data = User::find(auth()->user()->id);
+         $data->fill($request->safe()->except('foto'))->save();
 
-         $data->save();
+       
          
          $data
-         ->addFile($files)
+         ->addFile($request->foto)
+         ->path("foto")
          ->field("foto")
-         ->path("profile")
-         ->extension(['jpg','png'])
-         ->compress(60)
-         ->withThumb(100)
+         ->extension(['jpg', 'png'])
+         ->liveServer()
          ->storeFile();
 
       

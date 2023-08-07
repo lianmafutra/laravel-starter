@@ -5,6 +5,8 @@ namespace App\Utils;
 use App\Models\File as ModelsFile;
 use App\Utils\LmFile\FilterExtension;
 use App\Utils\LmFile\GeneratePath;
+use App\Utils\LmFile\GenerateThumbnail;
+use File;
 use RahulHaque\Filepond\Facades\Filepond;
 use Storage;
 use Str;
@@ -18,8 +20,13 @@ trait LmFileTrait
    protected $liveServer = false;
    protected $custom_path = "";
 
+   protected $getThumb;
+   protected $withThumb = false;
+   protected $withThumb_size = null;
+
    protected $extension = "";
    protected $filterExtension;
+
 
 
    public function addFile($file)
@@ -55,8 +62,11 @@ trait LmFileTrait
       return $this;
    }
 
-   public function checkFileExist()
+   public function withThumb($size)
    {
+      $this->withThumb_size = $size;
+      $this->withThumb      = true;
+      return  $this;
    }
 
    public function fileAttribute($fileRequest)
@@ -77,7 +87,6 @@ trait LmFileTrait
             'name_file_with_extension'  => $name_file_with_extension,
             'custom_path'               => $this->custom_path,
             'thumb_file_with_extension' => $thumb_file_with_extension,
-            'thumb_file_with_extension' => $thumb_file_with_extension,
 
          ]);
       }
@@ -87,9 +96,20 @@ trait LmFileTrait
    {
 
 
-
       $file_uuid = Str::uuid(); // UUID always generate new upload image
       $field = $this->field;
+      $fileAttribute = $this->fileAttribute(Filepond::field($this->file)->getFile());
+
+      if ($this->withThumb) {
+         $thumb = new GenerateThumbnail();
+         $thumb->run(
+            Filepond::field($this->file)->getFile(),
+            $this->withThumb_size,
+            $fileAttribute->get('custom_path') .
+               $fileAttribute->get('thumb_file_with_extension')
+         );
+      }
+
 
       if ($this->file == null) {
 
@@ -104,7 +124,7 @@ trait LmFileTrait
 
 
       if (ModelsFile::where('name_hash', basename($this->file))->count() < 1) {
-         $fileAttribute = $this->fileAttribute(Filepond::field($this->file)->getFile());
+
 
          $deleteOldFile = ModelsFile::where('file_id', $this->getModel()->$field)->first();
 
@@ -333,6 +353,19 @@ trait LmFileTrait
       }
    }
 
+   public function getThumb()
+   {
+      if ($this->makeThumbsAttribute()->toArray()) {
+         return $this->makeThumbsAttribute()->toArray()[0]['full_path'];
+      }
+      return "";
+   }
+
+   public function getThumbs()
+   {
+      return $this->makeThumbsAttribute()->pluck('full_path');
+   }
+
    public function getFiles()
    {
       return $this->makeFileAttribute()->pluck('full_path');
@@ -349,5 +382,40 @@ trait LmFileTrait
       });
 
       return $file;
+   }
+
+   public function makeThumbsAttribute()
+   {
+      $data = $this->field;
+      $file_id = $this->getModel()->$data;
+      $file = ModelsFile::where('file_id',  $file_id)->where('model_id', $this->getModel()->id)->orderBy('order', 'ASC')->get();
+      $file->map(function ($item) {
+         // check thumbnail availbale or not , 
+         $exists = Storage::disk('public')->exists($item->path . $this->searchThumb($item->name_hash));
+
+         if (!$exists) {
+            // return default original 
+            $item['full_path'] = url('storage/' . $item->path . $item->name_hash);
+            return $item;
+         }
+
+         // return default thumbnail 
+         $addString = "-thumb";
+         $fileInfo = pathinfo($item->name_hash);
+         $newFileName = $fileInfo['filename'] . $addString . '.' . $fileInfo['extension'];
+         $item['full_path'] = url('storage/' . $item->path . $newFileName);
+         return $item;
+      });
+
+      return $file;
+   }
+
+   
+   private function searchThumb($name_hash)
+   {
+      $addString = "-thumb";
+      $fileInfo = pathinfo($name_hash);
+      $thumbName = $fileInfo['filename'] . $addString . '.' . $fileInfo['extension'];
+      return $thumbName;
    }
 }

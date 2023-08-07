@@ -37,11 +37,11 @@ class AppServiceProvider extends ServiceProvider
       Blade::directive('tanggal', function ($expression) {
          return "<?php echo \Carbon\Carbon::parse($expression)->translatedFormat('d-m-y H:m:s'); ?>";
       });
-
       view()->composer('*', function ($view) {
          if (Auth::check()) {
-            // $view->with('fotoProfil',    User::find(auth()->user()->id)->field('foto')->getThumb());
-            $view->with('fotoProfil',    '');
+    
+
+            $view->with('fotoProfil',    User::find(auth()->user()->id)->field('foto')->getThumb());
             $view->with('menu', MenuSidebar::render());
          }
       });

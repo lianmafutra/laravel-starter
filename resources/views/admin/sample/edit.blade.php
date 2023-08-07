@@ -140,11 +140,11 @@
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-size.js') }} "></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-image-preview.js') }}"></script>
-
     <script src="{{ asset('https://nielsboogaard.github.io/filepond-plugin-get-file/dist/filepond-plugin-get-file.js') }}">
     </script>
     <script
         src="{{ asset('https://nielsboogaard.github.io/filepond-plugin-image-overlay/dist/filepond-plugin-image-overlay.js') }}">
+        
     </script>
 
 

@@ -9,10 +9,8 @@ use App\Utils\ApiResponse;
 use App\Utils\LmFile;
 use Carbon\Carbon;
 use DB;
-use RahulHaque\Filepond\Facades\Filepond;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Storage;
+
 
 class SampleCrudController extends Controller
 {
@@ -72,7 +70,7 @@ class SampleCrudController extends Controller
             ->field("file_cover")
             ->extension(['jpg', 'png'])
             ->withThumb(100)
-            ->liveServer()
+            ->compress(60)
             ->updateFile();
 
 
@@ -82,7 +80,7 @@ class SampleCrudController extends Controller
             ->field("file_cover_multi")
             ->extension(['jpg', 'png'])
             ->withThumb(100)
-            ->liveServer()
+            ->compress(60)
             ->updateFile();
 
 

@@ -263,65 +263,70 @@ trait LmFileTrait
 
    public function updateFileSingle()
    {
-      $field = $this->field;
 
-      $this->deleteDataOnUpdate();
+      try {
+         $field = $this->field;
 
-      $filepondFile = Filepond::field($this->file)->getFile();
-      $file_uuid = $this->getModel()->$field ? $this->getModel()->$field : Str::uuid();
-      $fileAttribute = $this->fileAttribute($filepondFile);
+         $this->deleteDataOnUpdate();
 
-      if ($this->withThumb) {
-         $thumb = new GenerateThumbnail();
-         $thumb->run(
-            $filepondFile,
-            $this->withThumb_size,
-            $fileAttribute->get('custom_path') .
-               $fileAttribute->get('thumb_file_with_extension')
-         );
-      }
+         $filepondFile = Filepond::field($this->file)->getFile();
+         $file_uuid = $this->getModel()->$field ? $this->getModel()->$field : Str::uuid();
+         $fileAttribute = $this->fileAttribute($filepondFile);
 
-      if ($this->extension) {
-         // filter extension
-         $this->filterExtension->run(
-            $filepondFile,
-            $this->extension
-         );
-      }
-
-      if ($this->compress) {
-         if ($filepondFile->getSize() >= $this->sizeToCompress) {
-            $fileCompress = new CompressImage();
-            $fileCompress = $fileCompress->run($filepondFile, $this->compressValue);
-
-            Storage::disk('public')->put(
+         if ($this->withThumb) {
+            $thumb = new GenerateThumbnail();
+            $thumb->run(
+               $filepondFile,
+               $this->withThumb_size,
                $fileAttribute->get('custom_path') .
-                  $fileAttribute->get('name_file_with_extension'),
-               $fileCompress
+                  $fileAttribute->get('thumb_file_with_extension')
             );
          }
-      } else {
-         Filepond::field($this->file)->moveTo(
-            $this->custom_path .
-               $fileAttribute->get('name_uniqe')
-         );
+
+         if ($this->extension) {
+            // filter extension
+            $this->filterExtension->run(
+               $filepondFile,
+               $this->extension
+            );
+         }
+
+         if ($this->compress) {
+            if ($filepondFile->getSize() >= $this->sizeToCompress) {
+               $fileCompress = new CompressImage();
+               $fileCompress = $fileCompress->run($filepondFile, $this->compressValue);
+
+               Storage::disk('public')->put(
+                  $fileAttribute->get('custom_path') .
+                     $fileAttribute->get('name_file_with_extension'),
+                  $fileCompress
+               );
+            }
+         } else {
+            Filepond::field($this->file)->moveTo(
+               $this->custom_path .
+                  $fileAttribute->get('name_uniqe')
+            );
+         }
+
+         $this->getModel()->update([
+            $this->field => $file_uuid
+         ]);
+
+         ModelsFile::create([
+            'file_id'     => $file_uuid,
+            'model_id'    => $this->getModel()->id,
+            'name_origin' => $fileAttribute->get('name_origin'),
+            'name_hash'   => $fileAttribute->get('name_file_with_extension'),
+            'path'        => $this->custom_path,
+            'created_by'  => auth()->user()->id,
+            'mime'        => $fileAttribute->get('mime'),
+            'order'       => 1,
+            'size'        => $fileAttribute->get('size'),
+         ]);
+      } catch (\Throwable $th) {
+         //throw $th;
       }
-
-      $this->getModel()->update([
-         $this->field => $file_uuid
-      ]);
-
-      ModelsFile::create([
-         'file_id'     => $file_uuid,
-         'model_id'    => $this->getModel()->id,
-         'name_origin' => $fileAttribute->get('name_origin'),
-         'name_hash'   => $fileAttribute->get('name_file_with_extension'),
-         'path'        => $this->custom_path,
-         'created_by'  => auth()->user()->id,
-         'mime'        => $fileAttribute->get('mime'),
-         'order'       => 1,
-         'size'        => $fileAttribute->get('size'),
-      ]);
    }
 
    public function storeFileMultiple()
@@ -405,14 +410,16 @@ trait LmFileTrait
             Storage::disk('public')->delete($value->path . $this->searchThumb($value->name_hash));
             ModelsFile::where('name_hash', $value->name_hash)->delete();
          }
-         return $this;
       } else {
-         $oldFiles = ModelsFile::where('file_id', $this->getModel()->$field)->first();
-         Storage::disk('public')->delete($oldFiles->path . $oldFiles->name_hash);
-         Storage::disk('public')->delete($oldFiles->path . $this->searchThumb($oldFiles->name_hash));
-         $oldFiles->delete();
 
-         return $this;
+         $oldFiles = ModelsFile::where('file_id', $this->getModel()->$field)->first();
+         if ($oldFiles) {
+            if ($oldFiles->name_hash != basename($this->file)) {
+               Storage::disk('public')->delete($oldFiles->path . $oldFiles->name_hash);
+               Storage::disk('public')->delete($oldFiles->path . $this->searchThumb($oldFiles->name_hash));
+               $oldFiles->delete();
+            }
+         }
       }
    }
 

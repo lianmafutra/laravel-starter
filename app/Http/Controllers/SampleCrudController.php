@@ -6,7 +6,6 @@ use App\Http\Requests\SampleCrudRequest;
 use App\Models\PermissionGroup;
 use App\Models\SampleCrud;
 use App\Utils\ApiResponse;
-use App\Utils\LmFile;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
@@ -52,10 +51,8 @@ class SampleCrudController extends Controller
    }
 
 
-   public function store(SampleCrudRequest $request, LmFile $lmFile)
+   public function store(SampleCrudRequest $request)
    {
-
-
       try {
          DB::beginTransaction();
 
@@ -82,8 +79,6 @@ class SampleCrudController extends Controller
             ->withThumb(100)
             ->compress(60)
             ->updateFile();
-
-
 
          DB::commit();
          return $this->success(__('trans.crud.success'));

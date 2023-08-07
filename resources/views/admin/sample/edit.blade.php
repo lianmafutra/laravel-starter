@@ -5,18 +5,16 @@
 
     <link rel="stylesheet" href="{{ asset('plugins/flatpicker/flatpickr.min.css') }}">
 
-    <link href="https://unpkg.com/filepond@4.30.4/dist/filepond.css" rel="stylesheet" />
-    <link href="{{ asset('plugins/filepond/filepond-plugin-image-preview.css') }} " rel="stylesheet" />
+  
 
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/summernote/summernote-bs4.min.css') }}">
-    <link rel="stylesheet"
-        href="https://nielsboogaard.github.io/filepond-plugin-get-file/dist/filepond-plugin-get-file.css">
-    <link rel="stylesheet"
-        href="https://nielsboogaard.github.io/filepond-plugin-image-overlay/dist/filepond-plugin-image-overlay.css">
 
-
+    <link href="{{ asset('plugins/filepond/filepond.css') }}" rel="stylesheet" />
+    <link href="{{ asset('plugins/filepond/filepond-plugin-image-preview.css') }} " rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('plugins/filepond/filepond-get-files.js') }}">
+    <link rel="stylesheet" href="https://nielsboogaard.github.io/filepond-plugin-image-overlay/dist/filepond-plugin-image-overlay.css">
 
     <style>
         @media (min-width: 576px) {
@@ -108,9 +106,6 @@
 
                     <x-summernote id="summernote" label="Summenote Editor" />
 
-                    {{-- <x-filepond id="file_cover" label='File Cover Liver Server' info='( Format File JPG/PNG , Maks 5 MB)'
-                        accept="image/jpeg, image/png" /> --}}
-
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn_submit btn btn-primary">Save</button>
@@ -119,7 +114,7 @@
         </form>
     </div>
 @endsection
-{{-- {{ Dd($sampleCrud->date_publisher) }} --}}
+
 @push('js')
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
 
@@ -134,19 +129,14 @@
     <script src="{{ asset('plugins/flatpicker/id.min.js') }}"></script>
 
     {{-- filepond --}}
-    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+    <script src="{{ asset('plugins/filepond/filepond.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-metadata.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-encode.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-size.js') }} "></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-image-preview.js') }}"></script>
-    <script src="{{ asset('https://nielsboogaard.github.io/filepond-plugin-get-file/dist/filepond-plugin-get-file.js') }}">
-    </script>
-    <script
-        src="{{ asset('https://nielsboogaard.github.io/filepond-plugin-image-overlay/dist/filepond-plugin-image-overlay.js') }}">
-        
-    </script>
-
+    <script src="{{ asset('plugins/filepond/filepond-get-files.js') }}"></script>
+    <script src="{{ asset('plugins/filepond/filepond-plugin-image-overlay.js') }}"></script>
 
     {{-- password toggle show/hide --}}
     <script src="{{ asset('plugins/toggle-password.js') }}"></script>
@@ -193,8 +183,6 @@
                 time_24hr: true
             });
 
-
-
             const date_range = $("#date_range").flatpickr({
                 allowInput: true,
                 mode: "range",
@@ -207,23 +195,17 @@
                 }
             })
 
-
             $('#date_publisher').mask('00/00/0000');
             $('#contact').mask('0000-0000-000000');
-
-
 
             FilePond.registerPlugin(
                 FilePondPluginFileEncode,
                 FilePondPluginImagePreview,
                 FilePondPluginImageOverlay,
-                FilePondPluginGetFile,
                 FilePondPluginFileValidateType,
                 FilePondPluginFileValidateSize)
 
-            const file_cover = FilePond.create(document.querySelector('#file_cover'));
-
-
+        
 
             $('#summernote').summernote({
                 height: 200,
@@ -294,8 +276,7 @@
             $("#summernote").summernote('code', @json(clean($sampleCrud->summernote)));
 
 
-
-
+            const file_cover = FilePond.create(document.querySelector('#file_cover'));
             file_cover.setOptions({
                 server: {
                     url: "{{ config('filepond.server.url') }}",
@@ -307,11 +288,9 @@
                     }
                 },
                 files: @json($sampleCrud->field('file_cover')->getFilepond())
-
             })
 
             const file_cover_multi = FilePond.create(document.querySelector('#file_cover_multi'));
-
             file_cover_multi.setOptions({
                 styleItemPanelAspectRatio: 1,
                 imageCropAspectRatio: '1:1',
@@ -326,13 +305,11 @@
                         'X-CSRF-TOKEN': "{{ @csrf_token() }}",
                     },
                     load: (source, load, error, progress, abort, headers) => {
-                     _getFilepond(source, load)
+                        _getFilepond(source, load)
                     }
                 },
                 files: @json($sampleCrud->field('file_cover_multi')->getFileponds())
             });
-
-
 
         })
     </script>

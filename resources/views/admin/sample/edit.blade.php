@@ -294,6 +294,8 @@
             $("#summernote").summernote('code', @json(clean($sampleCrud->summernote)));
 
 
+
+
             file_cover.setOptions({
                 server: {
                     url: "{{ config('filepond.server.url') }}",
@@ -301,12 +303,7 @@
                         'X-CSRF-TOKEN': "{{ @csrf_token() }}",
                     },
                     load: (source, load, error, progress, abort, headers) => {
-                        let request = new XMLHttpRequest();
-                        request.open('GET', source);
-                        request.responseType = "blob";
-                        request.onreadystatechange = () => request.readyState === 4 && load(request
-                            .response);
-                        request.send();
+                        _getFilepond(source, load)
                     }
                 },
                 files: @json($sampleCrud->field('file_cover')->getFilepond())
@@ -314,7 +311,7 @@
             })
 
             const file_cover_multi = FilePond.create(document.querySelector('#file_cover_multi'));
-     
+
             file_cover_multi.setOptions({
                 styleItemPanelAspectRatio: 1,
                 imageCropAspectRatio: '1:1',
@@ -329,12 +326,7 @@
                         'X-CSRF-TOKEN': "{{ @csrf_token() }}",
                     },
                     load: (source, load, error, progress, abort, headers) => {
-                        let request = new XMLHttpRequest();
-                        request.open('GET', source);
-                        request.responseType = "blob";
-                        request.onreadystatechange = () => request.readyState === 4 && load(request
-                            .response);
-                        request.send();
+                     _getFilepond(source, load)
                     }
                 },
                 files: @json($sampleCrud->field('file_cover_multi')->getFileponds())

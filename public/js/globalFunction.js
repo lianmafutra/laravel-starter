@@ -12,15 +12,29 @@ window._clearInput = function () {
    }
 }
 
+// filepond
+
+window._getFilepond = function (source, load) {
+   let filePond = FilePond.find(document.querySelector('.filepond'));
+   if (filePond != null) {
+      let request = new XMLHttpRequest();
+      request.open('GET', source);
+      request.responseType = "blob";
+      request.onreadystatechange = () => request.readyState === 4 && load(request
+         .response);
+      request.send();
+   }
+
+}
 function printErrorMsg(msg) {
-   
+
 
 
    let error = [];
    let error_array = [];
-  
+
    $.each(msg, function (key, value) {
-     
+
       $('.text-danger').each(function () {
          let id = $(this).attr("class").split(" ").pop()
             .slice(0, -4)
@@ -29,7 +43,7 @@ function printErrorMsg(msg) {
       });
 
       baru = key.replace(/\.0$/, '');
-     
+
       error_array.push(baru)
       $('.' + baru + '_err').text(JSON.stringify(value[0]).replace(/\.0/g, ''));
       $('.' + baru + '_err').show();
@@ -37,7 +51,7 @@ function printErrorMsg(msg) {
    });
 
 
-  
+
    $([document.documentElement, document.body]).animate({
       scrollTop: $("#" + error_array[0])
    });
@@ -59,7 +73,7 @@ window._showError = function (response) {
       swal.hideLoading()
       let text = '';
       if (response.status == 422) {
-      
+
          printErrorMsg(response.responseJSON.errors);
          text = "Periksa kembali inputan anda"
       }
@@ -67,7 +81,7 @@ window._showError = function (response) {
          text = response.responseJSON.message
          $('.error-text').hide();
       }
-   
+
       Swal.fire({
          icon: 'error',
          title: 'Terjadi Kesalahan...',
@@ -75,12 +89,12 @@ window._showError = function (response) {
       }).then(
          result => {
             if (result.value) {
-   
+
             }
          }
       );
    }, 500);
-   
+
 
 }
 
@@ -156,7 +170,7 @@ $('.select2-search__field').css('width', '100%');
 
 // set auto focus select2
 $(document).on('select2:open', function (e) {
-   document.querySelector('[aria-controls="select2-'+e.target.id+'-results"]').focus();
+   document.querySelector('[aria-controls="select2-' + e.target.id + '-results"]').focus();
 })
 
 //   others

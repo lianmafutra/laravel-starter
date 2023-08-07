@@ -207,11 +207,13 @@ trait LmFileTrait
       $field = $this->field;
 
       $arrayFiles = []; //array files from form request
-
+     
+      
       $this->deleteDataOnUpdate();
 
       $file_uuid = $this->getModel()->$field ? $this->getModel()->$field : Str::uuid();
 
+ 
       foreach ($this->file as $url) {
          $afterStorage = substr($url, strpos($url, 'storage/') + strlen('storage/'));
          $arrayFiles[] = $afterStorage;
@@ -219,8 +221,8 @@ trait LmFileTrait
 
       foreach ($arrayFiles as $key => $value) {
          if (ModelsFile::where('name_hash', basename($this->file[$key]))->count() < 1) {
-
             $fileAttribute = $this->fileAttribute(Filepond::field($this->file[$key])->getFile());
+           
             if ($this->extension) {
                // filter extension
                $this->filterExtension->run(
@@ -228,6 +230,17 @@ trait LmFileTrait
                   $this->extension
                );
             }
+
+            if ($this->withThumb) {
+               $thumb = new GenerateThumbnail();
+               $thumb->run(
+                  Filepond::field($this->file[$key])->getFile(),
+                  $this->withThumb_size,
+                  $fileAttribute->get('custom_path') .
+                     $fileAttribute->get('thumb_file_with_extension')
+               );
+            }
+      
 
             if ($this->liveServer()) {
                Filepond::field($this->file[$key])->moveTo(
@@ -261,11 +274,22 @@ trait LmFileTrait
 
       $this->deleteDataOnUpdate();
       $file_uuid = $this->getModel()->$field ? $this->getModel()->$field : Str::uuid();
+      $fileAttribute = $this->fileAttribute(Filepond::field($this->file)->getFile());
+
+      if ($this->withThumb) {
+         $thumb = new GenerateThumbnail();
+         $thumb->run(
+            Filepond::field($this->file)->getFile(),
+            $this->withThumb_size,
+            $fileAttribute->get('custom_path') .
+               $fileAttribute->get('thumb_file_with_extension')
+         );
+      }
 
 
       if (ModelsFile::where('name_hash', basename($this->file))->count() < 1) {
 
-         $fileAttribute = $this->fileAttribute(Filepond::field($this->file)->getFile());
+       
          if ($this->extension) {
             // filter extension
             $this->filterExtension->run(

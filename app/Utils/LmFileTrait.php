@@ -100,6 +100,16 @@ trait LmFileTrait
       $field = $this->field;
       $fileAttribute = $this->fileAttribute(Filepond::field($this->file)->getFile());
 
+      
+         // filter extension
+         if ($this->extension) {
+            $this->filterExtension->run(
+               Filepond::field($this->file)->getFile(),
+               $this->extension
+            );
+         }
+
+
       if ($this->withThumb) {
          $thumb = new GenerateThumbnail();
          $thumb->run(
@@ -116,6 +126,7 @@ trait LmFileTrait
          $deleteOldFile = ModelsFile::where('file_id', $this->getModel()->$field)->first();
          if ($deleteOldFile) {
             Storage::disk('public')->delete($deleteOldFile->path . $deleteOldFile->name_hash);
+            Storage::disk('public')->delete($deleteOldFile->path . $this->searchThumb($deleteOldFile->name_hash));
             $deleteOldFile->delete();
             return true;
          }
@@ -127,20 +138,13 @@ trait LmFileTrait
 
 
          $deleteOldFile = ModelsFile::where('file_id', $this->getModel()->$field)->first();
-
+       
          if ($deleteOldFile) {
             Storage::disk('public')->delete($deleteOldFile->path . $deleteOldFile->name_hash);
+            Storage::disk('public')->delete($deleteOldFile->path . $this->searchThumb($deleteOldFile->name_hash));
             $deleteOldFile->delete();
          }
 
-
-         // filter extension
-         if ($this->extension) {
-            $this->filterExtension->run(
-               Filepond::field($this->file)->getFile(),
-               $this->extension
-            );
-         }
 
          if ($this->liveServer()) {
             Filepond::field($this->file)->moveTo(

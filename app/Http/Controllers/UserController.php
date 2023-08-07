@@ -79,7 +79,7 @@ class UserController extends Controller
          ->extension(['jpg', 'png'])
          ->withThumb(100)
          ->liveServer()
-         ->storeFile();
+         ->updateFile();
 
       
          DB::commit();

@@ -54,11 +54,13 @@ class SampleCrudController extends Controller
    public function store(SampleCrudRequest $request)
    {
       try {
+
+         
          DB::beginTransaction();
 
          $sampleCrud = SampleCrud::updateOrCreate(
             ['id' => $request->sample_id],
-            $request->safe()->except('date_range', 'file_cover', 'file_cover_multi')
+            $request->safe()->except('date_range', 'file_cover', 'file_cover_multi','file_pdf')
          );
 
          $sampleCrud
@@ -78,6 +80,16 @@ class SampleCrudController extends Controller
             ->extension(['jpg', 'png'])
             ->withThumb(100)
             ->compress(60)
+            ->updateFile();
+
+
+            $sampleCrud
+            ->addFile($request->file_pdf)
+            ->path("pdf")
+            ->field("file_pdf")
+            ->extension(['pdf'])
+            // ->withThumb(100)
+            // ->compress(60)
             ->updateFile();
 
          DB::commit();

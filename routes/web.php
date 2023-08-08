@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\MasterUserController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PermissionGroupController;
+use App\Http\Controllers\Admin\PreviewPdfController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Auth\AuthController;
@@ -54,6 +55,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
    Route::get('/', [DashboardController::class, 'index'])->name('admin');
    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+
+  
 
    Route::controller(AuthController::class)->group(function () {
       Route::put('password-ubah', 'ubahPassword')->name('password.ubah');

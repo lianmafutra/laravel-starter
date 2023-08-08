@@ -266,8 +266,9 @@ trait LmFileTrait
 
       try {
          $field = $this->field;
+         
 
-         $this->deleteDataOnUpdate();
+         // $this->deleteDataOnUpdate();
 
          $filepondFile = Filepond::field($this->file)->getFile();
          $file_uuid = $this->getModel()->$field ? $this->getModel()->$field : Str::uuid();
@@ -303,6 +304,7 @@ trait LmFileTrait
                );
             }
          } else {
+        
             Filepond::field($this->file)->moveTo(
                $this->custom_path .
                   $fileAttribute->get('name_uniqe')
@@ -387,6 +389,7 @@ trait LmFileTrait
       if (is_array($this->file)) {
          $this->updateFileMultiple();
       } else {
+      
          $this->updateFileSingle();
       }
    }

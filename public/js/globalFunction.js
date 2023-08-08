@@ -15,17 +15,20 @@ window._clearInput = function () {
 // filepond
 
 window._getFilepond = function (source, load) {
-   let filePond = FilePond.find(document.querySelector('.filepond'));
-   if (filePond != null) {
-      let request = new XMLHttpRequest();
-      request.open('GET', source);
-      request.responseType = "blob";
-      request.onreadystatechange = () => request.readyState === 4 && load(request
-         .response);
-      request.send();
-   }
-
+   // console.log(source)
+   let request = new XMLHttpRequest();
+   request.open('GET', source);
+   request.responseType = "blob";
+   request.onreadystatechange = () => request.readyState === 4 && load(request
+      .response);
+   request.send();
 }
+
+
+
+
+
+
 function printErrorMsg(msg) {
 
 
@@ -187,3 +190,5 @@ $(document).ajaxSuccess(function (event, xhr, settings) {
       }
    }, 1000);
 })
+
+

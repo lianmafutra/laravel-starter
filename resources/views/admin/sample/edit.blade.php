@@ -14,18 +14,23 @@
     <link rel="stylesheet" href="{{ asset('plugins/filepond/filepond-plugin-get-file.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/filepond/filepond-plugin-image-overlay.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('plugins/magnific/magnific-popup.min.css') }}" />
+
+
     <style>
+
+        .filepond--item {
+            cursor: pointer;
+        }
+
+        .filepond--list-scroller {
+            cursor: default;
+        }
+
         @media (min-width: 576px) {
             #file_cover_multi .filepond--item {
                 width: calc(32% - 0.5em);
             }
-        }
-
-        .demo {
-            text-align: center;
-            font-family: Helvetica;
-            margin: 4em auto 0;
-            width: 450px;
         }
 
         a {
@@ -37,6 +42,8 @@
             cursor: pointer;
             text-decoration: underline;
         }
+
+
     </style>
 @endpush
 @section('header')
@@ -97,10 +104,15 @@
                     </x-check-box>
 
                     <x-filepond id="file_cover" label='File Cover' info='( Format File JPG/PNG , Maks 5 MB)'
-                        accept="image/jpeg, image/png" />
+                        accept="image/jpeg, image/png" /></a>
+
 
                     <x-filepond id="file_cover_multi" name="file_cover_multi[]" label='File Cover multiple'
                         info='( Format File JPG/PNG , Maks 5 MB)' accept="image/jpeg, image/png" multiple />
+
+                    <x-filepond id="file_pdf" label='File Cover' info='( Format File JPG/PNG , Maks 5 MB)' />
+
+                    
 
                     <x-summernote id="summernote" label="Summenote Editor" />
 
@@ -113,9 +125,9 @@
     </div>
 @endsection
 
+
 @push('js')
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
-
     <script src="{{ asset('template/admin/plugins/summernote/summernote-bs4.min.js') }}"></script>
     <script src="{{ asset('template/admin/plugins/summernote/summernote-bs4.min.js') }}"></script>
 
@@ -133,9 +145,9 @@
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-size.js') }} "></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-image-preview.js') }}"></script>
-   
-    <script src="{{ asset('plugins/filepond/filepond-plugin-image-overlay.js') }}"></script>
+
     <script src="{{ asset('plugins/filepond/filepond-get-files.js') }}"></script>
+    <script src="{{ asset('plugins/magnific/jquery.magnific-popup.min.js') }}"></script>
 
 
     {{-- password toggle show/hide --}}
@@ -143,10 +155,9 @@
 
     {{-- masking input currency,date input --}}
     <script src="{{ asset('plugins/jquery.mask.min.js') }}"></script>
-
+    <script src="{{ asset('plugins/filepond/filepond-plugin-image-overlay.js') }}"></script>
     <script>
         $(function() {
-
             $('.select2bs4').select2({
                 theme: 'bootstrap4',
             })
@@ -199,10 +210,10 @@
             $('#contact').mask('0000-0000-000000');
 
             FilePond.registerPlugin(
-               FilePondPluginGetFile,
+                //  FilePondPluginGetFile,
                 FilePondPluginFileEncode,
                 FilePondPluginImagePreview,
-         
+
                 FilePondPluginImageOverlay,
                 FilePondPluginFileValidateType,
                 FilePondPluginFileValidateSize)
@@ -277,9 +288,15 @@
             $("#summernote").summernote('code', @json(clean($sampleCrud->summernote)));
 
 
-            const file_cover = FilePond.create(document.querySelector('#file_cover'));
-            file_cover.setOptions({
-               allowDownloadByUrl: true,
+            const file_pdf = FilePond.create(document.querySelector('#file_pdf'));
+            file_pdf.setOptions({
+                allowDownloadByUrl: true,
+                allowImagePreview: true,
+                onactivatefile: (item) => {
+                    window.open(@json(url('viewpdf/web/viewer.html?url='))+ item.serverId,
+                        '_blank' // <- This is what makes it open in a new window.
+                    );
+                },
                 server: {
                     url: "{{ config('filepond.server.url') }}",
                     headers: {
@@ -289,12 +306,49 @@
                         _getFilepond(source, load)
                     }
                 },
+                files: @json($sampleCrud->field('file_pdf')->getFilepond())
+            })
+
+
+
+
+            const file_cover = FilePond.create(document.querySelector('#file_cover'));
+            file_cover.setOptions({
+                allowDownloadByUrl: true,
+                onactivatefile: (item) => {
+                    $.magnificPopup.open({
+                        items: {
+                            src: item.serverId
+                        },
+                        type: 'image'
+                    });
+
+                },
+                server: {
+                    url: "{{ config('filepond.server.url') }}",
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ @csrf_token() }}",
+                    },
+                    load: (source, load, error, progress, abort, headers) => {
+                        _getFilepond(source, load)
+
+                    }
+                },
                 files: @json($sampleCrud->field('file_cover')->getFilepond())
             })
 
             const file_cover_multi = FilePond.create(document.querySelector('#file_cover_multi'));
             file_cover_multi.setOptions({
-               allowDownloadByUrl: true, // by default downloading by URL disabled
+                onactivatefile: (item) => {
+                    $.magnificPopup.open({
+                        items: {
+                            src: item.serverId
+                        },
+                        type: 'image'
+                    });
+
+                },
+                allowDownloadByUrl: true, // by default downloading by URL disabled
                 styleItemPanelAspectRatio: 1,
                 imageCropAspectRatio: '1:1',
                 allowImagePreview: true,
@@ -313,16 +367,6 @@
                 },
                 files: @json($sampleCrud->field('file_cover_multi')->getFileponds())
             });
-
-
-            window._filepondPreview = function(data){
-              
-
-               let path = data.serverId;
-               alert(path)
-             
-            }
-
         })
     </script>
 @endpush

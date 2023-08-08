@@ -116,8 +116,11 @@
     <script src="{{ asset('template/admin/dist/js/adminlte.js') }}"></script>
     <script src="{{ asset('plugins/progress-bar/pace.min.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2-min.js') }}"></script>
+    
     @stack('js')
+
     <script src="{{ asset('js/globalFunction.js') }}"></script>
+
 
     <script>
         $.ajaxSetup({

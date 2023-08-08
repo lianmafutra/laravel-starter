@@ -425,17 +425,34 @@ trait LmFileTrait
          }
       }
    }
-
+  
    public function getFilepond()
    {
       $dataCollection = [];
       if ($this->makeFileAttribute()->toArray()) {
-         $dataObject = [
-            "source" => $this->makeFileAttribute()->toArray()[0]['full_path'],
-            "options" => [
-               "type" => "local",
-            ]
-         ];
+
+         if($this->makeFileAttribute()->toArray()[0]['mime'] == "application/pdf"){
+            $dataObject = [
+               "source" => $this->makeFileAttribute()->toArray()[0]['full_path'],
+               "options" => [
+                  "type" => "local",
+                  "file"=> [
+                     "name"=> $this->makeFileAttribute()->toArray()[0]['name_origin'],
+                     "size"=> $this->makeFileAttribute()->toArray()[0]['size'],
+                  ],
+                  "metadata" => [
+                     "poster" => 'https://www.iconpacks.net/icons/2/free-pdf-file-icon-3382-thumb.png',
+                  ]
+               ]
+            ];
+         }else{
+            $dataObject = [
+               "source" => $this->makeFileAttribute()->toArray()[0]['full_path'],
+               "options" => [
+                  "type" => "local",
+               ]
+            ];
+         }
          array_push($dataCollection, $dataObject);
          return $dataCollection;
       } else {
@@ -457,6 +474,9 @@ trait LmFileTrait
       }
       return $dataCollection;
    }
+
+
+   
 
    public function getFile()
    {

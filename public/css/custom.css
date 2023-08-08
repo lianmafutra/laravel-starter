@@ -389,5 +389,5 @@ a.brand-link {
 
 .nav-sidebar .nav-link p {
    display: inline-flex !important;
-   padding-right: 31px;
+   /* padding-right: 31px; */
 }

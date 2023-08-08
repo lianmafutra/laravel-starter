@@ -16,9 +16,10 @@
 
     <link rel="stylesheet" href="{{ asset('plugins/magnific/magnific-popup.min.css') }}" />
 
+    <link href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" rel="stylesheet" />
+
 
     <style>
-
         .filepond--item {
             cursor: pointer;
         }
@@ -29,6 +30,10 @@
 
         @media (min-width: 576px) {
             #file_cover_multi .filepond--item {
+                width: calc(32% - 0.5em);
+            }
+
+            #file_pdf .filepond--item {
                 width: calc(32% - 0.5em);
             }
         }
@@ -42,8 +47,6 @@
             cursor: pointer;
             text-decoration: underline;
         }
-
-
     </style>
 @endpush
 @section('header')
@@ -106,13 +109,11 @@
                     <x-filepond id="file_cover" label='File Cover' info='( Format File JPG/PNG , Maks 5 MB)'
                         accept="image/jpeg, image/png" /></a>
 
-
                     <x-filepond id="file_cover_multi" name="file_cover_multi[]" label='File Cover multiple'
                         info='( Format File JPG/PNG , Maks 5 MB)' accept="image/jpeg, image/png" multiple />
 
-                    <x-filepond id="file_pdf" label='File Cover' info='( Format File JPG/PNG , Maks 5 MB)' />
-
-                    
+                    <x-filepond id="file_pdf" label='File PDF' info='( Format File PDF, Maks 5 MB)'
+                        accept="application/pdf" />
 
                     <x-summernote id="summernote" label="Summenote Editor" />
 
@@ -139,6 +140,7 @@
     <script src="{{ asset('plugins/flatpicker/id.min.js') }}"></script>
 
     {{-- filepond --}}
+    <script src="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.js"></script>
     <script src="{{ asset('plugins/filepond/filepond.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-metadata.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-encode.js') }}"></script>
@@ -213,7 +215,7 @@
                 //  FilePondPluginGetFile,
                 FilePondPluginFileEncode,
                 FilePondPluginImagePreview,
-
+                FilePondPluginFilePoster,
                 FilePondPluginImageOverlay,
                 FilePondPluginFileValidateType,
                 FilePondPluginFileValidateSize)
@@ -290,11 +292,11 @@
 
             const file_pdf = FilePond.create(document.querySelector('#file_pdf'));
             file_pdf.setOptions({
-                allowDownloadByUrl: true,
                 allowImagePreview: true,
+                filePosterMaxHeight: 200,
                 onactivatefile: (item) => {
-                    window.open(@json(url('viewpdf/web/viewer.html?url='))+ item.serverId,
-                        '_blank' // <- This is what makes it open in a new window.
+                    window.open(@json(url('viewpdf/web/viewer.html?url=')) + item.serverId,
+                        '_blank'
                     );
                 },
                 server: {
@@ -307,10 +309,8 @@
                     }
                 },
                 files: @json($sampleCrud->field('file_pdf')->getFilepond())
+
             })
-
-
-
 
             const file_cover = FilePond.create(document.querySelector('#file_cover'));
             file_cover.setOptions({
@@ -322,7 +322,6 @@
                         },
                         type: 'image'
                     });
-
                 },
                 server: {
                     url: "{{ config('filepond.server.url') }}",
@@ -331,7 +330,6 @@
                     },
                     load: (source, load, error, progress, abort, headers) => {
                         _getFilepond(source, load)
-
                     }
                 },
                 files: @json($sampleCrud->field('file_cover')->getFilepond())

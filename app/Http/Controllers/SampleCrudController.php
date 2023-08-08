@@ -88,8 +88,6 @@ class SampleCrudController extends Controller
             ->path("pdf")
             ->field("file_pdf")
             ->extension(['pdf'])
-            // ->withThumb(100)
-            // ->compress(60)
             ->updateFile();
 
          DB::commit();

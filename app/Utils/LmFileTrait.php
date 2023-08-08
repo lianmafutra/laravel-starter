@@ -441,7 +441,7 @@ trait LmFileTrait
                      "size"=> $this->makeFileAttribute()->toArray()[0]['size'],
                   ],
                   "metadata" => [
-                     "poster" => 'https://www.iconpacks.net/icons/2/free-pdf-file-icon-3382-thumb.png',
+                     "poster" => asset('img/pdf-thumb.png'),
                   ]
                ]
             ];

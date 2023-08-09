@@ -16,37 +16,27 @@
 
     <link rel="stylesheet" href="{{ asset('plugins/magnific/magnific-popup.min.css') }}" />
 
-    <link href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('plugins/filepond/filepond-plugin-file-poster.css') }}"  />
 
 
     <style>
         #file_pdf .filepond--item {
             cursor: pointer;
         }
-
-    
-
         .filepond--list-scroller {
             cursor: default;
         }
+
        
-.filepond--root {
-  height: auto;
-}
+
         @media (min-width: 576px) {
             #file_cover_multi .filepond--item {
                 width: calc(32% - 0.5em);
             }
 
             #file_pdf .filepond--item {
-                width: calc(25% - 0.5em);
-                height: ;: calc(25% - 0.5em);
+               width: calc(32% - 0.5em);
             }
-
-            #file_pdf .filepond--item {
-               width: calc(25% - 0.5em);
-                height: ;: calc(25% - 0.5em);
-        }
         }
 
         a {
@@ -65,8 +55,9 @@
 @endsection
 @section('content')
     <div class="col-lg-8 col-md-8 col-sm-12">
-        <form id="form_sample" action="{{ route('sample-crud.store') }}" method="post">
+        <form id="form_sample" action="{{ route('sample-crud.store') }}">
             @csrf
+            @method('PUT')
             <div class="card">
                 <div class="card-header">
                     Data
@@ -151,7 +142,7 @@
     <script src="{{ asset('plugins/flatpicker/id.min.js') }}"></script>
 
     {{-- filepond --}}
-    <script src="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.js"></script>
+    <script src="{{ asset('plugins/filepond/filepond-plugin-file-poster.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-metadata.js') }}"></script>
     <script src="{{ asset('plugins/filepond/filepond-plugin-file-encode.js') }}"></script>
@@ -210,7 +201,6 @@
             const date_range = $("#date_range").flatpickr({
                 allowInput: true,
                 mode: "range",
-
                 onChange: function(dates, dateStr, instance) {
                     if (dates.length == 2) {
                         let dateStart = instance.formatDate(dates[0], "Y-m-d");
@@ -230,7 +220,6 @@
                 FilePondPluginImageOverlay,
                 FilePondPluginFileValidateType,
                 FilePondPluginFileValidateSize)
-
 
             $('#summernote').summernote({
                 height: 200,
@@ -259,7 +248,7 @@
                 const formData = new FormData(this);
                 $.ajax({
                     type: 'POST',
-                    url: route('sample-crud.store'),
+                    url: route('sample-crud.update', @json($sampleCrud->id)),
                     data: formData,
                     contentType: false,
                     processData: false,
@@ -300,24 +289,17 @@
 
             $("#summernote").summernote('code', @json(clean($sampleCrud->summernote)));
 
-
-
-
             const file_pdf = FilePond.create(document.querySelector('#file_pdf'));
             file_pdf.setOptions({
                 onactivatefile: (item) => {
-                    window.open(@json(url('viewpdf/web/viewer.html?url=')) + item.serverId,
-                        '_blank'
-                    );
-
+                    window.open(@json(url('viewpdf/web/viewer.html?url=')) + item.serverId,'_blank');
                 },
-                styleItemPanelAspectRatio: 1,
-                imageCropAspectRatio: '1:1',
+           
+              
                 allowImagePreview: true,
                 allowMultiple: true,
                 allowReorder: true,
-                imagePreviewHeight: 300,
-                imagePreviewWidth: 300,
+           
                 server: {
                     url: "{{ config('filepond.server.url') }}",
                     headers: {
@@ -362,7 +344,6 @@
                         },
                         type: 'image'
                     });
-
                 },
                 allowDownloadByUrl: true, // by default downloading by URL disabled
                 styleItemPanelAspectRatio: 1,

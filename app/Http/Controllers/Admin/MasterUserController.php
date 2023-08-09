@@ -30,13 +30,10 @@ class MasterUserController extends Controller
     
       $data = User::with('file_foto');
       $x['roles']          = Role::get();
-
-
       if (request()->ajax()) {
          return  datatables()->of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
-              
                return view('admin.master-user.action', compact('data'));
             })
             ->editColumn('foto', function ($data) {

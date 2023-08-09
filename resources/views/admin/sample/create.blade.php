@@ -1,20 +1,57 @@
 @extends('admin.layouts.master')
 @push('css')
-    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }} ">
-    <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }} ">
+<link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('plugins/flatpicker/flatpickr.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/flatpicker/flatpickr.min.css') }}">
 
-    <link href="{{ asset('plugins/filepond/filepond.css') }}" rel="stylesheet" />
-    <link href="{{ asset('plugins/filepond/filepond-plugin-image-preview.css') }} " rel="stylesheet" />
+<link rel="stylesheet" href="{{ asset('template/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('template/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ asset('template/admin/plugins/summernote/summernote-bs4.min.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('template/admin/plugins/summernote/summernote-bs4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/filepond/filepond.css') }}" />
+<link rel="stylesheet" href="{{ asset('plugins/filepond/filepond-plugin-image-preview.css') }}" />
+<link rel="stylesheet" href="{{ asset('plugins/filepond/filepond-plugin-get-file.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/filepond/filepond-plugin-image-overlay.css') }}">
+
+<link rel="stylesheet" href="{{ asset('plugins/magnific/magnific-popup.min.css') }}" />
+
+<link rel="stylesheet" href="{{ asset('plugins/filepond/filepond-plugin-file-poster.css') }}"  />
 
     <style>
-        #file_cover_multi .filepond--item {
-            width: calc(32% - 0.5em);
+     
+     #file_pdf .filepond--item {
+            cursor: pointer;
+        }
+
+
+
+        .filepond--list-scroller {
+            cursor: default;
+        }
+
+        .filepond--root {
+            height: auto;
+        }
+
+        @media (min-width: 576px) {
+            #file_cover_multi .filepond--item {
+                width: calc(32% - 0.5em);
+            }
+
+           
+
+        
+        }
+
+        a {
+            color: dodgerblue;
+            text-decoration: none;
+        }
+
+        a:hover {
+            cursor: pointer;
+            text-decoration: underline;
         }
     </style>
 @endpush
@@ -70,9 +107,13 @@
                         </x-checkbox.item>
                     </x-check-box>
                     <x-filepond id="file_cover" label='File Cover' info='( Format File JPG/PNG , Maks 5 MB)'
-                       />
+                        accept="image/jpeg, image/png" />
+
                     <x-filepond id="file_cover_multi" name="file_cover_multi[]" label='File Cover multiple'
                         info='( Format File JPG/PNG , Maks 5 MB)' accept="image/jpeg, image/png" multiple />
+
+                    <x-filepond id="file_pdf" name="file_pdf[]" label='File PDF' info='( Format File PDF, Maks 5 MB)'
+                        accept="application/pdf" multiple />
                     <x-summernote id="summernote" label="Summenote Editor" />
                 </div>
                 <div class="card-footer">
@@ -84,32 +125,36 @@
 @endsection
 
 @push('js')
-    <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
+<script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
+<script src="{{ asset('template/admin/plugins/summernote/summernote-bs4.min.js') }}"></script>
+<script src="{{ asset('template/admin/plugins/summernote/summernote-bs4.min.js') }}"></script>
 
-    <script src="{{ asset('template/admin/plugins/summernote/summernote-bs4.min.js') }}"></script>
-    <script src="{{ asset('template/admin/plugins/summernote/summernote-bs4.min.js') }}"></script>
+{{-- currency format input --}}
+<script src="{{ asset('plugins/autoNumeric.min.js') }}"></script>
 
-    {{-- currency format input --}}
-    <script src="{{ asset('plugins/autoNumeric.min.js') }}"></script>
+{{-- flatcpiker format date input --}}
+<script src="{{ asset('plugins/flatpicker/flatpickr.min.js') }}"></script>
+<script src="{{ asset('plugins/flatpicker/id.min.js') }}"></script>
 
-    {{-- flatcpiker format date input --}}
-    <script src="{{ asset('plugins/flatpicker/flatpickr.min.js') }}"></script>
-    <script src="{{ asset('plugins/flatpicker/id.min.js') }}"></script>
+{{-- filepond --}}
+<script src="{{ asset('plugins/filepond/filepond-plugin-file-poster.js') }}"></script>
+<script src="{{ asset('plugins/filepond/filepond.js') }}"></script>
+<script src="{{ asset('plugins/filepond/filepond-plugin-file-metadata.js') }}"></script>
+<script src="{{ asset('plugins/filepond/filepond-plugin-file-encode.js') }}"></script>
+<script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
+<script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-size.js') }} "></script>
+<script src="{{ asset('plugins/filepond/filepond-plugin-image-preview.js') }}"></script>
 
-    {{-- filepond --}}
-    <script src="{{ asset('plugins/filepond/filepond.js') }}"></script>
-    <script src="{{ asset('plugins/filepond/filepond-plugin-file-metadata.js') }}"></script>
-    <script src="{{ asset('plugins/filepond/filepond-plugin-file-encode.js') }}"></script>
-    <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-type.js') }}"></script>
-    <script src="{{ asset('plugins/filepond/filepond-plugin-file-validate-size.js') }} "></script>
-    <script src="{{ asset('plugins/filepond/filepond-plugin-image-preview.js') }}"></script>
+<script src="{{ asset('plugins/filepond/filepond-get-files.js') }}"></script>
+<script src="{{ asset('plugins/magnific/jquery.magnific-popup.min.js') }}"></script>
 
 
-    {{-- password toggle show/hide --}}
-    <script src="{{ asset('plugins/toggle-password.js') }}"></script>
+{{-- password toggle show/hide --}}
+<script src="{{ asset('plugins/toggle-password.js') }}"></script>
 
-    {{-- masking input currency,date input --}}
-    <script src="{{ asset('plugins/jquery.mask.min.js') }}"></script>
+{{-- masking input currency,date input --}}
+<script src="{{ asset('plugins/jquery.mask.min.js') }}"></script>
+<script src="{{ asset('plugins/filepond/filepond-plugin-image-overlay.js') }}"></script>
 
     <script>
         $(function() {
@@ -166,46 +211,15 @@
             $('#contact').mask('0000-0000-000000');
 
             FilePond.registerPlugin(
+                //  FilePondPluginGetFile,
                 FilePondPluginFileEncode,
                 FilePondPluginImagePreview,
-                
+                FilePondPluginFilePoster,
+                FilePondPluginImageOverlay,
                 FilePondPluginFileValidateType,
                 FilePondPluginFileValidateSize)
 
-            const file_cover = FilePond.create(document.querySelector('#file_cover'));
-
-            file_cover.setOptions({
-                server: {
-                    url: "{{ config('filepond.server.url') }}",
-                    headers: {
-                        'X-CSRF-TOKEN': "{{ @csrf_token() }}",
-                    }
-                }
-            });
-
-            const file_cover_multi = FilePond.create(document.querySelector('#file_cover_multi'));
-
-            file_cover_multi.setOptions({
-               styleItemPanelAspectRatio: 1,
-                imageCropAspectRatio: '1:1',
-                allowImagePreview: true,
-                allowMultiple: true,
-                allowReorder: true,
-                imagePreviewHeight: 300,
-                imagePreviewWidth: 300,
-                server: {
-                    url: "{{ config('filepond.server.url') }}",
-                    headers: {
-                        'X-CSRF-TOKEN': "{{ @csrf_token() }}",
-                    }
-                }
-            });
-
-           
-
-
             $('#summernote').summernote({
-
                 height: 200,
                 imageTitle: {
                     specificAltField: true,
@@ -226,7 +240,7 @@
                     ],
                 },
             })
-        })
+      
 
         $('#form_sample').submit(function(e) {
             e.preventDefault();
@@ -252,5 +266,72 @@
                 }
             })
         })
+
+        const file_pdf = FilePond.create(document.querySelector('#file_pdf'));
+            file_pdf.setOptions({
+                onactivatefile: (item) => {
+                    window.open(@json(url('viewpdf/web/viewer.html?url=')) + item.serverId,
+                        '_blank'
+                    );
+
+                },
+                allowMultiple: true,
+                allowReorder: true,
+                server: {
+                    url: "{{ config('filepond.server.url') }}",
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ @csrf_token() }}",
+                    }
+                },
+            });
+
+            const file_cover = FilePond.create(document.querySelector('#file_cover'));
+            file_cover.setOptions({
+                allowImagePreview: true,
+                onactivatefile: (item) => {
+                    $.magnificPopup.open({
+                        items: {
+                            src: item.serverId
+                        },
+                        type: 'image'
+                    });
+                },
+                server: {
+                    url: "{{ config('filepond.server.url') }}",
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ @csrf_token() }}",
+                    }
+                },
+              
+            })
+
+            const file_cover_multi = FilePond.create(document.querySelector('#file_cover_multi'));
+            file_cover_multi.setOptions({
+                onactivatefile: (item) => {
+                    $.magnificPopup.open({
+                        items: {
+                            src: item.serverId
+                        },
+                        type: 'image'
+                    });
+
+                },
+                allowDownloadByUrl: true, // by default downloading by URL disabled
+                styleItemPanelAspectRatio: 1,
+                imageCropAspectRatio: '1:1',
+                allowImagePreview: true,
+                allowMultiple: true,
+                allowReorder: true,
+                imagePreviewHeight: 300,
+                imagePreviewWidth: 300,
+                server: {
+                    url: "{{ config('filepond.server.url') }}",
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ @csrf_token() }}",
+                    }
+                }
+            });
+
+         })
     </script>
 @endpush

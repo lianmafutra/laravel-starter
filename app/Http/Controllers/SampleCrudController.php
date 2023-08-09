@@ -23,6 +23,9 @@ class SampleCrudController extends Controller
       if (request()->ajax()) {
          return datatables()->of($data)
             ->addIndexColumn()
+            ->addColumn('id', function ($data) {
+               return $data->hashId;
+            })
             ->addColumn('action', function ($data) {
                return view('admin.sample.action', compact('data'));
             })
@@ -31,8 +34,8 @@ class SampleCrudController extends Controller
             })
             ->editColumn('category_multi_id', function ($data) {
                $boldArray = array_map(function ($item) {
-                  return '<button type="button" class="m-1 btn bnt-sm btn-outline-secondary">'.$item.'</button>';
-               }, json_decode($data->category_multi_id));
+                  return '<button type="button" class="ml-1 btn bnt-sm btn-outline-secondary">'.$item.'</button>';
+               }, $data->category_multi_id);
                $string = implode("", $boldArray);
                return $string;
             })
@@ -52,7 +55,6 @@ class SampleCrudController extends Controller
    public function store(SampleCrudRequest $request)
    {
       try {
-
 
          DB::beginTransaction();
 

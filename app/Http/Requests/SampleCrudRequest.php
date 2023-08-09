@@ -19,7 +19,7 @@ class SampleCrudRequest extends FormRequest
    {
 
       $this->merge([
-         'category_multi_id' => json_encode($this->category_multi_id),
+         // 'category_multi_id' => json_encode($this->category_multi_id),
          'date_range_start'  => DateUtils::rangeDate($this->date_range)->get('start_date'),
          'date_range_end'    => DateUtils::rangeDate($this->date_range)->get('end_date'),
          'date_publisher'    => DateUtils::format($this->date_publisher),
@@ -28,6 +28,7 @@ class SampleCrudRequest extends FormRequest
          'end_date'          => DateUtils::format($this->end_date),
          'contact'           => trim(preg_replace('/[^0-9]/', '', $this->contact)),
          'price'             => Rupiah::clean($this->price),
+        
       ]);
    }
 
@@ -39,7 +40,7 @@ class SampleCrudRequest extends FormRequest
          'title'             => 'required|min:10|max:50|string',
          'desc'              => 'required|min:10|max:50|string',
          'category_id'       => 'required|string',
-         'category_multi_id' => 'required',
+         'category_multi_id' => 'required|array',
          'check'             => 'required',
          'radio'             => 'required',
          'time'              => 'required|date_format:H:i',

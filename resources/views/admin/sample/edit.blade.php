@@ -248,7 +248,7 @@
                 const formData = new FormData(this);
                 $.ajax({
                     type: 'POST',
-                    url: route('sample-crud.update', @json($sampleCrud->id)),
+                    url: route('sample-crud.update', @json($sampleCrud->hashId)),
                     data: formData,
                     contentType: false,
                     processData: false,
@@ -274,7 +274,7 @@
             $('#title').val(@json($sampleCrud->title))
             $('#desc').val(@json($sampleCrud->desc))
             $('#category_id').val(@json($sampleCrud->category_id)).change()
-            $("#category_multi_id").val(@json(json_decode($sampleCrud->category_multi_id))).change()
+            $("#category_multi_id").val( @json($sampleCrud->category_multi_id) ).change()
             $('#days').val(@json($sampleCrud->days)).change()
             $('#month').val(@json($sampleCrud->month)).change()
             $('#contact').val(@json($sampleCrud->contact))

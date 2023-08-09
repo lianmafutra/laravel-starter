@@ -55,6 +55,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Hash Id</th>
                             <th>Title</th>
                             <th>Category</th>
                             <th>Categories</th>
@@ -109,6 +110,11 @@
                         searchable: false,
                     },
                     {
+                        data: 'id',
+                        orderable: false,
+                        searchable: true,
+                    },
+                    {
                         data: 'title',
                         orderable: false,
                         searchable: true,
@@ -122,11 +128,14 @@
                     {
                         data: 'category_multi_id',
                         name: 'category_multi_id',
+                        orderable: false,
+                        defaultContent: '',
                         searchable: false,
                     },
                     {
                         data: 'price_format',
-                        searchable: false,
+                        name: 'price',
+                        searchable: true,
                     },
                     {
                         data: 'created_at',

@@ -16,12 +16,9 @@
                     <div class="row">
                         <div class="col-sm col-auto col-md-auto">
                             <a href="#" class="btn btn-sm btn-primary" id="btn_add_permission">
-                                <i class="fas fa-plus"></i> Add Permission</a>
+                                <i class="fas fa-plus"></i> Create</a>
                         </div>
-                        <div class="col-sm col-auto col-md-auto">
-                            <a href="#" class="btn btn-sm btn-primary" id="btn_add_multi_permission">
-                                <i class="fas fa-plus"></i> Add Multiple </a>
-                        </div>
+                      
                         <div style="margin :auto" class="card-tools col float-right mt-3">
                             <button type="button" class="float-right btn btn-tool" data-card-widget="collapse"
                                 title="Collapse">Filter
@@ -58,17 +55,10 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Permission</th>
-                            <th>Group</th>
-                            <th>Guard</th>
-                            <th>Desc</th>
-                            <th>CreatedAt</th>
-                            <th>CreatedAt</th>
-                            <th>CreatedAt</th>
-                            <th>CreatedAt</th>
-                            <th>CreatedAt</th>
-                            <th>CreatedAt</th>
-                            <th>CreatedAt</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Categories</th>
+                            <th>Price</th>
                             <th>CreatedAt</th>
                             <th>Action</th>
                         </tr>
@@ -112,57 +102,37 @@
                     leftColumns: @json(Cache::store('styles')->get('left_fixed_action', 0)),
                     rightColumns: @json(Cache::store('styles')->get('right_fixed_action', 0))
                 },
-                ajax: route('permission.index'),
+                ajax: route('sample-crud.index'),
                 columns: [{
                         data: "DT_RowIndex",
                         orderable: false,
                         searchable: false,
                     },
                     {
-                        data: 'name',
+                        data: 'title',
                         orderable: false,
                         searchable: true,
                     },
                     {
-                        data: 'group',
-                        name: 'permission_group.name',
+                        data: 'category_id',
+                        name: 'category',
                         searchable: true,
                         orderable: false
                     },
                     {
-                        data: 'guard_name',
+                        data: 'category_multi_id',
+                        name: 'category_multi_id',
                         searchable: false,
                     },
                     {
-                        data: 'desc',
-                        searchable: false,
-                    },
-                    {
-                        data: 'created_at',
+                        data: 'price_format',
                         searchable: false,
                     },
                     {
                         data: 'created_at',
                         searchable: false,
-                    }, {
-                        data: 'created_at',
-                        searchable: false,
-                    }, {
-                        data: 'created_at',
-                        searchable: false,
-                    }, {
-                        data: 'created_at',
-                        searchable: false,
-                    }, {
-                        data: 'created_at',
-                        searchable: false,
-                    }, {
-                        data: 'created_at',
-                        searchable: false,
-                    }, {
-                        data: 'created_at',
-                        searchable: false,
                     },
+                    
                     {
                         data: "action",
                         orderable: false,

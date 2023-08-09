@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SampleCrudRequest;
-use App\Models\PermissionGroup;
 use App\Models\SampleCrud;
 use App\Utils\ApiResponse;
 use Carbon\Carbon;
 use DB;
-use Illuminate\Http\Request;
 
 
 class SampleCrudController extends Controller
@@ -18,30 +16,30 @@ class SampleCrudController extends Controller
    public function index()
    {
 
-      $data = DB::table('permissions')
-         ->select('permissions.*', 'permission_group.name as group', 'permissions.name as name')
-         ->leftJoin('permission_group', 'permission_group.id', '=', 'permissions.permission_group_id');
-      $groupIndex = PermissionGroup::get();
+      $data = SampleCrud::all();
+      
+      
+
       if (request()->ajax()) {
          return datatables()->of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
-               return view('admin.permissions.action', compact('data'));
+               return view('admin.sample.action', compact('data'));
             })
             ->editColumn('created_at', function ($data) {
                return Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('d/m/Y h:i:s');
             })
-            ->editColumn('guard_name', function ($data) {
-               if ($data->guard_name == 'web') {
-                  return   '<span class="badge badge-primary">' . $data->guard_name . '</span>';;
-               } elseif ($data->guard_name == 'api') {
-                  return   '<span class="badge badge-warning">' . $data->guard_name . '</span>';;
-               }
+            ->editColumn('category_multi_id', function ($data) {
+               $boldArray = array_map(function ($item) {
+                  return '<button type="button" class="m-1 btn bnt-sm btn-outline-secondary">'.$item.'</button>';
+               }, json_decode($data->category_multi_id));
+               $string = implode("", $boldArray);
+               return $string;
             })
-            ->rawColumns(['action', 'guard_name'])
+            ->rawColumns(['action', 'category_multi_id'])
             ->make(true);
       }
-      return view('admin.sample.index', compact('data', 'groupIndex'));
+      return view('admin.sample.index', compact('data'));
    }
 
 
@@ -55,11 +53,11 @@ class SampleCrudController extends Controller
    {
       try {
 
-       
+
          DB::beginTransaction();
 
          $sampleCrud = SampleCrud::create($request->safe()->except('date_range', 'file_cover', 'file_cover_multi', 'file_pdf'));
-      
+
          $sampleCrud
             ->addFile($request->file_pdf)
             ->path("file_pdf")
@@ -107,12 +105,11 @@ class SampleCrudController extends Controller
    {
       try {
 
-    
+
          DB::beginTransaction();
-    
+
          $sampleCrud->fill($request->safe()->except('date_range', 'file_cover', 'file_cover_multi', 'file_pdf'))->save();
-    
-      
+
          $sampleCrud
             ->addFile($request->file_pdf)
             ->path("file_pdf")
@@ -128,7 +125,7 @@ class SampleCrudController extends Controller
             ->withThumb(100)
             ->compress(60)
             ->updateFile();
-            
+
          $sampleCrud
             ->addFile($request->file_cover_multi)
             ->path("cover_multi")
@@ -149,6 +146,11 @@ class SampleCrudController extends Controller
 
    public function destroy(SampleCrud $sampleCrud)
    {
-      //
+      try {
+         $sampleCrud->delete();
+         return redirect()->back()->with('success', config('language.alert-success.destroy'), 200);
+      } catch (\Throwable $th) {
+         return redirect()->back()->with('error', config('language.alert-error.destroy'), 400);
+      }
    }
 }

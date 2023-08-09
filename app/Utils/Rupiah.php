@@ -11,4 +11,8 @@ class Rupiah
             $output = preg_replace( '/[^0-9]/', '', $rupiah);
             return $output;
       }
+
+      public static function toRupiah($value){
+         return 'Rp ' . number_format($value, 0, ',', '.');
+      }
 }

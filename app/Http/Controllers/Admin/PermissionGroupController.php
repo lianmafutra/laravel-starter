@@ -17,7 +17,8 @@ class PermissionGroupController extends Controller
 
    public function index()
    {
-      $data       = PermissionGroup::with(['permissions' => function ($query) {
+      
+      $data = PermissionGroup::with(['permissions' => function ($query) {
          $query->orderBy('name', 'ASC');
       }]);
 
@@ -34,7 +35,6 @@ class PermissionGroupController extends Controller
                $output = array_map(function ($val) {
                   return '<button type="button" class="m-1 btn bnt-sm btn-outline-secondary">' . $val . '</button>';
                }, $data->permissions->pluck('name')->toArray());
-
                return implode('', $output);
             })
 

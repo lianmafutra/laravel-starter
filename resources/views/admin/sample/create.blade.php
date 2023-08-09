@@ -19,36 +19,24 @@
 <link rel="stylesheet" href="{{ asset('plugins/filepond/filepond-plugin-file-poster.css') }}"  />
 
     <style>
-     
      #file_pdf .filepond--item {
             cursor: pointer;
         }
-
-
-
         .filepond--list-scroller {
             cursor: default;
         }
-
         .filepond--root {
             height: auto;
         }
-
         @media (min-width: 576px) {
             #file_cover_multi .filepond--item {
                 width: calc(32% - 0.5em);
             }
-
-           
-
-        
         }
-
         a {
             color: dodgerblue;
             text-decoration: none;
         }
-
         a:hover {
             cursor: pointer;
             text-decoration: underline;

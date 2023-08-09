@@ -26,24 +26,18 @@
         .filepond--list-scroller {
             cursor: default;
         }
-
-       
-
         @media (min-width: 576px) {
             #file_cover_multi .filepond--item {
                 width: calc(32% - 0.5em);
             }
-
             #file_pdf .filepond--item {
                width: calc(32% - 0.5em);
             }
         }
-
         a {
             color: dodgerblue;
             text-decoration: none;
         }
-
         a:hover {
             cursor: pointer;
             text-decoration: underline;

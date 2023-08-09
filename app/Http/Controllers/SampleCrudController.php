@@ -7,7 +7,7 @@ use App\Models\SampleCrud;
 use App\Utils\ApiResponse;
 use Carbon\Carbon;
 use DB;
-
+use Illuminate\Notifications\Action;
 
 class SampleCrudController extends Controller
 {
@@ -27,6 +27,7 @@ class SampleCrudController extends Controller
                return $data->hashId;
             })
             ->addColumn('action', function ($data) {
+              
                return view('admin.sample.action', compact('data'));
             })
             ->editColumn('created_at', function ($data) {

@@ -15,7 +15,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-sm col-auto col-md-auto">
-                            <a href="#" class="btn btn-sm btn-primary" id="btn_add_permission">
+                            <a href="{{ route('sample-crud.create') }}" class="btn btn-sm btn-primary">
                                 <i class="fas fa-plus"></i> Create</a>
                         </div>
                       

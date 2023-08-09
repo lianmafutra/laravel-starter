@@ -2,7 +2,7 @@
    <div class="container-fluid">
        <div class="row mb-2">
            <div class="col-sm-6">
-               <h5 class="m-0">{{ $title }}</h5>
+               <h5 class="m-0 header-font">{{ $title }}</h5>
            </div>
        </div>
    </div>

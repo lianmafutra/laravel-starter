@@ -34,7 +34,7 @@ class SampleCrudRequest extends FormRequest
    public function rules()
    {
 
-     
+
       return [
          'title'             => 'required|min:10|max:50|string',
          'desc'              => 'required|min:10|max:50|string',
@@ -55,16 +55,18 @@ class SampleCrudRequest extends FormRequest
          'date_range_start'  => 'required|date_format:Y-m-d',
          'date_range_end'    => 'required|date_format:Y-m-d',
          'summernote'        => 'required|string|max:500',
+         'file_pdf'   => 'required',
+         'file_pdf.*' => Rule::filepond([
+            'file',
+            'mimes:pdf',
+            'max:10000'
+         ]),
          'file_cover'        => 'required', Rule::filepond([
             'file',
             'mimes:jpeg,jpg,png',
             'max:20000'
          ]),
-         // 'file_Pdf'        => 'required', Rule::filepond([
-         //    'file',
-         //    'mimes:pdf',
-         //    'max:20000'
-         // ]),
+
          'file_cover_multi'   => 'required',
          'file_cover_multi.*' => Rule::filepond([
             'file',

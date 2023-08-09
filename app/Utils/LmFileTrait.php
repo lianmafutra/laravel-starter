@@ -266,13 +266,15 @@ trait LmFileTrait
 
       try {
          $field = $this->field;
-         
 
-         // $this->deleteDataOnUpdate();
+         $this->deleteDataOnUpdate();
 
          $filepondFile = Filepond::field($this->file)->getFile();
+   
          $file_uuid = $this->getModel()->$field ? $this->getModel()->$field : Str::uuid();
+      
          $fileAttribute = $this->fileAttribute($filepondFile);
+        
 
          if ($this->withThumb) {
             $thumb = new GenerateThumbnail();
@@ -293,6 +295,7 @@ trait LmFileTrait
          }
 
          if ($this->compress) {
+           
             if ($filepondFile->getSize() >= $this->sizeToCompress) {
                $fileCompress = new CompressImage();
                $fileCompress = $fileCompress->run($filepondFile, $this->compressValue);
@@ -303,13 +306,16 @@ trait LmFileTrait
                   $fileCompress
                );
             }
+          
          } else {
-        
             Filepond::field($this->file)->moveTo(
-               $this->custom_path .
+               $this->custom_path.
                   $fileAttribute->get('name_uniqe')
             );
+         
          }
+
+       
 
          $this->getModel()->update([
             $this->field => $file_uuid
@@ -463,15 +469,43 @@ trait LmFileTrait
    {
       $dataCollection = [];
       $dataObject = [];
-      foreach ($this->makeFileAttribute() as $key => $value) {
-         $dataObject = [
-            "source" => $value->full_path,
-            "options" => [
-               "type" => "local",
-            ]
-         ];
-         array_push($dataCollection, $dataObject);
+
+
+      if($this->makeFileAttribute()->toArray()[0]['mime'] == "application/pdf"){
+
+         foreach ($this->makeFileAttribute() as $key => $value) {
+            $dataObject = [
+               "source" => $value->full_path,
+               "options" => [
+                  "type" => "local",
+                  "file"=> [
+                     "name"=>  $value->name_origin,
+                     "size"=>  $value->size,
+                  ],
+                  "metadata" => [
+                     "poster" => asset('img/pdf-thumb.png'),
+                  ]
+               ]
+            ];
+            array_push($dataCollection, $dataObject);
+         }
+
+
+         
+      }else{
+         foreach ($this->makeFileAttribute() as $key => $value) {
+            $dataObject = [
+               "source" => $value->full_path,
+               "options" => [
+                  "type" => "local",
+               ]
+            ];
+            array_push($dataCollection, $dataObject);
+         }
       }
+
+
+     
       return $dataCollection;
    }
 

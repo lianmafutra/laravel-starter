@@ -40,7 +40,11 @@ class MasterUserController extends Controller
                return view('admin.master-user.action', compact('data'));
             })
             ->editColumn('foto', function ($data) {
-               return '<img   class="foto img-circle elevation-3 foto p-0" src="' . $data?->getUrlFoto() . '' . '" height="40px" width="40px"; style="object-fit: cover; padding: 0px !important;">';
+               if($data?->field('foto')->getFile()){
+                  return '<img class="foto img-circle elevation-3 foto p-0" src="' . $data?->field('foto')->getFile() . '' . '" height="40px" width="40px"; style="object-fit: cover; padding: 0px !important;">';
+               }else{
+                  return '<img class="foto img-circle elevation-3 foto p-0" src="' . asset('img/avatar.png') . '' . '" height="40px" width="40px"; style="object-fit: cover; padding: 0px !important;">';
+               }
             })
             ->addColumn('role', function (User $data) {
                return $this->userServices->getRoleColor($data->getRoleName());

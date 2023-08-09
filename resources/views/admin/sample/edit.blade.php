@@ -20,22 +20,33 @@
 
 
     <style>
-        .filepond--item {
+        #file_pdf .filepond--item {
             cursor: pointer;
         }
+
+    
 
         .filepond--list-scroller {
             cursor: default;
         }
-
+       
+.filepond--root {
+  height: auto;
+}
         @media (min-width: 576px) {
             #file_cover_multi .filepond--item {
                 width: calc(32% - 0.5em);
             }
 
             #file_pdf .filepond--item {
-                width: calc(32% - 0.5em);
+                width: calc(25% - 0.5em);
+                height: ;: calc(25% - 0.5em);
             }
+
+            #file_pdf .filepond--item {
+               width: calc(25% - 0.5em);
+                height: ;: calc(25% - 0.5em);
+        }
         }
 
         a {
@@ -107,13 +118,13 @@
                     </x-check-box>
 
                     <x-filepond id="file_cover" label='File Cover' info='( Format File JPG/PNG , Maks 5 MB)'
-                        accept="image/jpeg, image/png" /></a>
+                        accept="image/jpeg, image/png" />
 
                     <x-filepond id="file_cover_multi" name="file_cover_multi[]" label='File Cover multiple'
                         info='( Format File JPG/PNG , Maks 5 MB)' accept="image/jpeg, image/png" multiple />
 
-                    <x-filepond id="file_pdf" label='File PDF' info='( Format File PDF, Maks 5 MB)'
-                        accept="application/pdf" />
+                    <x-filepond id="file_pdf" name="file_pdf[]" label='File PDF' info='( Format File PDF, Maks 5 MB)'
+                        accept="application/pdf" multiple />
 
                     <x-summernote id="summernote" label="Summenote Editor" />
 
@@ -290,15 +301,23 @@
             $("#summernote").summernote('code', @json(clean($sampleCrud->summernote)));
 
 
+
+
             const file_pdf = FilePond.create(document.querySelector('#file_pdf'));
             file_pdf.setOptions({
-                allowImagePreview: true,
-                filePosterMaxHeight: 200,
                 onactivatefile: (item) => {
                     window.open(@json(url('viewpdf/web/viewer.html?url=')) + item.serverId,
                         '_blank'
                     );
+
                 },
+                styleItemPanelAspectRatio: 1,
+                imageCropAspectRatio: '1:1',
+                allowImagePreview: true,
+                allowMultiple: true,
+                allowReorder: true,
+                imagePreviewHeight: 300,
+                imagePreviewWidth: 300,
                 server: {
                     url: "{{ config('filepond.server.url') }}",
                     headers: {
@@ -308,9 +327,8 @@
                         _getFilepond(source, load)
                     }
                 },
-                files: @json($sampleCrud->field('file_pdf')->getFilepond())
-
-            })
+                files: @json($sampleCrud->field('file_pdf')->getFileponds())
+            });
 
             const file_cover = FilePond.create(document.querySelector('#file_cover'));
             file_cover.setOptions({

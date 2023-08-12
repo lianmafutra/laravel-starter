@@ -24,6 +24,15 @@ window._getFilepond = function (source, load) {
    request.send();
 }
 
+window._alertDeleteFilepond = function (resolve, reject) {
+   if (confirm("Are You Sure Delete This File ?") == true) {
+      return true;
+    } else {
+      return false;
+    }
+ };  
+
+
 
 
 

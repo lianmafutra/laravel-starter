@@ -296,13 +296,9 @@
                     window.open(@json(url('viewpdf/web/viewer.html?url=')) + item.serverId, '_blank');
                 },
                 beforeRemoveFile: (item) => {
-                    let text;
-                    if (confirm("Are You Sure Delete This File ?") == true) {
-                        text = "You pressed OK!";
-                    } else {
-                        text = "You canceled!";
-                        return false;
-                    }
+                    return new Promise((resolve, reject) => {
+                       _alertDeleteFilepond()
+                    })
                 },
                 allowImagePreview: true,
                 allowMultiple: true,
@@ -331,6 +327,11 @@
                         type: 'image'
                     });
                 },
+                beforeRemoveFile: (item) => {
+                    return new Promise((resolve, reject) => {
+                       _alertDeleteFilepond()
+                    })
+                },
                 server: {
                     url: "{{ config('filepond.server.url') }}",
                     headers: {
@@ -352,6 +353,11 @@
                         },
                         type: 'image'
                     });
+                },
+                beforeRemoveFile: (item) => {
+                    return new Promise((resolve, reject) => {
+                       _alertDeleteFilepond()
+                    })
                 },
                 styleItemPanelAspectRatio: 1,
                 imageCropAspectRatio: '1:1',

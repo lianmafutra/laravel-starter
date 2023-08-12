@@ -15,9 +15,7 @@ class SampleCrud extends Model
 {
    use LmFileTrait;
    use HasFactory;
-   use HasHashId;
-   use SavesHashId;
-   use HasHashIdRouting;
+   use HasHashId, SavesHashId, HasHashIdRouting;
 
    protected $table = 'sample';
    protected $guarded = [];

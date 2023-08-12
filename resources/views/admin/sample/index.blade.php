@@ -18,7 +18,7 @@
                             <a href="{{ route('sample-crud.create') }}" class="btn btn-sm btn-primary">
                                 <i class="fas fa-plus"></i> Create</a>
                         </div>
-                      
+
                         <div style="margin :auto" class="card-tools col float-right mt-3">
                             <button type="button" class="float-right btn btn-tool" data-card-widget="collapse"
                                 title="Collapse">Filter
@@ -100,10 +100,12 @@
                 order: [
                     [6, 'desc']
                 ],
-                scrollX: true,
+                aaSorting: [],
+                scrollX: false,
+
                 fixedColumns: {
                     leftColumns: @json(Cache::store('styles')->get('left_fixed_action', 0)),
-                    rightColumns: @json(Cache::store('styles')->get('right_fixed_action', 0))
+                    rightColumns: 1
                 },
                 ajax: route('sample-crud.index'),
                 columns: [{
@@ -131,7 +133,7 @@
                         data: 'category_multi_id',
                         name: 'category_multi_id',
                         orderable: false,
-                        defaultContent: '',
+
                         searchable: false,
                     },
                     {
@@ -143,7 +145,7 @@
                         data: 'created_at',
                         searchable: false,
                     },
-                    
+
                     {
                         data: "action",
                         orderable: false,
@@ -153,25 +155,25 @@
                 ],
             }
 
-         
-                Object.assign(tableOptions, {
-                    dom: "<'row' <'col-sm-12 col-md-1'l>  <'col-sm-12 col-md-4'B> <'col-sm-12 col-md-6'f> >" +
-                        "<'row'<'col-sm-12'tr> >" +
-                        "<'row' <'col-sm-12 col-md-5' i> <'col-sm-12 col-md-7 text-right'p> >",
-                    initComplete: function() {
-                        $('body').find('.dataTables_scrollBody').addClass("scrollbar");
-                    },
-                    buttons: {
-                        dom: {
-                            button: {
-                                className: 'btn btn-sm btn-default'
-                            }
-                        },
-                        "buttons": @json(Cache::store('styles')->get('action_button')),
-                    },
-                });
-        
-            Object.assign(tableOptions, {});
+
+            //  Object.assign(tableOptions, {
+            //      dom: "<'row' <'col-sm-12 col-md-1'l>  <'col-sm-12 col-md-4'B> <'col-sm-12 col-md-6'f> >" +
+            //          "<'row'<'col-sm-12'tr> >" +
+            //          "<'row' <'col-sm-12 col-md-5' i> <'col-sm-12 col-md-7 text-right'p> >",
+            //      initComplete: function() {
+            //          $('body').find('.dataTables_scrollBody').addClass("scrollbar");
+            //      },
+            //      buttons: {
+            //          dom: {
+            //              button: {
+            //                  className: 'btn btn-sm btn-default'
+            //              }
+            //          },
+            //          "buttons": @json(Cache::store('styles')->get('action_button')),
+            //      },
+            //  });
+
+            // Object.assign(tableOptions, {});
 
             datatable.DataTable(tableOptions);
             // datatable.DataTable(tableOptions);
@@ -294,7 +296,7 @@
                     $("#permission_group_id").val(response.data.permission_group_id).change()
                 })
             })
-            
+
             $('#datatable').on('click', '.btn_delete', function(e) {
                 e.preventDefault()
                 Swal.fire({

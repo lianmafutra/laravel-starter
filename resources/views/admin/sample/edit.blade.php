@@ -297,7 +297,7 @@
                 },
                 beforeRemoveFile: (item) => {
                     return new Promise((resolve, reject) => {
-                       _alertDeleteFilepond()
+                        _alertDeleteFilepond()
                     })
                 },
                 allowImagePreview: true,
@@ -320,16 +320,22 @@
             const file_cover = FilePond.create(document.querySelector('#file_cover'));
             file_cover.setOptions({
                 onactivatefile: (item) => {
-                    $.magnificPopup.open({
+                  $.magnificPopup.open({
                         items: {
                             src: item.serverId
+                        },
+                        image: {
+                            titleSrc: function(item2) {
+                              console.log('fileku', item)
+                                return `<center><span style="text-align: center !important" class="image_title">${item.filename}</span></center>`;
+                            }
                         },
                         type: 'image'
                     });
                 },
                 beforeRemoveFile: (item) => {
                     return new Promise((resolve, reject) => {
-                       _alertDeleteFilepond()
+                        _alertDeleteFilepond()
                     })
                 },
                 server: {
@@ -351,12 +357,18 @@
                         items: {
                             src: item.serverId
                         },
+                        image: {
+                            titleSrc: function(item2) {
+                              console.log('fileku', item)
+                                return `<center><span style="text-align: center !important" class="image_title">${item.filename}</span></center>`;
+                            }
+                        },
                         type: 'image'
                     });
                 },
                 beforeRemoveFile: (item) => {
                     return new Promise((resolve, reject) => {
-                       _alertDeleteFilepond()
+                        _alertDeleteFilepond()
                     })
                 },
                 styleItemPanelAspectRatio: 1,

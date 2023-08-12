@@ -34,9 +34,12 @@ window._alertDeleteFilepond = function (resolve, reject) {
 
 window._showImageFilepond = function (item) {
    $.magnificPopup.open({
+      
+  mainClass: 'mfp-fade',
       items: {
          src: item.serverId
       },
+      
       image: {
          titleSrc: function () {
             return `<center><span style="text-align: center !important" class="image_title">${item.filename}<br> ${item.getMetadata('name_origin')},<br> Created At :  ${item.getMetadata('created_at')}</span></center>`;

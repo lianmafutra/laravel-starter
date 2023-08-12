@@ -33,10 +33,7 @@ trait LmFileTrait
    protected $compressValue = 0;
    protected $sizeToCompress = 40000;
 
-   public function __construct()
-   {
-      parent::__construct();
-   }
+
 
    public function addFile($file)
    {

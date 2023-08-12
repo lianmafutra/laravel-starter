@@ -7,6 +7,7 @@ use App\Utils\LmFile\CompressImage;
 use App\Utils\LmFile\FilterExtension;
 use App\Utils\LmFile\GeneratePath;
 use App\Utils\LmFile\GenerateThumbnail;
+use Carbon\Carbon;
 use Exception;
 use RahulHaque\Filepond\Facades\Filepond;
 use Storage;
@@ -452,15 +453,19 @@ trait LmFileTrait
                ]
             ];
          } else {
+
             $dataObject = [
                "source" => $this->makeFileAttribute()->toArray()[0]['full_path'],
                "options" => [
                   "type" => "local",
+                  "metadata" => [
+                     "name_origin" =>  $this->makeFileAttribute()->toArray()[0]['name_origin'],
+                     "created_at" => $this->makeFileAttribute()->toArray()[0]['created_at'],
+                  ]
                ],
-               "metadata" => [
-                  "poster" => asset('img/pdf-thumb.png'),
-               ]
             ];
+
+            
          }
          array_push($dataCollection, $dataObject);
          return $dataCollection;
@@ -493,12 +498,19 @@ trait LmFileTrait
       } else {
 
 
+
          foreach ($this->makeFileAttribute() as $key => $value) {
+         
+          
             $dataObject = [
                "source" => $value->full_path,
                "options" => [
                   "type" => "local",
-               ]
+                  "metadata" => [
+                     "name_origin" =>  $value->name_origin,
+                     "created_at" =>  $value->first()->toArray()['created_at'],
+                  ]
+               ],
             ];
             array_push($dataCollection, $dataObject);
          }

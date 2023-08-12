@@ -400,3 +400,9 @@ a.brand-link {
    color: #202124;
    font-weight: 500;
 }
+
+/*  */
+
+.mfp-close{
+   cursor: pointer !important;
+  }

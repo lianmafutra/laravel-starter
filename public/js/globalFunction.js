@@ -27,10 +27,27 @@ window._getFilepond = function (source, load) {
 window._alertDeleteFilepond = function (resolve, reject) {
    if (confirm("Are You Sure Delete This File ?") == true) {
       return true;
-    } else {
+   } else {
       return false;
-    }
- };  
+   }
+};
+
+window._showImageFilepond = function (item) {
+   $.magnificPopup.open({
+      items: {
+         src: item.serverId
+      },
+      image: {
+         titleSrc: function () {
+            return `<center><span style="text-align: center !important" class="image_title">${item.filename}<br> ${item.getMetadata('name_origin')},<br> Created At :  ${item.getMetadata('created_at')}</span></center>`;
+         }
+      },
+      type: 'image'
+   });
+
+};
+
+
 
 
 

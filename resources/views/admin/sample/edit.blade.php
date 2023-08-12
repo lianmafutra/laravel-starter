@@ -24,11 +24,10 @@
             cursor: pointer;
         }
 
+
         .filepond--list-scroller {
             cursor: default;
         }
-
-
 
         @media (min-width: 576px) {
             #file_cover_multi .filepond--item {
@@ -38,16 +37,6 @@
             #file_pdf .filepond--item {
                 width: calc(32% - 0.5em);
             }
-        }
-
-        a {
-            color: dodgerblue;
-            text-decoration: none;
-        }
-
-        a:hover {
-            cursor: pointer;
-            text-decoration: underline;
         }
     </style>
 @endpush
@@ -153,7 +142,7 @@
 
     <script src="{{ asset('plugins/filepond/filepond-get-files.js') }}"></script>
     <script src="{{ asset('plugins/magnific/jquery.magnific-popup.min.js') }}"></script>
-
+    <script src="https://unpkg.com/filepond-plugin-file-metadata/dist/filepond-plugin-file-metadata.js"></script>
 
     {{-- password toggle show/hide --}}
     <script src="{{ asset('plugins/toggle-password.js') }}"></script>
@@ -219,6 +208,7 @@
                 FilePondPluginImagePreview,
                 FilePondPluginFilePoster,
                 FilePondPluginImageOverlay,
+                FilePondPluginFileMetadata,
                 FilePondPluginFileValidateType,
                 FilePondPluginFileValidateSize)
 
@@ -320,18 +310,7 @@
             const file_cover = FilePond.create(document.querySelector('#file_cover'));
             file_cover.setOptions({
                 onactivatefile: (item) => {
-                  $.magnificPopup.open({
-                        items: {
-                            src: item.serverId
-                        },
-                        image: {
-                            titleSrc: function(item2) {
-                              console.log('fileku', item)
-                                return `<center><span style="text-align: center !important" class="image_title">${item.filename}</span></center>`;
-                            }
-                        },
-                        type: 'image'
-                    });
+                  _showImageFilepond(item)
                 },
                 beforeRemoveFile: (item) => {
                     return new Promise((resolve, reject) => {
@@ -351,20 +330,10 @@
             })
 
             const file_cover_multi = FilePond.create(document.querySelector('#file_cover_multi'));
+            
             file_cover_multi.setOptions({
-                onactivatefile: (item) => {
-                    $.magnificPopup.open({
-                        items: {
-                            src: item.serverId
-                        },
-                        image: {
-                            titleSrc: function(item2) {
-                              console.log('fileku', item)
-                                return `<center><span style="text-align: center !important" class="image_title">${item.filename}</span></center>`;
-                            }
-                        },
-                        type: 'image'
-                    });
+                onactivatefile: (item, index) => {
+                  _showImageFilepond(item)
                 },
                 beforeRemoveFile: (item) => {
                     return new Promise((resolve, reject) => {
@@ -387,6 +356,7 @@
                         _getFilepond(source, load)
                     }
                 },
+               
                 files: @json($sampleCrud->field('file_cover_multi')->getFileponds())
             });
         })

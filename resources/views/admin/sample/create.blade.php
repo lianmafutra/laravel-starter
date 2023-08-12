@@ -98,7 +98,7 @@
                         accept="image/jpeg, image/png" />
 
                     <x-filepond id="file_cover_multi" name="file_cover_multi[]" label='File Cover multiple'
-                        info='( Format File JPG/PNG , Maks 5 MB)' accept="image/jpeg, image/png" multiple />
+                        info='( Format File JPG/PNG , Maks 5 MB)' multiple />
 
                     <x-filepond id="file_pdf" name="file_pdf[]" label='File PDF' info='( Format File PDF, Maks 5 MB)'
                         accept="application/pdf" multiple />
@@ -203,7 +203,7 @@
                 FilePondPluginFileEncode,
                 FilePondPluginImagePreview,
                 FilePondPluginFilePoster,
-                FilePondPluginImageOverlay,
+          
                 FilePondPluginFileValidateType,
                 FilePondPluginFileValidateSize)
 
@@ -257,12 +257,6 @@
 
         const file_pdf = FilePond.create(document.querySelector('#file_pdf'));
             file_pdf.setOptions({
-                onactivatefile: (item) => {
-                    window.open(@json(url('viewpdf/web/viewer.html?url=')) + item.serverId,
-                        '_blank'
-                    );
-
-                },
                 allowMultiple: true,
                 allowReorder: true,
                 server: {
@@ -276,14 +270,6 @@
             const file_cover = FilePond.create(document.querySelector('#file_cover'));
             file_cover.setOptions({
                 allowImagePreview: true,
-                onactivatefile: (item) => {
-                    $.magnificPopup.open({
-                        items: {
-                            src: item.serverId
-                        },
-                        type: 'image'
-                    });
-                },
                 server: {
                     url: "{{ config('filepond.server.url') }}",
                     headers: {
@@ -295,16 +281,6 @@
 
             const file_cover_multi = FilePond.create(document.querySelector('#file_cover_multi'));
             file_cover_multi.setOptions({
-                onactivatefile: (item) => {
-                    $.magnificPopup.open({
-                        items: {
-                            src: item.serverId
-                        },
-                        type: 'image'
-                    });
-
-                },
-                allowDownloadByUrl: true, // by default downloading by URL disabled
                 styleItemPanelAspectRatio: 1,
                 imageCropAspectRatio: '1:1',
                 allowImagePreview: true,

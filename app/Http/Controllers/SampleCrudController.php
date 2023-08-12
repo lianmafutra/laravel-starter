@@ -7,7 +7,7 @@ use App\Models\SampleCrud;
 use App\Utils\ApiResponse;
 use Carbon\Carbon;
 use DB;
-use Illuminate\Notifications\Action;
+
 
 class SampleCrudController extends Controller
 {
@@ -16,9 +16,9 @@ class SampleCrudController extends Controller
    public function index()
    {
 
-      $data = SampleCrud::all();
-      
-      
+      $data = SampleCrud::get();
+
+
 
       if (request()->ajax()) {
          return datatables()->of($data)
@@ -27,7 +27,6 @@ class SampleCrudController extends Controller
                return $data->hashId;
             })
             ->addColumn('action', function ($data) {
-              
                return view('admin.sample.action', compact('data'));
             })
             ->editColumn('created_at', function ($data) {
@@ -35,7 +34,7 @@ class SampleCrudController extends Controller
             })
             ->editColumn('category_multi_id', function ($data) {
                $boldArray = array_map(function ($item) {
-                  return '<button type="button" class="ml-1 btn bnt-sm btn-outline-secondary">'.$item.'</button>';
+                  return '<button type="button" class="ml-1 btn bnt-sm btn-outline-secondary">' . $item . '</button>';
                }, $data->category_multi_id);
                $string = implode("", $boldArray);
                return $string;
@@ -61,14 +60,25 @@ class SampleCrudController extends Controller
 
          $sampleCrud = SampleCrud::create($request->safe()->except('date_range', 'file_cover', 'file_cover_multi', 'file_pdf'));
 
-         $sampleCrud
+
+
+         SampleCrud::find($sampleCrud->id)
             ->addFile($request->file_pdf)
             ->path("file_pdf")
             ->field("file_pdf")
             ->extension(['pdf'])
             ->storeFile();
 
-         $sampleCrud
+            SampleCrud::find($sampleCrud->id)
+            ->addFile($request->file_cover_multi)
+            ->path("cover_multi")
+            ->field("file_cover_multi")
+            ->extension(['jpg', 'png'])
+            ->withThumb(100)
+            ->compress(60)
+            ->storeFile();
+
+            SampleCrud::find($sampleCrud->id)
             ->addFile($request->file_cover)
             ->path("cover")
             ->field("file_cover")
@@ -77,14 +87,6 @@ class SampleCrudController extends Controller
             ->compress(60)
             ->storeFile();
 
-         $sampleCrud
-            ->addFile($request->file_cover_multi)
-            ->path("cover_multi")
-            ->field("file_cover_multi")
-            ->extension(['jpg', 'png'])
-            ->withThumb(100)
-            ->compress(60)
-            ->storeFile();
 
          DB::commit();
          return $this->success(__('trans.crud.success'));
@@ -113,23 +115,8 @@ class SampleCrudController extends Controller
 
          $sampleCrud->fill($request->safe()->except('date_range', 'file_cover', 'file_cover_multi', 'file_pdf'))->save();
 
-         $sampleCrud
-            ->addFile($request->file_pdf)
-            ->path("file_pdf")
-            ->field("file_pdf")
-            ->extension(['pdf'])
-            ->updateFile();
 
-         $sampleCrud
-            ->addFile($request->file_cover)
-            ->path("cover")
-            ->field("file_cover")
-            ->extension(['jpg', 'png'])
-            ->withThumb(100)
-            ->compress(60)
-            ->updateFile();
-
-         $sampleCrud
+         SampleCrud::find($sampleCrud->id)
             ->addFile($request->file_cover_multi)
             ->path("cover_multi")
             ->field("file_cover_multi")
@@ -138,7 +125,25 @@ class SampleCrudController extends Controller
             ->compress(60)
             ->updateFile();
 
+
+         SampleCrud::find($sampleCrud->id)
+            ->addFile($request->file_pdf)
+            ->path("file_pdf")
+            ->field("file_pdf")
+            ->extension(['pdf'])
+            ->updateFile();
+
+         SampleCrud::find($sampleCrud->id)
+            ->addFile($request->file_cover)
+            ->path("cover")
+            ->field("file_cover")
+            ->extension(['jpg', 'png'])
+            ->withThumb(100)
+            ->compress(60)
+            ->updateFile();
+
          DB::commit();
+
          return $this->success(__('trans.crud.success'));
       } catch (\Throwable $th) {
          DB::rollBack();
@@ -150,7 +155,7 @@ class SampleCrudController extends Controller
    public function destroy(SampleCrud $sampleCrud)
    {
       try {
-         $sampleCrud->delete();
+         $sampleCrud->deleteWithFile();
          return redirect()->back()->with('success', config('language.alert-success.destroy'), 200);
       } catch (\Throwable $th) {
          return redirect()->back()->with('error', config('language.alert-error.destroy'), 400);

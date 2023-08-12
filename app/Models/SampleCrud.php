@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Deligoez\LaravelModelHashId\Traits\HasHashId;
+use Deligoez\LaravelModelHashId\Traits\HasHashIdRouting;
 use Deligoez\LaravelModelHashId\Traits\SavesHashId;
 
 class SampleCrud extends Model
@@ -16,9 +17,11 @@ class SampleCrud extends Model
    use HasFactory;
    use HasHashId;
    use SavesHashId;
+   use HasHashIdRouting;
 
    protected $table = 'sample';
    protected $guarded = [];
+
    protected $hidden = ['id'];
 
    protected $appends = [

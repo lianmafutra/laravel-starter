@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Utils\LmFileTrait;
+use Deligoez\LaravelModelHashId\Traits\HasHashIdRouting;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -73,6 +74,7 @@ class User extends Authenticatable
 {
    use HasFactory, Notifiable;
    use HasRoles;
+
    use LmFileTrait;
 
    protected $guarded = [];

@@ -35,6 +35,7 @@ class SampleCrudRequest extends FormRequest
    public function rules()
    {
 
+    
 
       return [
          'title'             => 'required|min:10|max:50|string',

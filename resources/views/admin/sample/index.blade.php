@@ -97,7 +97,9 @@
                 processing: true,
                 lengthChange: true,
                 paginate: true,
-                aaSorting: [],
+                order: [
+                    [6, 'desc']
+                ],
                 scrollX: true,
                 fixedColumns: {
                     leftColumns: @json(Cache::store('styles')->get('left_fixed_action', 0)),
@@ -316,7 +318,6 @@
                                 _showLoading()
                             },
                             success: (response) => {
-                                datatable.ajax.reload()
                                 _alertSuccess(response.message)
                             },
                             error: function(response) {

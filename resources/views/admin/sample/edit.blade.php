@@ -16,28 +16,35 @@
 
     <link rel="stylesheet" href="{{ asset('plugins/magnific/magnific-popup.min.css') }}" />
 
-    <link rel="stylesheet" href="{{ asset('plugins/filepond/filepond-plugin-file-poster.css') }}"  />
+    <link rel="stylesheet" href="{{ asset('plugins/filepond/filepond-plugin-file-poster.css') }}" />
 
 
     <style>
         #file_pdf .filepond--item {
             cursor: pointer;
         }
+
         .filepond--list-scroller {
             cursor: default;
         }
+
+
+
         @media (min-width: 576px) {
             #file_cover_multi .filepond--item {
                 width: calc(32% - 0.5em);
             }
+
             #file_pdf .filepond--item {
-               width: calc(32% - 0.5em);
+                width: calc(32% - 0.5em);
             }
         }
+
         a {
             color: dodgerblue;
             text-decoration: none;
         }
+
         a:hover {
             cursor: pointer;
             text-decoration: underline;
@@ -268,7 +275,7 @@
             $('#title').val(@json($sampleCrud->title))
             $('#desc').val(@json($sampleCrud->desc))
             $('#category_id').val(@json($sampleCrud->category_id)).change()
-            $("#category_multi_id").val( @json($sampleCrud->category_multi_id) ).change()
+            $("#category_multi_id").val(@json($sampleCrud->category_multi_id)).change()
             $('#days').val(@json($sampleCrud->days)).change()
             $('#month').val(@json($sampleCrud->month)).change()
             $('#contact').val(@json($sampleCrud->contact))
@@ -286,14 +293,20 @@
             const file_pdf = FilePond.create(document.querySelector('#file_pdf'));
             file_pdf.setOptions({
                 onactivatefile: (item) => {
-                    window.open(@json(url('viewpdf/web/viewer.html?url=')) + item.serverId,'_blank');
+                    window.open(@json(url('viewpdf/web/viewer.html?url=')) + item.serverId, '_blank');
                 },
-           
-              
+                beforeRemoveFile: (item) => {
+                    let text;
+                    if (confirm("Are You Sure Delete This File ?") == true) {
+                        text = "You pressed OK!";
+                    } else {
+                        text = "You canceled!";
+                        return false;
+                    }
+                },
                 allowImagePreview: true,
                 allowMultiple: true,
                 allowReorder: true,
-           
                 server: {
                     url: "{{ config('filepond.server.url') }}",
                     headers: {
@@ -306,9 +319,10 @@
                 files: @json($sampleCrud->field('file_pdf')->getFileponds())
             });
 
+
+
             const file_cover = FilePond.create(document.querySelector('#file_cover'));
             file_cover.setOptions({
-                allowDownloadByUrl: true,
                 onactivatefile: (item) => {
                     $.magnificPopup.open({
                         items: {
@@ -339,7 +353,6 @@
                         type: 'image'
                     });
                 },
-                allowDownloadByUrl: true, // by default downloading by URL disabled
                 styleItemPanelAspectRatio: 1,
                 imageCropAspectRatio: '1:1',
                 allowImagePreview: true,

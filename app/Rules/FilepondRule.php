@@ -62,8 +62,6 @@ class FilepondRule implements Rule, DataAwareRule, ValidatorAwareRule
    public function passes($attribute, $value)
    {
 
-   
-
       if (CleanFilepond::run($value)) {
          $field = explode('.', $attribute)[0];
        
@@ -99,7 +97,6 @@ class FilepondRule implements Rule, DataAwareRule, ValidatorAwareRule
     */
    public function message()
    {
-
       return $this->messages;
    }
 }

@@ -99,9 +99,10 @@ class MasterUserController extends Controller
          return datatables()->of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) use ($user) {
+             
                if ($user->hasDirectPermission($data->name)) {
                   return '<a href="#" data-action="' . $data->name . '"
-                  data-url="' . route("revoke.permission") . '" data-toggle="tooltip" data-placement="bottom" title="Delete Data" class="btn btn-sm btn-danger btn_delete" data-id="" data-name=""><i class="fas fa-trash"></i></a>';
+                  data-url="' . route("master-user.revoke.permission") . '" data-toggle="tooltip" data-placement="bottom" title="Delete Data" class="btn btn-sm btn-danger btn_delete" data-id="" data-name=""><i class="fas fa-trash"></i></a>';
                }
             })
             ->editColumn('created_at', function ($data) {

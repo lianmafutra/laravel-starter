@@ -142,7 +142,7 @@ class SampleCrudController extends Controller
             ->compress(60)
             ->updateFile();
 
-         DB::commit();
+       
 
          return $this->success(__('trans.crud.success'));
       } catch (\Throwable $th) {
@@ -155,10 +155,15 @@ class SampleCrudController extends Controller
    public function destroy(SampleCrud $sampleCrud)
    {
       try {
+         DB::beginTransaction();
+
          $sampleCrud->deleteWithFile();
-         return redirect()->back()->with('success', config('language.alert-success.destroy'), 200);
+         DB::commit();
+         return $this->success(__('trans.crud.success'));
+      
       } catch (\Throwable $th) {
-         return redirect()->back()->with('error', config('language.alert-error.destroy'), 400);
+         DB::rollBack();
+         return $this->error(__('trans.crud.error') . $th, 400);
       }
    }
 }

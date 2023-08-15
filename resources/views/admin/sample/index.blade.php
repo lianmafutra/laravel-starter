@@ -146,25 +146,11 @@
                 ],
             }
 
-            _datatableButton(datatable, tableOptions, @json(Cache::store('styles')->get('action_button')));
+            _datatableButton(datatable, tableOptions, @json(Cache::store('styles')->get('action_button')))
             _datatableFixed(datatable, tableOptions,
                 @json(Cache::store('styles')->get('left_fixed_action', 0)),
-                @json(Cache::store('styles')->get('right_fixed_action', 0)));
+                @json(Cache::store('styles')->get('right_fixed_action', 0)))
 
-            // Object.assign(tableOptions, {});
-            // $('#datatable').DataTable().clear().destroy();
-
-            // datatable.columns([2]).every(function() {
-            //     var column = this;
-            //     var select = $('<br><input placeholder="Search..." class=""></input>')
-            //         .appendTo($(column.header()))
-            //         .on('change', function() {
-            //             var val = $.fn.dataTable.util.escapeRegex($(this).val());
-            //             if (column.search() !== val) {
-            //                 column.search(val).draw();
-            //             }
-            //         });
-            // });
 
             $("#form_edit_group").submit(function(e) {
                 e.preventDefault()

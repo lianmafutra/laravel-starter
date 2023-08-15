@@ -461,8 +461,6 @@ trait LmFileTrait
                   ]
                ],
             ];
-
-            
          }
          array_push($dataCollection, $dataObject);
          return $dataCollection;
@@ -497,8 +495,8 @@ trait LmFileTrait
 
 
          foreach ($this->makeFileAttribute() as $key => $value) {
-         
-          
+
+
             $dataObject = [
                "source" => $value->full_path,
                "options" => [
@@ -590,5 +588,19 @@ trait LmFileTrait
       $fileInfo = pathinfo($name_hash);
       $thumbName = $fileInfo['filename'] . $addString . '.' . $fileInfo['extension'];
       return $thumbName;
+   }
+
+
+
+   public function deleteWithFile()
+   {
+
+      $file =  ModelsFile::where('model_id', $this->getModel()->id)->get();
+      $this->getModel()->delete();
+      foreach ($file as $key => $deleteOldFile) {
+         Storage::disk('public')->delete($deleteOldFile->path . $deleteOldFile->name_hash);
+         Storage::disk('public')->delete($deleteOldFile->path . $this->searchThumb($deleteOldFile->name_hash));
+      }
+      return $file;
    }
 }

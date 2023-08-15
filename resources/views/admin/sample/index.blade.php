@@ -3,9 +3,8 @@
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }} ">
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('template/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-    @include('partials.datatable-css-settings')
-
-    @endpush
+    @include('partials.css-settings')
+@endpush
 @section('header')
     <x-header title="Permission List"></x-header>
 @endsection
@@ -72,7 +71,6 @@
 @endsection
 
 @push('js')
-  
     <script src="{{ asset('plugins/sweetalert2/sweetalert2-min.js') }}"></script>
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
 
@@ -118,7 +116,7 @@
                     },
                     {
                         data: 'category_id',
-                        name: 'category',
+                        name: 'category_id',
                         searchable: true,
                         orderable: false
                     },
@@ -127,7 +125,7 @@
                         name: 'category_multi_id',
                         orderable: false,
 
-                        searchable: false,
+                        searchable: true,
                     },
                     {
                         data: 'price_format',

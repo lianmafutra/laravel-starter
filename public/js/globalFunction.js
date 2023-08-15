@@ -52,12 +52,6 @@ window._showImageFilepond = function (item) {
 
 
 
-
-
-
-
-
-
 function printErrorMsg(msg) {
 
 

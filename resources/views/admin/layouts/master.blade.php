@@ -18,10 +18,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @stack('css')
     <style>
-        table.dataTable tbody tr.selected>* {
-            box-shadow: inset 0 0 0 9999px rgb(13 110 253 / 90%) !important;
-            color: white !important;
-        }
+      
 
         /* fix modal open, problem auto add padding on body */
         body {

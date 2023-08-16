@@ -69,7 +69,7 @@ class SampleCrudController extends Controller
             ->extension(['pdf'])
             ->storeFile();
 
-            SampleCrud::find($sampleCrud->id)
+         SampleCrud::find($sampleCrud->id)
             ->addFile($request->file_cover_multi)
             ->path("cover_multi")
             ->field("file_cover_multi")
@@ -78,7 +78,7 @@ class SampleCrudController extends Controller
             ->compress(60)
             ->storeFile();
 
-            SampleCrud::find($sampleCrud->id)
+         SampleCrud::find($sampleCrud->id)
             ->addFile($request->file_cover)
             ->path("cover")
             ->field("file_cover")
@@ -142,7 +142,7 @@ class SampleCrudController extends Controller
             ->compress(60)
             ->updateFile();
 
-       
+
 
          return $this->success(__('trans.crud.success'));
       } catch (\Throwable $th) {
@@ -156,11 +156,9 @@ class SampleCrudController extends Controller
    {
       try {
          DB::beginTransaction();
-
          $sampleCrud->deleteWithFile();
          DB::commit();
          return $this->success(__('trans.crud.success'));
-      
       } catch (\Throwable $th) {
          DB::rollBack();
          return $this->error(__('trans.crud.error') . $th, 400);

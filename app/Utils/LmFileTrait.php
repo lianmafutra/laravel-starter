@@ -114,8 +114,6 @@ trait LmFileTrait
             $this->custom_path . Str::random(15)
          );
 
-
-
          // generate Thumbnail
          if ($this->withThumb) {
 
@@ -495,8 +493,6 @@ trait LmFileTrait
 
 
          foreach ($this->makeFileAttribute() as $key => $value) {
-
-
             $dataObject = [
                "source" => $value->full_path,
                "options" => [
@@ -594,9 +590,8 @@ trait LmFileTrait
 
    public function deleteWithFile()
    {
-
       $file =  ModelsFile::where('model_id', $this->getModel()->id)->get();
-      $this->getModel()->delete();
+      $file = $this->getModel()->delete();
       foreach ($file as $key => $deleteOldFile) {
          Storage::disk('public')->delete($deleteOldFile->path . $deleteOldFile->name_hash);
          Storage::disk('public')->delete($deleteOldFile->path . $this->searchThumb($deleteOldFile->name_hash));

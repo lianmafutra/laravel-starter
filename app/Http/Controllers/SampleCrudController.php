@@ -73,7 +73,7 @@ class SampleCrudController extends Controller
             ->addFile($request->file_cover_multi)
             ->path("cover_multi")
             ->field("file_cover_multi")
-            ->extension(['jpg', 'png'])
+            ->extension(['jpg', 'png','jpeg'])
             ->withThumb(100)
             ->compress(60)
             ->storeFile();
@@ -82,7 +82,7 @@ class SampleCrudController extends Controller
             ->addFile($request->file_cover)
             ->path("cover")
             ->field("file_cover")
-            ->extension(['jpg', 'png'])
+            ->extension(['jpg', 'png','jpeg'])
             ->withThumb(100)
             ->compress(60)
             ->storeFile();
